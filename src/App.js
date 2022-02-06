@@ -1,5 +1,8 @@
 //import logo from './logo.svg';
+import React from "react";
+import Layout from "./components/layout";
 import './App.css';
+
 
 function App() {
 
@@ -8,7 +11,10 @@ function App() {
   return (
     <div className="App">
       <h1>Textklang App</h1>
+        <Layout/>
+
     </div>
+
   );
 }
 
