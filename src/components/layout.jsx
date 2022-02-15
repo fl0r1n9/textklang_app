@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import SearchTable from "./search_table";
+import Nav from "./nav";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -16,6 +17,7 @@ const Item = styled(Paper)(({ theme }) => ({
 export default function Layout() {
     return (
         <Box sx={{ width: '100%' }}>
+            <Nav/>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
                 <Grid item xs={6}>
                     <SearchTable/>
