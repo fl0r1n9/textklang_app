@@ -21,15 +21,10 @@ export default function SearchField() {
 
     function renderShowText(buttonPress) {
         if (buttonPress === true) {
-            return <h1>Hello World</h1>;
+            return <h1>Optionen auswählen</h1>;
         } else {
             return <h1/>
         }
-    }
-
-    function name(parameter) {
-
-        manipulateShowText(true)
     }
 
     const theFunction = () => {manipulateShowText(true)}
@@ -46,17 +41,18 @@ export default function SearchField() {
                 </Box>
 
                 <FormControl> {/* TODO: fullwidth*/}
-                    <InputLabel id="demo-simple-select-label">Age</InputLabel>
+                    <InputLabel id="demo-simple-select-label">Suche nach...</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={age}
-                        label="Age"
+                        label="Alle"
                         onChange={handleChange}
                     >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={30}>Alle</MenuItem>
+                        <MenuItem value={10}>Autor</MenuItem>
+                        <MenuItem value={20}>Titel</MenuItem>
+                        <MenuItem value={30}>Leser</MenuItem>
                     </Select>
                 </FormControl>
 
@@ -67,9 +63,9 @@ export default function SearchField() {
             }
 
             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Button variant="contained" onClick={theFunction}>1</Button>
+                <Button variant="contained" onClick={theFunction}>Filter hinzufügen</Button>
 
-                <Button variant="contained">2</Button>
+                <Button variant="contained">Preset speichern</Button>
             </Box>
 
         </div>
