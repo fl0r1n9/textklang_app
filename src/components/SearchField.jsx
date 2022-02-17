@@ -12,9 +12,9 @@ import Button from '@mui/material/Button';
 
 export default function SearchField() {
 
-    const [age, setAge] = React.useState('');
+    const [searchFilter, setSearchFilter] = React.useState('');
     const handleChange = (event) => {
-        setAge(event.target.value);
+        setSearchFilter(event.target.value);
     };
 
     const [stateShowText, manipulateShowText] = React.useState(false);
@@ -36,23 +36,24 @@ export default function SearchField() {
 
 
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                    <AccountCircle sx={{color: 'action.active', mr: 1, my: 0.5}}/>
-                    <TextField id="input-with-sx" label="suchen" variant="standard"/>
+                    {/*TODO: new icon */}
+                    {/*<AccountCircle sx={{color: 'action.active', mr: 1, my: 0.5}}/>*/}
+                    <TextField id="input-with-sx" label="Suchen" variant="standard"/>
                 </Box>
 
-                <FormControl> {/* TODO: fullwidth*/}
-                    <InputLabel id="demo-simple-select-label">Suche nach...</InputLabel>
+                <FormControl sx={{ minWidth: 120 }}> {/* TODO: change size*/}
+                    <InputLabel id="demo-simple-select-label">Kategorie</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={age}
-                        label="Alle"
+                        value={searchFilter}
+                        label="Search Filter"
                         onChange={handleChange}
                     >
-                        <MenuItem value={30}>Alle</MenuItem>
-                        <MenuItem value={10}>Autor</MenuItem>
-                        <MenuItem value={20}>Titel</MenuItem>
-                        <MenuItem value={30}>Leser</MenuItem>
+                        <MenuItem value={1}>Alle</MenuItem>
+                        <MenuItem value={2}>Titel</MenuItem>
+                        <MenuItem value={3}>Autor</MenuItem>
+                        <MenuItem value={4}>Leser</MenuItem>
                     </Select>
                 </FormControl>
 

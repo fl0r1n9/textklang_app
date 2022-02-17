@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {deDE} from "@mui/material/locale";
+import {createTheme, ThemeProvider} from "@mui/material/styles";
+
+const theme = createTheme(deDE);
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+      <ThemeProvider theme={theme}>
+          <App />
+      </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

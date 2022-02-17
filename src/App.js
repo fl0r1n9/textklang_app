@@ -10,7 +10,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Textklang App</h1>
+        <h1>Textklang App</h1>
         <Layout/>
 
     </div>
