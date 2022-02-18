@@ -7,11 +7,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
-//import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 
 function ScrollTop(props) {
-    const { children, window } = props;
+    const {children, window} = props;
     // Note that you normally won't need to set the window ref as useScrollTrigger
     // will default to window.
     // This is only being set here because the demo is in an iframe.
@@ -39,7 +39,7 @@ function ScrollTop(props) {
             <Box
                 onClick={handleClick}
                 role="presentation"
-                sx={{ position: 'fixed', bottom: 16, right: 16 }}
+                sx={{position: 'fixed', bottom: 16, right: 16}}
             >
                 {children}
             </Box>
@@ -59,7 +59,7 @@ ScrollTop.propTypes = {
 export default function BackToTop(props) {
     return (
         <React.Fragment>
-            <CssBaseline />
+            <CssBaseline/>
             <AppBar>
                 <Toolbar>
                     <Typography variant="h6" component="div">
@@ -67,7 +67,7 @@ export default function BackToTop(props) {
                     </Typography>
                 </Toolbar>
             </AppBar>
-            {/*<Toolbar id="back-to-top-anchor" />*/}
+            <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
             {/*<Container>
                 <Box sx={{ my: 2 }}>
                     {[...new Array(12)]
@@ -82,7 +82,7 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
             </Container>*/}
             <ScrollTop {...props}>
                 <Fab color="secondary" size="small" aria-label="scroll back to top">
-                    {/*<KeyboardArrowUpIcon />*/}
+                    <KeyboardArrowUpIcon/>
                 </Fab>
             </ScrollTop>
         </React.Fragment>

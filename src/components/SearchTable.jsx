@@ -17,9 +17,8 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-//import DeleteIcon from '@mui/icons-material/Delete';
-//import FilterListIcon from '@mui/icons-material/FilterList';
 import {visuallyHidden} from '@mui/utils';
+
 
 function createData(name, author, reader, orig) {
     return {
@@ -30,10 +29,23 @@ function createData(name, author, reader, orig) {
     };
 }
 
+
+
 const rows = [
     createData('Nachtlied', 'Eichendorff', 'Fabri', true),
     createData('Der Herbst', 'Hölderlin', 'Zischler', true),
     createData('Vulkan', 'Hölderlin', 'Zischler', true),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Stufen', 'Hesse', 'Rheinwald', false),
     createData('Stufen', 'Hesse', 'Rheinwald', false),
 ];
 
@@ -88,7 +100,7 @@ const headCells = [
     },
     {
         id: 'orig',
-        string: false,
+        string: true,
         disablePadding: false,
         label: 'Original',
     },
@@ -105,6 +117,7 @@ function EnhancedTableHead(props) {
         <TableHead>
             <TableRow>
                 {headCells.map((headCell) => (
+                   //TODO: improve alignment -> only works for header
                     <TableCell
                         key={headCell.id}
                         align={headCell.string ? 'right' : 'left'}
@@ -183,8 +196,23 @@ export default function SearchTable() {
         setSelected([]);
     };
 
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
+    const [stateClicked, setStateClicked] = React.useState(false);
+
+    function renderNewView(rowClicked) {
+        if (rowClicked === true) {
+            return <h1>Optionen auswählen</h1>;
+        } else {
+            return <h1/>
+        }
+    }
+
+    //TODO: use renderNewView(stateClicked)
+
+    const handleClick = () => {
+
+        setStateClicked(true);
+
+        /*const selectedIndex = selected.indexOf(name);
         let newSelected = [];
 
         if (selectedIndex === -1) {
@@ -200,9 +228,10 @@ export default function SearchTable() {
             );
         }
 
-        setSelected(newSelected);
+        setSelected(newSelected);*/
     };
 
+    //TODO: (fix via old version): Sorting and page change reloads table
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -241,8 +270,7 @@ export default function SearchTable() {
                             rowCount={rows.length}
                         />
                         <TableBody>
-                            {/* if you don't need to support IE11, you can replace the `stableSort` call with:
-                 rows.slice().sort(getComparator(order, orderBy)) */}
+
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
@@ -253,7 +281,7 @@ export default function SearchTable() {
                                         <TableRow
                                             hover
                                             onClick={(event) => handleClick(event, row.name)}
-                                            role="checkbox"
+                                            //role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
                                             key={row.name}
@@ -308,6 +336,7 @@ export default function SearchTable() {
                 control={<Switch checked={dense} onChange={handleChangeDense}/>}
                 label="Abstände verkleinern"
             />
+
         </Box>
     );
 }
