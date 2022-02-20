@@ -172,7 +172,7 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
-export default function SearchTable() {
+export default function SearchTable({setId}) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -196,21 +196,12 @@ export default function SearchTable() {
         setSelected([]);
     };
 
-    const [stateClicked, setStateClicked] = React.useState(false);
-
-    function renderNewView(rowClicked) {
-        if (rowClicked === true) {
-            return <h1>Optionen auswählen</h1>;
-        } else {
-            return <h1/>
-        }
-    }
 
     //TODO: use renderNewView(stateClicked)
 
-    const handleClick = () => {
+    const handleClick = (event,name) => {
 
-        setStateClicked(true);
+        setId(name);
 
         /*const selectedIndex = selected.indexOf(name);
         let newSelected = [];

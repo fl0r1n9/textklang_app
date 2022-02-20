@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import SearchTable from "./SearchTable";
 import Nav from "./Nav";
 import SearchField from "./SearchField";
+import ContentPage from "./ContentPage";
 
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
@@ -14,18 +15,27 @@ const Item = styled(Paper)(({theme}) => ({
     color: theme.palette.text.secondary,
 }));
 
+
 export default function Layout() {
-    const numbers = [{name: "abc", age: "23"}, {name: "def", age: "41"}, {name: "ghi", age: "43"}];
+
+    const [id, setId] = React.useState(null);
 
     return (
         <Box sx={{width: '100%'}}>
             <Nav/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 <Grid item xs={6}>
-                    <Item>
-                    <SearchTable/>
-                    </Item>
+
+                    {
+                        id === null ? <Item>
+                            <SearchTable setId={setId}/>
+                        </Item> : <Item>
+                            <ContentPage id={id} setId={setId}/>
+                        </Item>
+                    }
+
                 </Grid>
+
                 <Grid item xs={6}>
                     <Item>
                         <SearchField/>
@@ -33,5 +43,6 @@ export default function Layout() {
                 </Grid>
             </Grid>
         </Box>
+
     );
 }
