@@ -31,12 +31,18 @@ export default function SearchField() {
     //add filter hook
     const [box, setBox] = React.useState(0);
 
+    let box_array = new Array(box);
+    console.log(box);
 
     function createNewBox() {
 
         if (box > 0) {
-            console.log("got here");
 
+            for (let i = 0; i < box; i++) {
+                box_array.push(i);
+            }
+
+            //TODO: in FirstBox auslagern?
             return <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
@@ -45,7 +51,7 @@ export default function SearchField() {
                         onChange={handleChange_fc}
                         displayEmpty
                     >
-                        <MenuItem value="contains" >
+                        <MenuItem value="contains">
                             enthält
                         </MenuItem>
                         <MenuItem value="not">enthält nicht</MenuItem>
@@ -60,7 +66,7 @@ export default function SearchField() {
                         onChange={handleChange_uc}
                         displayEmpty
                     >
-                        <MenuItem value="punctuation" >
+                        <MenuItem value="punctuation">
                             Satzzeichen
                         </MenuItem>
                         <MenuItem value="syl">Silbe</MenuItem>
@@ -110,7 +116,7 @@ export default function SearchField() {
             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <Button variant="contained" onClick={function x() {
                     setBox(box + 1);
-                    console.log(box);
+
                 }}>Filter hinzufügen</Button>
 
                 <Button variant="contained">Preset speichern</Button>
