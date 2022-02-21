@@ -4,8 +4,8 @@ import {InputLabel, MenuItem} from "@mui/material";
 import {Select} from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import {useState} from "react";
+import Condition from "./Condition";
+import {CreateNewCondition} from "./CreateNewCondition";
 
 
 export default function SearchField() {
@@ -17,38 +17,26 @@ export default function SearchField() {
         setSearchFilter(event.target.value);
     };
 
-    const [functionChooser, setFunctionChooser] = React.useState('contains');
-    const handleChange_fc = (event) => {
-        setFunctionChooser(event.target.value);
-    };
-
-    const [unitChooser, setUnitChooser] = React.useState('');
-    const handleChange_uc = (event) => {
-        setUnitChooser(event.target.value);
-    };
-
 
     //add filter hook
-    const [box, setBox] = React.useState(0);
+    const [conditions, setConditions] = React.useState([]);
 
-    let box_array = new Array(box);
-    console.log(box);
 
-    function createNewBox() {
 
-        if (box > 0) {
+    const handleAddCondition = () => {
+        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg","")));
+    }
 
-            for (let i = 0; i < box; i++) {
-                box_array.push(i);
-            }
+    function showConditions() {
 
-            //TODO: in FirstBox auslagern?
+        return conditions.map(condition => {
             return <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
-                        value={functionChooser}
-                        onChange={handleChange_fc}
+                        disabled= {true}
+                        value={condition.func}
+                        //onChange={handleChange_fc}
                         displayEmpty
                     >
                         <MenuItem value="contains">
@@ -62,8 +50,9 @@ export default function SearchField() {
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">was?</InputLabel>
                     <Select
-                        value={unitChooser}
-                        onChange={handleChange_uc}
+                        disabled= {true}
+                        value={condition.entity}
+                      //  onChange={handleChange_uc}
                         displayEmpty
                     >
                         <MenuItem value="punctuation">
@@ -75,54 +64,42 @@ export default function SearchField() {
                     </Select>
                 </FormControl>
             </Box>
-        } else {
-            return <h1/>
-        }
-
-    }
-
+        })
+}
 
     return (
-        <div>
+    <div>
 
-            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
 
 
-                <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                    {/*TODO: search button? */}
-                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"/>
-                </Box>
-
-                <FormControl variant="standard" sx={{minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
-                    <Select
-                        value={searchFilter}
-                        onChange={handleChange}
-                        displayEmpty
-                    >
-                        <MenuItem value="all">Alle</MenuItem>
-                        <MenuItem value="title">Titel</MenuItem>
-                        <MenuItem value="author">Autor</MenuItem>
-                        <MenuItem value="reader">Leser</MenuItem>
-                    </Select>
-                </FormControl>
-
+            <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                {/*TODO: search button? */}
+                <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"/>
             </Box>
 
-            {
-                createNewBox()
-            }
+            <FormControl variant="standard" sx={{minWidth: 120}}>
+                <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
+                <Select
+                    value={searchFilter}
+                    onChange={handleChange}
+                    displayEmpty
+                >
+                    <MenuItem value="all">Alle</MenuItem>
+                    <MenuItem value="title">Titel</MenuItem>
+                    <MenuItem value="author">Autor</MenuItem>
+                    <MenuItem value="reader">Leser</MenuItem>
+                </Select>
+            </FormControl>
 
-            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Button variant="contained" onClick={function x() {
-                    setBox(box + 1);
+        </Box>
 
-                }}>Filter hinzufügen</Button>
+        {showConditions()}
+        <CreateNewCondition handleAddCondition={handleAddCondition}/>
 
-                <Button variant="contained">Preset speichern</Button>
-            </Box>
 
-        </div>
-    );
+
+    </div>
+);
 
 }
