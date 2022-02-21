@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "./components/Layout";
 import './App.css';
-import ContentPage from "./components/ContentPage";
 
 function App() {
 

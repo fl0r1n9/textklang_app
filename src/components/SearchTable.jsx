@@ -1,6 +1,5 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import {alpha} from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -30,23 +29,14 @@ function createData(name, author, reader, orig) {
 }
 
 
-
 const rows = [
     createData('Nachtlied', 'Eichendorff', 'Fabri', true),
     createData('Der Herbst', 'Hölderlin', 'Zischler', true),
     createData('Vulkan', 'Hölderlin', 'Zischler', true),
     createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
+    createData('Der Erlkönig', 'Goethe', 'Rheinwald', false),
+    createData('Der Abend', 'Schiller', 'Rheinwald', false),
+    createData('An die Parzen', 'Schiller', 'Rheinwald', false),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -172,6 +162,8 @@ EnhancedTableToolbar.propTypes = {
     numSelected: PropTypes.number.isRequired,
 };
 
+
+//TODO: hover changes cursor
 export default function SearchTable({setId}) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -197,11 +189,11 @@ export default function SearchTable({setId}) {
     };
 
 
-    //TODO: use renderNewView(stateClicked)
-
     const handleClick = (event,name) => {
 
-        setId(name);
+        const parameter = [event,name];
+
+        setId(parameter);
 
         /*const selectedIndex = selected.indexOf(name);
         let newSelected = [];
@@ -222,7 +214,6 @@ export default function SearchTable({setId}) {
         setSelected(newSelected);*/
     };
 
-    //TODO: (fix via old version): Sorting and page change reloads table
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
@@ -271,7 +262,7 @@ export default function SearchTable({setId}) {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(event, row.name)}
+                                            onClick={(event) => handleClick(row.author, row.name)}
                                             //role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}

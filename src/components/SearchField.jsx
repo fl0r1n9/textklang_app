@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import {MenuItem} from "@mui/material";
+import {InputLabel, MenuItem} from "@mui/material";
 import {Select} from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -11,31 +11,68 @@ import {useState} from "react";
 export default function SearchField() {
 
 
-    const [searchFilter, setSearchFilter] = React.useState('');
-
+    //FormControl hooks
+    const [searchFilter, setSearchFilter] = React.useState('all');
     const handleChange = (event) => {
         setSearchFilter(event.target.value);
     };
 
-    const [stateShowNewBox, manipulateShowNewBox] = React.useState(false);
+    const [functionChooser, setFunctionChooser] = React.useState('contains');
+    const handleChange_fc = (event) => {
+        setFunctionChooser(event.target.value);
+    };
 
-    function renderShowNewBox(buttonPress) {
-        if (buttonPress === true) {
-            return <h7>test</h7>
+    const [unitChooser, setUnitChooser] = React.useState('');
+    const handleChange_uc = (event) => {
+        setUnitChooser(event.target.value);
+    };
+
+
+    //add filter hook
+    const [box, setBox] = React.useState(0);
+
+
+    function createNewBox() {
+
+        if (box > 0) {
+            console.log("got here");
+
+            return <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
+                    <Select
+                        value={functionChooser}
+                        onChange={handleChange_fc}
+                        displayEmpty
+                    >
+                        <MenuItem value="contains" >
+                            enthält
+                        </MenuItem>
+                        <MenuItem value="not">enthält nicht</MenuItem>
+                        <MenuItem value="min">enthält mindestens</MenuItem>
+                        <MenuItem value="max">enthält maximal</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">was?</InputLabel>
+                    <Select
+                        value={unitChooser}
+                        onChange={handleChange_uc}
+                        displayEmpty
+                    >
+                        <MenuItem value="punctuation" >
+                            Satzzeichen
+                        </MenuItem>
+                        <MenuItem value="syl">Silbe</MenuItem>
+                        <MenuItem value="word">Wort</MenuItem>
+                        <MenuItem value="verse">Vers</MenuItem>
+                    </Select>
+                </FormControl>
+            </Box>
         } else {
             return <h1/>
         }
-    }
 
-    const setShowBoxTrue = () => {
-        manipulateShowNewBox(true)
-    }
-
-    function NewBox(){
-        const [state] = useState({count:0});
-
-        return  <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-        </Box>
     }
 
 
@@ -51,27 +88,30 @@ export default function SearchField() {
                 </Box>
 
                 <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
                     <Select
                         value={searchFilter}
                         onChange={handleChange}
                         displayEmpty
                     >
-                        <MenuItem value="" itemID="all">
-                            Alle
-                        </MenuItem>
-                        <MenuItem itemID="title">Titel</MenuItem>
-                        <MenuItem itemID="author">Autor</MenuItem>
-                        <MenuItem itemID="reader">Leser</MenuItem>
+                        <MenuItem value="all">Alle</MenuItem>
+                        <MenuItem value="title">Titel</MenuItem>
+                        <MenuItem value="author">Autor</MenuItem>
+                        <MenuItem value="reader">Leser</MenuItem>
                     </Select>
                 </FormControl>
 
             </Box>
 
             {
-                renderShowNewBox(stateShowNewBox)
+                createNewBox()
             }
+
             <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                <Button variant="contained" onClick={setShowBoxTrue}>Filter hinzufügen</Button>
+                <Button variant="contained" onClick={function x() {
+                    setBox(box + 1);
+                    console.log(box);
+                }}>Filter hinzufügen</Button>
 
                 <Button variant="contained">Preset speichern</Button>
             </Box>
