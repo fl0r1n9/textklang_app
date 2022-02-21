@@ -11,6 +11,7 @@ export default function ContentPage(props) {
 
     let displayText;
 
+    //find and display texts
     for (const key in poems) {
 
         if (poems[key].title === id[1]) {

@@ -1,5 +1,7 @@
 import React from "react";
 
+
+//conditions constructor
 export default class Condition {
 
     constructor(first, func, entity, where, searchString) {
@@ -14,7 +16,7 @@ export default class Condition {
 
 }
 
-//TODO:
+//TODO: pseudo for SearchField
 /*
 
 const result = poems.filter(poem.text => {

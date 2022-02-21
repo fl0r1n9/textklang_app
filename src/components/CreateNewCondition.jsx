@@ -5,11 +5,13 @@ import {InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
 
 
+//routine and logic for adding components
+
 export function CreateNewCondition(props){
 
    const {handleAddCondition} = props;
 
-    //FormControl hooks
+//FormControl hooks
     const [func,setFunc] = React.useState(null);
     const handleChange_fc = (event) => {
         setFunc(event.target.value);
@@ -17,13 +19,9 @@ export function CreateNewCondition(props){
     const [entity,setEntity] = React.useState(null);
     const handleChange_ec = (event) => {
         setEntity(event.target.value);
-
-
-
-
     };
 
-
+//first condition
     return <div>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
             <FormControl variant="standard" sx={{minWidth: 120}}>

@@ -22,11 +22,12 @@ export default function SearchField() {
     const [conditions, setConditions] = React.useState([]);
 
 
-
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg","")));
+        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg", "")));
     }
 
+
+    //placeholder&preview condition
     function showConditions() {
 
         return conditions.map(condition => {
@@ -34,7 +35,7 @@ export default function SearchField() {
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
-                        disabled= {true}
+                        disabled={true}
                         value={condition.func}
                         //onChange={handleChange_fc}
                         displayEmpty
@@ -50,9 +51,9 @@ export default function SearchField() {
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">was?</InputLabel>
                     <Select
-                        disabled= {true}
+                        disabled={true}
                         value={condition.entity}
-                      //  onChange={handleChange_uc}
+                        //  onChange={handleChange_uc}
                         displayEmpty
                     >
                         <MenuItem value="punctuation">
@@ -65,41 +66,44 @@ export default function SearchField() {
                 </FormControl>
             </Box>
         })
-}
+    }
 
     return (
-    <div>
+        //standard condition component
 
-        <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+        <div>
 
+            <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
 
-            <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                {/*TODO: search button? */}
-                <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"/>
+        {/*main search bar*/}
+
+                <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
+                    {/*TODO: search button? */}
+                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"/>
+                </Box>
+
+        {/*filter button*/}
+                <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
+                    <Select
+                        value={searchFilter}
+                        onChange={handleChange}
+                        displayEmpty
+                    >
+                        <MenuItem value="all">Alle</MenuItem>
+                        <MenuItem value="title">Titel</MenuItem>
+                        <MenuItem value="author">Autor</MenuItem>
+                        <MenuItem value="reader">Leser</MenuItem>
+                    </Select>
+                </FormControl>
+
             </Box>
 
-            <FormControl variant="standard" sx={{minWidth: 120}}>
-                <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
-                <Select
-                    value={searchFilter}
-                    onChange={handleChange}
-                    displayEmpty
-                >
-                    <MenuItem value="all">Alle</MenuItem>
-                    <MenuItem value="title">Titel</MenuItem>
-                    <MenuItem value="author">Autor</MenuItem>
-                    <MenuItem value="reader">Leser</MenuItem>
-                </Select>
-            </FormControl>
-
-        </Box>
-
-        {showConditions()}
-        <CreateNewCondition handleAddCondition={handleAddCondition}/>
+            {showConditions()}
+            <CreateNewCondition handleAddCondition={handleAddCondition}/>
 
 
-
-    </div>
-);
+        </div>
+    );
 
 }
