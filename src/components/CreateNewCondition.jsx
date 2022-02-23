@@ -7,23 +7,10 @@ import Button from "@mui/material/Button";
 
 //routine and logic for adding components
 
-export function CreateNewCondition(props){
+export function CreateNewCondition(props) {
 
-   const {handleAddCondition,conditions,conditionsNumber} = props;
+    const {handleAddCondition, func, setFunc, entity, setEntity} = props;
 
-//FormControl hooks
-    const [func,setFunc] = React.useState('');
-    const handleChange_fc = (event) => {
-        setFunc(event.target.value);
-        conditions[conditionsNumber] = event.target.value;
-        console.log(conditions);
-
-    };
-    const [entity,setEntity] = React.useState('');
-    const handleChange_ec = (event) => {
-        setEntity(event.target.value);
-        conditions.push(event.target.value);
-    };
 
 //first condition
     return <div>
@@ -33,7 +20,7 @@ export function CreateNewCondition(props){
                 <Select
 
                     value={func}
-                    onChange={handleChange_fc}
+                    onChange={(event) => setFunc(event.target.value)}
                     displayEmpty
                 >
                     <MenuItem value="contains">
@@ -49,7 +36,7 @@ export function CreateNewCondition(props){
                 <Select
 
                     value={entity}
-                    onChange={handleChange_ec}
+                    onChange={(event) => setEntity(event.target.value)}
                     displayEmpty
                 >
                     <MenuItem value="punctuation">
@@ -62,7 +49,8 @@ export function CreateNewCondition(props){
             </FormControl>
         </Box>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Button variant="contained" onClick={handleAddCondition} disabled={func === '' || entity === ''}>Filter hinzufügen</Button>
+            <Button variant="contained" onClick={handleAddCondition} disabled={!func || !entity}>Filter
+                hinzufügen</Button>
 
             <Button variant="contained">Preset laden</Button>
         </Box>

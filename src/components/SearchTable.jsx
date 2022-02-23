@@ -17,15 +17,6 @@ import Switch from '@mui/material/Switch';
 import {visuallyHidden} from '@mui/utils';
 import {poems} from "../data/poems";
 
-function createData(name, author, reader, orig) {
-    return {
-        name, author, reader, orig,
-    };
-}
-
-
-//let rows = [createData('Nachtlied', 'Eichendorff', 'Fabri', true), createData('Der Herbst', 'Hölderlin', 'Zischler', true), createData('Vulkan', 'Hölderlin', 'Zischler', true), createData('Stufen', 'Hesse', 'Rheinwald', false), createData('Der Erlkönig', 'Goethe', 'Rheinwald', false), createData('Der Abend', 'Schiller', 'Rheinwald', false), createData('An die Parzen', 'Schiller', 'Rheinwald', false),];
-
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -276,7 +267,7 @@ export default function SearchTable(props) {
                                                    style={{cursor: 'pointer'}}>{row.author} </TableCell>
                                         <TableCell align="right"
                                                    style={{cursor: 'pointer'}}>{row.reader}</TableCell>
-                                        <TableCell align="right" style={{cursor: 'pointer'}}>{row.orig}</TableCell>
+                                        <TableCell align="right" style={{cursor: 'pointer'}}>{row.id}</TableCell>
                                     </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow

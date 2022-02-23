@@ -6,15 +6,11 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Condition from "./Condition";
 import {CreateNewCondition} from "./CreateNewCondition";
-import {poems} from "../data/poems";
-import {useState} from "react";
-
 
 export default function SearchField(props) {
 
 
     const {setResult, searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
-
 
 
     //SearchFilter hook
@@ -24,16 +20,20 @@ export default function SearchField(props) {
         setResult([]);
     };
 
-
     //add conditions hook
     const [conditions, setConditions] = React.useState([]);
-    const [conditionsNumber, setConditionsNumber] = React.useState(0);
+
+    //FormControl hooks
+    const [func, setFunc] = React.useState(null);
+
+    const [entity, setEntity] = React.useState(null);
+
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(conditionsNumber, "", "", "vers_beg", "")));
-        setConditionsNumber(conditionsNumber + 1);
-        console.log(conditions);
+        setConditions(conditions.concat(new Condition(func, entity)));
+        setFunc(null);
+        setEntity(null);
     }
 
 
@@ -87,8 +87,9 @@ export default function SearchField(props) {
                 {/*main search bar*/}
 
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard" value={searchInput}
-                               onChange={(event)=>setSearchInput(event.target.value)}/>
+                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"
+                               value={searchInput}
+                               onChange={(event) => setSearchInput(event.target.value)}/>
                 </Box>
 
                 {/*filter button*/}
@@ -109,7 +110,8 @@ export default function SearchField(props) {
             </Box>
 
             {showConditions()}
-            <CreateNewCondition handleAddCondition={handleAddCondition} conditions={conditions} conditionsNumber={conditionsNumber}/>
+            <CreateNewCondition handleAddCondition={handleAddCondition}
+                                conditions={conditions} func={func} setFunc={setFunc} entity={entity} setEntity={setEntity}/>
 
 
         </div>
