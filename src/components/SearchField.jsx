@@ -13,52 +13,11 @@ import {useState} from "react";
 export default function SearchField(props) {
 
 
-    const {setResult,string,setString} = props;
-
-
-    //TODO: search for all
-    const filterResults = (e) => {
-        const searchString = e.target.value;
-
-        if (searchString !== '') {
-
-            let results;
-
-            switch (searchFilter){
-                case 'all':
-                        results = poems.filter((poemData) => {
-                            return poemData.text.toLowerCase().includes(searchString.toLowerCase());
-                        });
-                    break;
-                case 'title':
-                    results = poems.filter((poemData) => {
-                        return poemData.title.toLowerCase().includes(searchString.toLowerCase());
-                    });
-                    break;
-                case 'author':
-                    results = poems.filter((poemData) => {
-                        return poemData.author.toLowerCase().includes(searchString.toLowerCase());
-                    });
-                    break;
-                case 'reader':
-                    results = poems.filter((poemData) => {
-                        return poemData.reader.toLowerCase().includes(searchString.toLowerCase());
-                    });
-                    break;
-            }
-
-            setResult(results);
-        }else {
-            setResult([]);
-        }
-        setString(searchString);
-        //console.log(result);
-    }
+    const {setResult, searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
 
 
 
-    //FormControl hooks
-    const [searchFilter, setSearchFilter] = React.useState('all');
+    //SearchFilter hook
     const handleChange = (event) => {
         setSearchFilter(event.target.value);
         setString('');
@@ -66,12 +25,15 @@ export default function SearchField(props) {
     };
 
 
-    //add filter hook
+    //add conditions hook
     const [conditions, setConditions] = React.useState([]);
+    const [conditionsNumber, setConditionsNumber] = React.useState(0);
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg", "")));
+        setConditions(conditions.concat(new Condition(conditionsNumber, "", "", "vers_beg", "")));
+        setConditionsNumber(conditionsNumber + 1);
+        console.log(conditions);
     }
 
 
@@ -122,14 +84,14 @@ export default function SearchField(props) {
             {/*standard condition component*/}
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
 
-        {/*main search bar*/}
+                {/*main search bar*/}
 
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
-                    {/*TODO: search button? */}
-                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard" value={string} onChange={filterResults}/>
+                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard" value={searchInput}
+                               onChange={(event)=>setSearchInput(event.target.value)}/>
                 </Box>
 
-        {/*filter button*/}
+                {/*filter button*/}
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Suchen nach...</InputLabel>
                     <Select
@@ -147,7 +109,7 @@ export default function SearchField(props) {
             </Box>
 
             {showConditions()}
-            <CreateNewCondition handleAddCondition={handleAddCondition}/>
+            <CreateNewCondition handleAddCondition={handleAddCondition} conditions={conditions} conditionsNumber={conditionsNumber}/>
 
 
         </div>

@@ -9,16 +9,20 @@ import Button from "@mui/material/Button";
 
 export function CreateNewCondition(props){
 
-   const {handleAddCondition} = props;
+   const {handleAddCondition,conditions,conditionsNumber} = props;
 
 //FormControl hooks
     const [func,setFunc] = React.useState('');
     const handleChange_fc = (event) => {
         setFunc(event.target.value);
+        conditions[conditionsNumber] = event.target.value;
+        console.log(conditions);
+
     };
     const [entity,setEntity] = React.useState('');
     const handleChange_ec = (event) => {
         setEntity(event.target.value);
+        conditions.push(event.target.value);
     };
 
 //first condition

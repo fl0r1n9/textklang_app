@@ -20,7 +20,8 @@ export default function Layout() {
 
     const [id, setId] = React.useState(null);
     const [result,setResult] = React.useState('');
-    const [string, setString] = React.useState('');
+    const [searchInput, setSearchInput] = React.useState('');
+    const [searchFilter, setSearchFilter] = React.useState('all');
 
     return (
         <Box sx={{width: '100%'}}>
@@ -30,9 +31,9 @@ export default function Layout() {
 
                     {
                         id === null ? <Item>
-                            <SearchTable setId={setId} result={result}/>
+                            <SearchTable setId={setId} result={result} searchInput={searchInput} searchFilter={searchFilter}/>
                         </Item> : <Item>
-                            <ContentPage id={id} setId={setId} string={string}/>
+                            <ContentPage id={id} setId={setId} searchInput={searchInput}/>
                         </Item>
                     }
 
@@ -40,7 +41,7 @@ export default function Layout() {
 
                 <Grid item xs={6}>
                     <Item>
-                        <SearchField setResult={setResult} string={string} setString={setString}/>
+                        <SearchField setResult={setResult} searchInput={searchInput} setString={setSearchInput} searchFilter={searchFilter} setSearchFilter={setSearchFilter} setSearchInput={setSearchInput}/>
                     </Item>
                 </Grid>
             </Grid>

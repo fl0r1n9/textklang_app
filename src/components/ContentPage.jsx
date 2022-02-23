@@ -4,11 +4,10 @@ import Button from "@mui/material/Button";
 import {poems} from "../data/poems"
 import Highlighter from "react-highlight-words";
 
-
 export default function ContentPage(props) {
 
     //all parameters destructured
-    const {id, setId, string} = props;
+    const {id, setId, searchInput} = props;
 
     let displayText;
 
@@ -36,7 +35,7 @@ export default function ContentPage(props) {
             </style>
             <p id="preline">
                 <Highlighter
-                    searchWords={[string]}
+                    searchWords={[searchInput]}
                     autoEscape={true}
                     textToHighlight={displayText}
                 >{displayText}</Highlighter>

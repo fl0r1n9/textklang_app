@@ -15,6 +15,7 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {visuallyHidden} from '@mui/utils';
+import {poems} from "../data/poems";
 
 function createData(name, author, reader, orig) {
     return {
@@ -23,7 +24,7 @@ function createData(name, author, reader, orig) {
 }
 
 
-let rows = [createData('Nachtlied', 'Eichendorff', 'Fabri', true), createData('Der Herbst', 'Hölderlin', 'Zischler', true), createData('Vulkan', 'Hölderlin', 'Zischler', true), createData('Stufen', 'Hesse', 'Rheinwald', false), createData('Der Erlkönig', 'Goethe', 'Rheinwald', false), createData('Der Abend', 'Schiller', 'Rheinwald', false), createData('An die Parzen', 'Schiller', 'Rheinwald', false),];
+//let rows = [createData('Nachtlied', 'Eichendorff', 'Fabri', true), createData('Der Herbst', 'Hölderlin', 'Zischler', true), createData('Vulkan', 'Hölderlin', 'Zischler', true), createData('Stufen', 'Hesse', 'Rheinwald', false), createData('Der Erlkönig', 'Goethe', 'Rheinwald', false), createData('Der Abend', 'Schiller', 'Rheinwald', false), createData('An die Parzen', 'Schiller', 'Rheinwald', false),];
 
 
 function descendingComparator(a, b, orderBy) {
@@ -56,7 +57,7 @@ function stableSort(array, comparator) {
 
 //settings for formatting table head
 const headCells = [{
-    id: 'name', string: true, disablePadding: true, label: 'Titel',
+    id: 'title', string: true, disablePadding: true, label: 'Titel',
 }, {
     id: 'author', string: true, disablePadding: false, label: 'Autor',
 }, {
@@ -72,27 +73,27 @@ function EnhancedTableHead(props) {
     };
 
     return (<TableHead>
-            <TableRow>
-                {headCells.map((headCell) => (//TODO: improve alignment -> only works for header
-                    <TableCell
-                        key={headCell.id}
-                        align={headCell.string ? 'right' : 'left'}
-                        padding={headCell.disablePadding ? 'none' : 'normal'}
-                        sortDirection={orderBy === headCell.id ? order : false}
+        <TableRow>
+            {headCells.map((headCell) => (//TODO: improve alignment -> only works for header
+                <TableCell
+                    key={headCell.id}
+                    align={headCell.string ? 'right' : 'left'}
+                    padding={headCell.disablePadding ? 'none' : 'normal'}
+                    sortDirection={orderBy === headCell.id ? order : false}
+                >
+                    <TableSortLabel
+                        active={orderBy === headCell.id}
+                        direction={orderBy === headCell.id ? order : 'asc'}
+                        onClick={createSortHandler(headCell.id)}
                     >
-                        <TableSortLabel
-                            active={orderBy === headCell.id}
-                            direction={orderBy === headCell.id ? order : 'asc'}
-                            onClick={createSortHandler(headCell.id)}
-                        >
-                            {headCell.label}
-                            {orderBy === headCell.id ? (<Box component="span" sx={visuallyHidden}>
-                                    {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>) : null}
-                        </TableSortLabel>
-                    </TableCell>))}
-            </TableRow>
-        </TableHead>);
+                        {headCell.label}
+                        {orderBy === headCell.id ? (<Box component="span" sx={visuallyHidden}>
+                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                        </Box>) : null}
+                    </TableSortLabel>
+                </TableCell>))}
+        </TableRow>
+    </TableHead>);
 }
 
 EnhancedTableHead.propTypes = {
@@ -106,15 +107,15 @@ EnhancedTableHead.propTypes = {
 const EnhancedTableToolbar = () => {
 
     return (<Toolbar>
-            <Typography
-                sx={{flex: '1 1 100%'}}
-                variant="h6"
-                id="tableTitle"
-                component="div"
-            >
-                Suchergebnisse
-            </Typography>
-        </Toolbar>);
+        <Typography
+            sx={{flex: '1 1 100%'}}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+        >
+            Suchergebnisse
+        </Typography>
+    </Toolbar>);
 };
 
 EnhancedTableToolbar.propTypes = {
@@ -124,14 +125,8 @@ EnhancedTableToolbar.propTypes = {
 
 export default function SearchTable(props) {
 
-    const {setId, result} = props;
+    const {setId, result, searchInput, searchFilter} = props;
 
-    //TODO: update rows live
-    function updateRows() {
-        rows = result.map((entry) => (createData(entry.title, entry.author, entry.reader, entry.id)));
-        console.log(rows);
-
-    }
 
 
     const [order, setOrder] = React.useState('asc');
@@ -149,7 +144,7 @@ export default function SearchTable(props) {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = rows.map((n) => n.name);
+            const newSelecteds = poems.map((n) => n.title);
 
             setSelected(newSelecteds);
             return;
@@ -194,13 +189,35 @@ export default function SearchTable(props) {
 
     const handleChangeDense = (event) => {
         setDense(event.target.checked);
-        updateRows();
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - poems.length) : 0;
+
+    //TODO: search for all by ||
+    const filterResults = (poem) => {
+        switch (searchFilter) {
+            case 'all':
+
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase());
+
+            case 'title':
+
+                return poem.title.toLowerCase().includes(searchInput.toLowerCase());
+
+            case 'author':
+
+                return poem.author.toLowerCase().includes(searchInput.toLowerCase());
+
+            case 'reader':
+
+                return poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+
+        }
+    }
+
 
     return (<Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
@@ -217,26 +234,27 @@ export default function SearchTable(props) {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={rows.length}
+                            rowCount={poems.length}
                         />
                         <TableBody>
 
-                            {stableSort(rows, getComparator(order, orderBy))
+                            {stableSort(poems, getComparator(order, orderBy))
+                                .filter(poem => filterResults(poem))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.title);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (<TableRow
-                                            hover
-                                            onClick={() => handleClick(row.author, row.name)}
-                                            //role="checkbox"
-                                            aria-checked={isItemSelected}
-                                            tabIndex={-1}
-                                            key={row.name}
-                                            selected={isItemSelected}
-                                        >
-                                            {/* <TableCell padding="checkbox">
+                                        hover
+                                        onClick={() => handleClick(row.author, row.title)}
+                                        //role="checkbox"
+                                        aria-checked={isItemSelected}
+                                        tabIndex={-1}
+                                        key={row.title}
+                                        selected={isItemSelected}
+                                    >
+                                        {/* <TableCell padding="checkbox">
                                                 <Checkbox
                                                     color="primary"
                                                     checked={isItemSelected}
@@ -245,36 +263,36 @@ export default function SearchTable(props) {
                                                     }}
                                                 />
                                             </TableCell>*/}
-                                            <TableCell
-                                                style={{cursor: 'pointer'}}
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
-                                                {row.name}
-                                            </TableCell>
-                                            <TableCell align="right"
-                                                       style={{cursor: 'pointer'}}>{row.author} </TableCell>
-                                            <TableCell align="right"
-                                                       style={{cursor: 'pointer'}}>{row.reader}</TableCell>
-                                            <TableCell align="right" style={{cursor: 'pointer'}}>{row.orig}</TableCell>
-                                        </TableRow>);
+                                        <TableCell
+                                            style={{cursor: 'pointer'}}
+                                            component="th"
+                                            id={labelId}
+                                            scope="row"
+                                            padding="none"
+                                        >
+                                            {row.title}
+                                        </TableCell>
+                                        <TableCell align="right"
+                                                   style={{cursor: 'pointer'}}>{row.author} </TableCell>
+                                        <TableCell align="right"
+                                                   style={{cursor: 'pointer'}}>{row.reader}</TableCell>
+                                        <TableCell align="right" style={{cursor: 'pointer'}}>{row.orig}</TableCell>
+                                    </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow
-                                    style={{
-                                        height: (dense ? 33 : 53) * emptyRows,
-                                    }}
-                                >
-                                    <TableCell colSpan={6}/>
-                                </TableRow>)}
+                                style={{
+                                    height: (dense ? 33 : 53) * emptyRows,
+                                }}
+                            >
+                                <TableCell colSpan={6}/>
+                            </TableRow>)}
                         </TableBody>
                     </Table>
                 </TableContainer>
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={rows.length}
+                    count={poems.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}
