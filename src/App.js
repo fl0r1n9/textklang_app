@@ -9,8 +9,6 @@ function App() {
     <div className="App">
         <h1>Textklang App</h1>
         <Layout/>
-
-
     </div>
 
   );

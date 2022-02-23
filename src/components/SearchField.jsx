@@ -6,9 +6,60 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Condition from "./Condition";
 import {CreateNewCondition} from "./CreateNewCondition";
+import {poems} from "../data/poems";
+import {useState} from "react";
 
 
 export default function SearchField() {
+
+    //TODO: search for all & lift up
+    /*
+    const result = poems.filter(poem.text => {
+        return "string" in poem = true;
+    }).map(poem)
+    */
+
+    const [string,setString] = useState('');
+    const [result,setResult] = useState('');
+
+    const filterResults = (e) => {
+        const searchString = e.target.value;
+
+        if (searchString !== '') {
+
+            let results;
+
+            switch (searchFilter){
+                case 'all':
+                        results = poems.filter((poemData) => {
+                            return poemData.text.toLowerCase().includes(searchString.toLowerCase());
+                        });
+                    break;
+                case 'title':
+                    results = poems.filter((poemData) => {
+                        return poemData.title.toLowerCase().includes(searchString.toLowerCase());
+                    });
+                    break;
+                case 'author':
+                    results = poems.filter((poemData) => {
+                        return poemData.author.toLowerCase().includes(searchString.toLowerCase());
+                    });
+                    break;
+                case 'reader':
+                    results = poems.filter((poemData) => {
+                        return poemData.reader.toLowerCase().includes(searchString.toLowerCase());
+                    });
+                    break;
+            }
+
+            setResult(results);
+        }else {
+            setResult([]);
+        }
+        setString(searchString);
+        console.log(result);
+    }
+
 
 
     //FormControl hooks
@@ -79,7 +130,7 @@ export default function SearchField() {
 
                 <Box sx={{display: 'flex', alignItems: 'flex-end'}}>
                     {/*TODO: search button? */}
-                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard"/>
+                    <TextField sx={{minWidth: 300}} id="input-with-sx" label="Suchen" variant="standard" value={string} onChange={filterResults}/>
                 </Box>
 
         {/*filter button*/}

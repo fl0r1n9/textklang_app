@@ -15,8 +15,6 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {visuallyHidden} from '@mui/utils';
-import {poems} from "../data/poems";
-
 
 function createData(name, author, reader, orig) {
     return {
@@ -37,6 +35,9 @@ const rows = [
     createData('Der Abend', 'Schiller', 'Rheinwald', false),
     createData('An die Parzen', 'Schiller', 'Rheinwald', false),
 ];
+
+//TODO: update rows and lift up
+function updateRows(){}
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -97,7 +98,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-    const {onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort} =
+    const {order, orderBy, onRequestSort} =
         props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
@@ -163,14 +164,13 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-//TODO: hover changes cursor
 export default function SearchTable({setId}) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -253,8 +253,6 @@ export default function SearchTable({setId}) {
                         />
                         <TableBody>
 
-                            {/*TODO: {stableSort(rows, getComparator(order, orderBy)).filter(poem => {}).slice()*/}
-
                             {stableSort(rows, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
@@ -264,7 +262,7 @@ export default function SearchTable({setId}) {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) => handleClick(row.author, row.name)}
+                                            onClick={() => handleClick(row.author, row.name)}
                                             //role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -281,6 +279,7 @@ export default function SearchTable({setId}) {
                                                 />
                                             </TableCell>*/}
                                             <TableCell
+                                                style = {{cursor:'pointer'}}
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
@@ -288,9 +287,9 @@ export default function SearchTable({setId}) {
                                             >
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right">{row.author}</TableCell>
-                                            <TableCell align="right">{row.reader}</TableCell>
-                                            <TableCell align="right">{row.orig}</TableCell>
+                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.author} </TableCell>
+                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.reader}</TableCell>
+                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.orig}</TableCell>
                                         </TableRow>
                                     );
                                 })}

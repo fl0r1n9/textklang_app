@@ -1,5 +1,3 @@
-import React from "react";
-
 
 //conditions constructor
 export default class Condition {
@@ -16,10 +14,3 @@ export default class Condition {
 
 }
 
-//TODO: pseudo for SearchField
-/*
-
-const result = poems.filter(poem.text => {
-    return "string" in poem = true;
-}).map(poem)
-*/

@@ -3,6 +3,7 @@ export var poems = [
         "id": "erlkoenig_goethe",
         "title": "Der Erlkönig",
         "author": "Goethe",
+        "reader": "Rheinwald",
         "text": "Wer reitet so spät durch Nacht und Wind?\n" +
             "Es ist der Vater mit seinem Kind;\n" +
             "Er hat den Knaben wohl in dem Arm,\n" +
@@ -41,6 +42,7 @@ export var poems = [
         "id": "eichendorff_nachtlied",
         "title": "Nachtlied",
         "author": "Eichendorff",
+        "reader": "Fabri",
         "text": "Vergangen ist der lichte Tag,\n" +
             "\tVon ferne kommt der Glocken Schlag;\n" +
             "\tSo reist die Zeit die ganze Nacht,\n" +
@@ -70,6 +72,7 @@ export var poems = [
         "id": "stufen_hesse",
         "title": "Stufen",
         "author": "Hesse",
+        "reader": "Rheinwald",
         "text":
             "Wie jede Blüte welkt und jede Jugend\n" +
             "Dem Alter weicht, blüht jede Lebensstufe,\n" +
@@ -95,5 +98,33 @@ export var poems = [
             "Uns neuen Räumen jung entgegen senden,\n" +
             "Des Lebens Ruf an uns wird niemals enden,\n" +
             "Wohlan denn, Herz, nimm Abschied und gesunde!\n"
+    },
+    {
+        "id": "herbst_hoelderlin",
+        "title": "Der Herbst",
+        "author": "Hölderlin",
+        "reader": "Zischler",
+        "text": "",
+    },
+    {
+        "id": "vulkan_hoelderlin",
+        "title": "Vulkan",
+        "author": "Hölderlin",
+        "reader": "Zischler",
+        "text": "",
+    },
+    {
+        "id": "abend_schiller",
+        "title": "Der Abend",
+        "author": "Schiller",
+        "reader": "Rheinwald",
+        "text": "",
+    },
+    {
+        "id": "parzen_schiller",
+        "title": "An die Parzen",
+        "author": "Schiller",
+        "reader": "Rheinwald",
+        "text": "",
     },
 ]
