@@ -18,26 +18,13 @@ import {visuallyHidden} from '@mui/utils';
 
 function createData(name, author, reader, orig) {
     return {
-        name,
-        author,
-        reader,
-        orig,
+        name, author, reader, orig,
     };
 }
 
 
-const rows = [
-    createData('Nachtlied', 'Eichendorff', 'Fabri', true),
-    createData('Der Herbst', 'Hölderlin', 'Zischler', true),
-    createData('Vulkan', 'Hölderlin', 'Zischler', true),
-    createData('Stufen', 'Hesse', 'Rheinwald', false),
-    createData('Der Erlkönig', 'Goethe', 'Rheinwald', false),
-    createData('Der Abend', 'Schiller', 'Rheinwald', false),
-    createData('An die Parzen', 'Schiller', 'Rheinwald', false),
-];
+let rows = [createData('Nachtlied', 'Eichendorff', 'Fabri', true), createData('Der Herbst', 'Hölderlin', 'Zischler', true), createData('Vulkan', 'Hölderlin', 'Zischler', true), createData('Stufen', 'Hesse', 'Rheinwald', false), createData('Der Erlkönig', 'Goethe', 'Rheinwald', false), createData('Der Abend', 'Schiller', 'Rheinwald', false), createData('An die Parzen', 'Schiller', 'Rheinwald', false),];
 
-//TODO: update rows and lift up
-function updateRows(){}
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -50,9 +37,7 @@ function descendingComparator(a, b, orderBy) {
 }
 
 function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
+    return order === 'desc' ? (a, b) => descendingComparator(a, b, orderBy) : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
 // This method is created for cross-browser compatibility, if you don't
@@ -70,45 +55,25 @@ function stableSort(array, comparator) {
 }
 
 //settings for formatting table head
-const headCells = [
-    {
-        id: 'name',
-        string: true,
-        disablePadding: true,
-        label: 'Titel',
-    },
-    {
-        id: 'author',
-        string: true,
-        disablePadding: false,
-        label: 'Autor',
-    },
-    {
-        id: 'reader',
-        string: true,
-        disablePadding: false,
-        label: 'Leser',
-    },
-    {
-        id: 'orig',
-        string: true,
-        disablePadding: false,
-        label: 'Original',
-    },
-];
+const headCells = [{
+    id: 'name', string: true, disablePadding: true, label: 'Titel',
+}, {
+    id: 'author', string: true, disablePadding: false, label: 'Autor',
+}, {
+    id: 'reader', string: true, disablePadding: false, label: 'Leser',
+}, {
+    id: 'orig', string: true, disablePadding: false, label: 'Original',
+},];
 
 function EnhancedTableHead(props) {
-    const {order, orderBy, onRequestSort} =
-        props;
+    const {order, orderBy, onRequestSort} = props;
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
 
-    return (
-        <TableHead>
+    return (<TableHead>
             <TableRow>
-                {headCells.map((headCell) => (
-                   //TODO: improve alignment -> only works for header
+                {headCells.map((headCell) => (//TODO: improve alignment -> only works for header
                     <TableCell
                         key={headCell.id}
                         align={headCell.string ? 'right' : 'left'}
@@ -121,23 +86,18 @@ function EnhancedTableHead(props) {
                             onClick={createSortHandler(headCell.id)}
                         >
                             {headCell.label}
-                            {orderBy === headCell.id ? (
-                                <Box component="span" sx={visuallyHidden}>
+                            {orderBy === headCell.id ? (<Box component="span" sx={visuallyHidden}>
                                     {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                                </Box>
-                            ) : null}
+                                </Box>) : null}
                         </TableSortLabel>
-                    </TableCell>
-                ))}
+                    </TableCell>))}
             </TableRow>
-        </TableHead>
-    );
+        </TableHead>);
 }
 
 EnhancedTableHead.propTypes = {
 //  numSelected: PropTypes.number.isRequired,
-    onRequestSort: PropTypes.func.isRequired,
-//    onSelectAllClick: PropTypes.func.isRequired,
+    onRequestSort: PropTypes.func.isRequired, //    onSelectAllClick: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -145,8 +105,7 @@ EnhancedTableHead.propTypes = {
 
 const EnhancedTableToolbar = () => {
 
-    return (
-        <Toolbar>
+    return (<Toolbar>
             <Typography
                 sx={{flex: '1 1 100%'}}
                 variant="h6"
@@ -155,8 +114,7 @@ const EnhancedTableToolbar = () => {
             >
                 Suchergebnisse
             </Typography>
-        </Toolbar>
-    );
+        </Toolbar>);
 };
 
 EnhancedTableToolbar.propTypes = {
@@ -164,7 +122,18 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-export default function SearchTable({setId}) {
+export default function SearchTable(props) {
+
+    const {setId, result} = props;
+
+    //TODO: update rows live
+    function updateRows() {
+        rows = result.map((entry) => (createData(entry.title, entry.author, entry.reader, entry.id)));
+        console.log(rows);
+
+    }
+
+
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
     const [selected, setSelected] = React.useState([]);
@@ -189,9 +158,9 @@ export default function SearchTable({setId}) {
     };
 
 
-    const handleClick = (event,name) => {
+    const handleClick = (event, name) => {
 
-        const parameter = [event,name];
+        const parameter = [event, name];
 
         setId(parameter);
 
@@ -225,16 +194,15 @@ export default function SearchTable({setId}) {
 
     const handleChangeDense = (event) => {
         setDense(event.target.checked);
+        updateRows();
     };
 
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-    return (
-        <Box sx={{width: '100%'}}>
+    return (<Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
                 <EnhancedTableToolbar numSelected={selected.length}/>
                 <TableContainer>
@@ -259,8 +227,7 @@ export default function SearchTable({setId}) {
                                     const isItemSelected = isSelected(row.name);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
-                                    return (
-                                        <TableRow
+                                    return (<TableRow
                                             hover
                                             onClick={() => handleClick(row.author, row.name)}
                                             //role="checkbox"
@@ -279,7 +246,7 @@ export default function SearchTable({setId}) {
                                                 />
                                             </TableCell>*/}
                                             <TableCell
-                                                style = {{cursor:'pointer'}}
+                                                style={{cursor: 'pointer'}}
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
@@ -287,21 +254,20 @@ export default function SearchTable({setId}) {
                                             >
                                                 {row.name}
                                             </TableCell>
-                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.author} </TableCell>
-                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.reader}</TableCell>
-                                            <TableCell align="right" style = {{cursor:'pointer'}}>{row.orig}</TableCell>
-                                        </TableRow>
-                                    );
+                                            <TableCell align="right"
+                                                       style={{cursor: 'pointer'}}>{row.author} </TableCell>
+                                            <TableCell align="right"
+                                                       style={{cursor: 'pointer'}}>{row.reader}</TableCell>
+                                            <TableCell align="right" style={{cursor: 'pointer'}}>{row.orig}</TableCell>
+                                        </TableRow>);
                                 })}
-                            {emptyRows > 0 && (
-                                <TableRow
+                            {emptyRows > 0 && (<TableRow
                                     style={{
                                         height: (dense ? 33 : 53) * emptyRows,
                                     }}
                                 >
                                     <TableCell colSpan={6}/>
-                                </TableRow>
-                            )}
+                                </TableRow>)}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -321,5 +287,6 @@ export default function SearchTable({setId}) {
             />
 
         </Box>
+
     );
 }

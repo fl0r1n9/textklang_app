@@ -2,12 +2,13 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {poems} from "../data/poems"
+import Highlighter from "react-highlight-words";
 
 
 export default function ContentPage(props) {
 
     //all parameters destructured
-    const {id, setId} = props;
+    const {id, setId, string} = props;
 
     let displayText;
 
@@ -33,13 +34,18 @@ export default function ContentPage(props) {
           white-space: pre-line;
         }`}
             </style>
-            <p id="preline">{displayText}</p>
+            <p id="preline">
+                <Highlighter
+                    searchWords={[string]}
+                    autoEscape={true}
+                    textToHighlight={displayText}
+                >{displayText}</Highlighter>
+                </p>
 
 
             <Button variant="contained" onClick={() => setId(null)}>Zurück</Button>
 
         </Box>
-
         // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
 
     );

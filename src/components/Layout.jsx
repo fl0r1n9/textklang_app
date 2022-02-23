@@ -19,6 +19,8 @@ const Item = styled(Paper)(({theme}) => ({
 export default function Layout() {
 
     const [id, setId] = React.useState(null);
+    const [result,setResult] = React.useState('');
+    const [string, setString] = React.useState('');
 
     return (
         <Box sx={{width: '100%'}}>
@@ -28,9 +30,9 @@ export default function Layout() {
 
                     {
                         id === null ? <Item>
-                            <SearchTable setId={setId}/>
+                            <SearchTable setId={setId} result={result}/>
                         </Item> : <Item>
-                            <ContentPage id={id} setId={setId}/>
+                            <ContentPage id={id} setId={setId} string={string}/>
                         </Item>
                     }
 
@@ -38,7 +40,7 @@ export default function Layout() {
 
                 <Grid item xs={6}>
                     <Item>
-                        <SearchField/>
+                        <SearchField setResult={setResult} string={string} setString={setString}/>
                     </Item>
                 </Grid>
             </Grid>

@@ -10,18 +10,13 @@ import {poems} from "../data/poems";
 import {useState} from "react";
 
 
-export default function SearchField() {
+export default function SearchField(props) {
 
-    //TODO: search for all & lift up
-    /*
-    const result = poems.filter(poem.text => {
-        return "string" in poem = true;
-    }).map(poem)
-    */
 
-    const [string,setString] = useState('');
-    const [result,setResult] = useState('');
+    const {setResult,string,setString} = props;
 
+
+    //TODO: search for all
     const filterResults = (e) => {
         const searchString = e.target.value;
 
@@ -57,7 +52,7 @@ export default function SearchField() {
             setResult([]);
         }
         setString(searchString);
-        console.log(result);
+        //console.log(result);
     }
 
 
@@ -66,6 +61,8 @@ export default function SearchField() {
     const [searchFilter, setSearchFilter] = React.useState('all');
     const handleChange = (event) => {
         setSearchFilter(event.target.value);
+        setString('');
+        setResult([]);
     };
 
 
@@ -74,7 +71,7 @@ export default function SearchField() {
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(entity)));
+        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg", "")));
     }
 
 
