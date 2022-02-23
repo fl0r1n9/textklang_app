@@ -15,10 +15,13 @@ export default function ContentPage(props) {
     for (const key in poems) {
 
         if (poems[key].title === id[1]) {
-            displayText = poems[key].text;
+            if (poems[key].text === "") {
+                displayText = "Text nicht in der Datenbank";
+            } else {
+                displayText = poems[key].text;
+
+            }
             break;
-        } else {
-            displayText = "Text nicht in der Datenbank";
         }
     }
 

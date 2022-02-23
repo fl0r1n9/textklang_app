@@ -12,11 +12,11 @@ export function CreateNewCondition(props){
    const {handleAddCondition} = props;
 
 //FormControl hooks
-    const [func,setFunc] = React.useState(null);
+    const [func,setFunc] = React.useState('');
     const handleChange_fc = (event) => {
         setFunc(event.target.value);
     };
-    const [entity,setEntity] = React.useState(null);
+    const [entity,setEntity] = React.useState('');
     const handleChange_ec = (event) => {
         setEntity(event.target.value);
     };
@@ -58,7 +58,7 @@ export function CreateNewCondition(props){
             </FormControl>
         </Box>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Button variant="contained" onClick={handleAddCondition} disabled={func === null || entity === null}>Filter hinzufügen</Button>
+            <Button variant="contained" onClick={handleAddCondition} disabled={func === '' || entity === ''}>Filter hinzufügen</Button>
 
             <Button variant="contained">Preset laden</Button>
         </Box>

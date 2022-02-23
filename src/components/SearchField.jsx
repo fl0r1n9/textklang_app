@@ -74,11 +74,11 @@ export default function SearchField() {
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(true, "contains", "punctuation", "vers_beg", "")));
+        setConditions(conditions.concat(new Condition(entity)));
     }
 
 
-    //placeholder&preview condition
+    //added conditions to be rendered
     function showConditions() {
 
         return conditions.map(condition => {
@@ -120,10 +120,9 @@ export default function SearchField() {
     }
 
     return (
-        //standard condition component
 
         <div>
-
+            {/*standard condition component*/}
             <Box sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end'}}>
 
         {/*main search bar*/}
