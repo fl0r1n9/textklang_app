@@ -9,12 +9,12 @@ import Button from "@mui/material/Button";
 
 export function CreateNewCondition(props) {
 
-    const {handleAddCondition, func, setFunc, entity, setEntity} = props;
+    const {handleAddCondition, func, setFunc, entity, setEntity,where,setWhere} = props;
 
 
 //first condition
     return <div>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2}}>
             <FormControl variant="standard" sx={{minWidth: 120}}>
                 <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                 <Select
@@ -47,9 +47,28 @@ export function CreateNewCondition(props) {
                     <MenuItem value="verse">Vers</MenuItem>
                 </Select>
             </FormControl>
+            <FormControl variant="standard" sx={{minWidth: 120}}>
+                <InputLabel id="demo-simple-select-standard-label">wo?</InputLabel>
+                <Select
+
+                    value={where}
+                    onChange={(event) => setWhere(event.target.value)}
+                    displayEmpty
+                >
+                    <MenuItem value="vers_start">
+                        Versbeginn
+                    </MenuItem>
+                    <MenuItem value="vers_end">Versende</MenuItem>
+                    <MenuItem value="str_start">Strophenbeginn</MenuItem>
+                    <MenuItem value="str_end">Strophenende</MenuItem>
+                    <MenuItem value="int_start">Beginn Intonationsphrase</MenuItem>
+                    <MenuItem value="int_end">Ende Intonationsphrase</MenuItem>
+                </Select>
+            </FormControl>
         </Box>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Button variant="contained" onClick={handleAddCondition} disabled={!func || !entity}>Filter
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4}}>
+           {/*TODO:||!entity||!where*/}
+            <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 hinzufügen</Button>
 
             <Button variant="contained">Preset laden</Button>

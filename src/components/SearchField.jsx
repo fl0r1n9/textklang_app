@@ -28,12 +28,15 @@ export default function SearchField(props) {
 
     const [entity, setEntity] = React.useState(null);
 
+    const [where,setWhere] = React.useState(null);
+
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(func, entity)));
+        setConditions(conditions.concat(new Condition(func, entity, where)));
         setFunc(null);
         setEntity(null);
+        setWhere(null);
     }
 
 
@@ -41,13 +44,12 @@ export default function SearchField(props) {
     function showConditions() {
 
         return conditions.map(condition => {
-            return <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            return <Box sx={{display: 'flex', justifyContent: 'space-between', border:2, mt:2}}>
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
                         disabled={true}
                         value={condition.func}
-                        //onChange={handleChange_fc}
                         displayEmpty
                     >
                         <MenuItem value="contains">
@@ -63,7 +65,6 @@ export default function SearchField(props) {
                     <Select
                         disabled={true}
                         value={condition.entity}
-                        //  onChange={handleChange_uc}
                         displayEmpty
                     >
                         <MenuItem value="punctuation">
@@ -72,6 +73,23 @@ export default function SearchField(props) {
                         <MenuItem value="syl">Silbe</MenuItem>
                         <MenuItem value="word">Wort</MenuItem>
                         <MenuItem value="verse">Vers</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">wo?</InputLabel>
+                    <Select
+                        disabled={true}
+                        value={condition.where}
+                        displayEmpty
+                    >
+                        <MenuItem value="vers_start">
+                            Versbeginn
+                        </MenuItem>
+                        <MenuItem value="vers_end">Versende</MenuItem>
+                        <MenuItem value="str_start">Strophenbeginn</MenuItem>
+                        <MenuItem value="str_end">Strophenende</MenuItem>
+                        <MenuItem value="int_start">Beginn Intonationsphrase</MenuItem>
+                        <MenuItem value="int_end">Ende Intonationsphrase</MenuItem>
                     </Select>
                 </FormControl>
             </Box>
@@ -104,6 +122,8 @@ export default function SearchField(props) {
                         <MenuItem value="title">Titel</MenuItem>
                         <MenuItem value="author">Autor</MenuItem>
                         <MenuItem value="reader">Leser</MenuItem>
+                        <MenuItem value="text">Text</MenuItem>
+
                     </Select>
                 </FormControl>
 
@@ -111,7 +131,7 @@ export default function SearchField(props) {
 
             {showConditions()}
             <CreateNewCondition handleAddCondition={handleAddCondition}
-                                conditions={conditions} func={func} setFunc={setFunc} entity={entity} setEntity={setEntity}/>
+                                conditions={conditions} func={func} setFunc={setFunc} entity={entity} setEntity={setEntity} where={where} setWhere={setWhere}/>
 
 
         </div>

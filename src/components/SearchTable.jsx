@@ -192,7 +192,10 @@ export default function SearchTable(props) {
         switch (searchFilter) {
             case 'all':
 
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase());
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.title.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.author.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
             case 'title':
 
@@ -205,6 +208,10 @@ export default function SearchTable(props) {
             case 'reader':
 
                 return poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+
+            case 'text':
+
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase());
 
         }
     }

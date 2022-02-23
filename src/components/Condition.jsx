@@ -2,11 +2,11 @@
 //conditions constructor
 export default class Condition {
 
-    constructor(func, entity) {
+    constructor(func, entity, where) {
       //  this.first = first;
         this.func = func;
         this.entity = entity;
-        //this.where = where;
+        this.where = where;
         //this.searchString = searchString;
 
     }
