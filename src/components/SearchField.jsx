@@ -24,19 +24,28 @@ export default function SearchField(props) {
     const [conditions, setConditions] = React.useState([]);
 
     //FormControl hooks
+    //TODO: optimize: don't initialize w/ null
+    const [first, setFirst] = React.useState(true);
+
     const [func, setFunc] = React.useState(null);
 
     const [entity, setEntity] = React.useState(null);
 
     const [where,setWhere] = React.useState(null);
 
+    const [conditionSearchInput, setConditionSearchInput] = React.useState('');
+
+
 
 
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(func, entity, where)));
+        setConditions(conditions.concat(new Condition(first, func, entity, where,conditionSearchInput)));
+        console.log(new Condition(first, func, entity, where,conditionSearchInput));
+        setFirst(false);
         setFunc(null);
         setEntity(null);
         setWhere(null);
+        setConditionSearchInput('');
     }
 
 
@@ -82,9 +91,8 @@ export default function SearchField(props) {
                         value={condition.where}
                         displayEmpty
                     >
-                        <MenuItem value="vers_start">
-                            Versbeginn
-                        </MenuItem>
+                        <MenuItem value="wayne">egal</MenuItem>
+                        <MenuItem value="vers_start">Versbeginn</MenuItem>
                         <MenuItem value="vers_end">Versende</MenuItem>
                         <MenuItem value="str_start">Strophenbeginn</MenuItem>
                         <MenuItem value="str_end">Strophenende</MenuItem>
@@ -92,6 +100,13 @@ export default function SearchField(props) {
                         <MenuItem value="int_end">Ende Intonationsphrase</MenuItem>
                     </Select>
                 </FormControl>
+
+
+
+                <TextField disabled={true} sx={{minWidth: 100}} id="input-for-condition-retro"
+                           variant="standard" label={condition.conditionSearchInput}
+                           value={condition.searchInput}/>
+
             </Box>
         })
     }
@@ -131,7 +146,14 @@ export default function SearchField(props) {
 
             {showConditions()}
             <CreateNewCondition handleAddCondition={handleAddCondition}
-                                conditions={conditions} func={func} setFunc={setFunc} entity={entity} setEntity={setEntity} where={where} setWhere={setWhere}/>
+                                conditions={conditions}
+                                first={first} setFirst={setFirst}
+                                func={func} setFunc={setFunc}
+                                entity={entity} setEntity={setEntity}
+                                where={where} setWhere={setWhere}
+                                conditionSearchInput={conditionSearchInput} setConditionSearchInput={setConditionSearchInput}
+
+            />
 
 
         </div>

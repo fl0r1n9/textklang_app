@@ -3,6 +3,9 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {poems} from "../data/poems"
 import Highlighter from "react-highlight-words";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+
 
 export default function ContentPage(props) {
 
@@ -10,6 +13,14 @@ export default function ContentPage(props) {
     const {id, setId, searchInput} = props;
 
     let displayText;
+
+    //TODO:implement
+    function playFile() {
+    }
+
+    function pauseFile() {
+    }
+
 
     //find and display texts
     for (const key in poems) {
@@ -27,19 +38,23 @@ export default function ContentPage(props) {
 
     return (
         <Box>
-            <h1>{id[0] + " - " + id[1]}</h1>
+            <h3>{id[0] + " - " + id[1]}
+                <PlayArrowIcon style={{cursor: 'pointer'}} onClick={playFile}/>
+                <PauseIcon style={{cursor: 'pointer'}} onClick={pauseFile}/>
+            </h3>
             <style>
                 {`#preline {
           white-space: pre-line;
         }`}
             </style>
             <p id="preline">
+                {/*//TODO: optimize: Highlighter redundant attributes */}
                 <Highlighter
                     searchWords={[searchInput]}
                     autoEscape={true}
                     textToHighlight={displayText}
                 >{displayText}</Highlighter>
-                </p>
+            </p>
 
 
             <Button variant="contained" onClick={() => setId(null)}>Zurück</Button>

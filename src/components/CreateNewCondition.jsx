@@ -3,16 +3,23 @@ import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import {InputLabel, MenuItem, Select} from "@mui/material";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 
 //routine and logic for adding components
 
 export function CreateNewCondition(props) {
 
-    const {handleAddCondition, func, setFunc, entity, setEntity,where,setWhere} = props;
+    const {
+        handleAddCondition, func, setFunc,
+        entity, setEntity,where,setWhere,first,
+        conditionSearchInput,setConditionSearchInput
+    }
+        = props;
 
 
-//first condition
+//editable condition box
+//TODO: differentiate first & other dependencies
     return <div>
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2}}>
             <FormControl variant="standard" sx={{minWidth: 120}}>
@@ -55,6 +62,7 @@ export function CreateNewCondition(props) {
                     onChange={(event) => setWhere(event.target.value)}
                     displayEmpty
                 >
+                    <MenuItem value="wayne">egal</MenuItem>
                     <MenuItem value="vers_start">
                         Versbeginn
                     </MenuItem>
@@ -65,12 +73,20 @@ export function CreateNewCondition(props) {
                     <MenuItem value="int_end">Ende Intonationsphrase</MenuItem>
                 </Select>
             </FormControl>
-        </Box>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4}}>
-           {/*TODO:||!entity||!where*/}
-            <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
-                hinzufügen</Button>
+            <TextField sx={{minWidth: 100}} id="input-for-condition" label="Detaileingabe" variant="standard"
+                       value={conditionSearchInput}
+                       onChange={(event) => setConditionSearchInput(event.target.value)}/>
 
+        </Box>
+
+       {/*bottom button row */}
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4}}>
+            {/*take out ||!entity||!where for debugging*/}
+            <Button variant="contained" onClick={handleAddCondition} disabled={!func||!entity||!where}>Filter
+                +</Button>
+
+            {/*//TODO: these two buttons*/}
+            <Button variant="contained">Filter -</Button>
             <Button variant="contained">Preset laden</Button>
         </Box>
     </div>

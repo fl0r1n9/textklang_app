@@ -31,7 +31,11 @@ export default function Layout() {
 
                     {
                         id === null ? <Item>
-                            <SearchTable setId={setId} result={result} searchInput={searchInput} searchFilter={searchFilter}/>
+                            <SearchTable setId={setId}
+                                         result={result}
+                                         searchInput={searchInput}
+                                         searchFilter={searchFilter}
+                            />
                         </Item> : <Item>
                             <ContentPage id={id} setId={setId} searchInput={searchInput}/>
                         </Item>
@@ -41,7 +45,13 @@ export default function Layout() {
 
                 <Grid item xs={6}>
                     <Item>
-                        <SearchField setResult={setResult} searchInput={searchInput} setString={setSearchInput} searchFilter={searchFilter} setSearchFilter={setSearchFilter} setSearchInput={setSearchInput}/>
+                        <SearchField setResult={setResult}
+                                     searchInput={searchInput}
+                                     setString={setSearchInput}
+                                     searchFilter={searchFilter}
+                                     setSearchFilter={setSearchFilter}
+                                     setSearchInput={setSearchInput}
+                        />
                     </Item>
                 </Grid>
             </Grid>

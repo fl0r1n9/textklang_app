@@ -116,9 +116,8 @@ EnhancedTableToolbar.propTypes = {
 
 export default function SearchTable(props) {
 
-    const {setId, result, searchInput, searchFilter} = props;
-
-
+    //result?
+    const {setId, searchInput, searchFilter} = props;
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -187,7 +186,6 @@ export default function SearchTable(props) {
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - poems.length) : 0;
 
-    //TODO: search for all by ||
     const filterResults = (poem) => {
         switch (searchFilter) {
             case 'all':
