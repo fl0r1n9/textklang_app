@@ -1,5 +1,6 @@
 import * as React from "react";
 import {poems} from '../data/poems'
+import Box from "@mui/material/Box";
 
 export default function DetailsTab(props) {
 
@@ -7,10 +8,11 @@ export default function DetailsTab(props) {
 
     return (
 
-        <>
-            <p>{poem.author + " - " + poem.title}</p>
-            <p>{poem.reader}</p>
-        </>
+        <Box sx={{alignContent: "flex-start", justifyContent: "flex-start"}}>
+            <p>Titel: {poem.title} </p>
+            <p>Autor: {poem.author}</p>
+            <p>Leser: {poem.reader}</p>
+        </Box>
 
     )
 }

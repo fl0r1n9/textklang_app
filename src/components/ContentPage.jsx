@@ -10,7 +10,7 @@ import {Howl} from "howler";
 export default function ContentPage(props) {
 
     //all parameters destructured
-    const {id, setId, searchInput} = props;
+    const {id, setId, searchInput, setValue} = props;
 
     const sound = new Howl({
         src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"],
@@ -62,7 +62,7 @@ export default function ContentPage(props) {
             </p>
 
 
-            <Button variant="contained" onClick={() => setId(null)}>Zurück</Button>
+            <Button variant="contained" onClick={() => {setId(null); setValue(0)}}>Zurück</Button>
 
         </Box>
         // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />

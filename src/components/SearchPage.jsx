@@ -31,15 +31,13 @@ export default function SearchPage(props) {
 
     const [entity, setEntity] = React.useState(null);
 
-    const [where,setWhere] = React.useState(null);
+    const [where, setWhere] = React.useState(null);
 
     const [conditionSearchInput, setConditionSearchInput] = React.useState('');
 
 
-
-
     const handleAddCondition = () => {
-        setConditions(conditions.concat(new Condition(first, func, entity, where,conditionSearchInput)));
+        setConditions(conditions.concat(new Condition(first, func, entity, where, conditionSearchInput)));
         setFirst(false);
         setFunc(null);
         setEntity(null);
@@ -61,7 +59,7 @@ export default function SearchPage(props) {
     //added conditions to be rendered
     function showConditions() {
         return conditions.map(condition => {
-            return <Box sx={{display: 'flex', justifyContent: 'space-between', border:2, mt:2, flexWrap: 'wrap'}}>
+            return <Box sx={{display: 'flex', justifyContent: 'space-between', border: 2, mt: 2, flexWrap: 'wrap'}}>
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
@@ -75,6 +73,10 @@ export default function SearchPage(props) {
                         <MenuItem value="not">enthält nicht</MenuItem>
                         <MenuItem value="min">enthält mindestens</MenuItem>
                         <MenuItem value="max">enthält maximal</MenuItem>
+                        <MenuItem value="follows">
+                            folgt
+                        </MenuItem>
+                        <MenuItem value="follows_not">folgt nicht</MenuItem>
                     </Select>
                 </FormControl>
                 <FormControl variant="standard" sx={{minWidth: 120}}>
@@ -108,7 +110,6 @@ export default function SearchPage(props) {
                         <MenuItem value="int_end">Ende Intonationsphrase</MenuItem>
                     </Select>
                 </FormControl>
-
 
 
                 <TextField disabled={true} sx={{minWidth: 100}} id="input-for-condition-retro"
@@ -160,7 +161,8 @@ export default function SearchPage(props) {
                                 func={func} setFunc={setFunc}
                                 entity={entity} setEntity={setEntity}
                                 where={where} setWhere={setWhere}
-                                conditionSearchInput={conditionSearchInput} setConditionSearchInput={setConditionSearchInput}
+                                conditionSearchInput={conditionSearchInput}
+                                setConditionSearchInput={setConditionSearchInput}
                                 handleSavePreset={handleSavePreset}
 
             />

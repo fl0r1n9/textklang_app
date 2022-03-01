@@ -46,7 +46,7 @@ export default function Layout() {
                                           searchFilter={searchFilter}
                             />
                         </Item> : <Item>
-                            <ContentPage id={id} setId={setId} searchInput={searchInput}/>
+                            <ContentPage id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
                         </Item>
                     }
 
@@ -54,29 +54,30 @@ export default function Layout() {
 
                 <Grid item xs={6}>
                     <Item>
-                    <Box sx={{ width: '100%' }}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                <Tab label="Suche"/>
-                                <Tab label="Details" disabled={id === null}/>
-                                <Tab label="POS" disabled/>
-                            </Tabs>
+                        <Box sx={{width: '100%'}}>
+                            <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
+                                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                    <Tab label="Suche"/>
+                                    <Tab label="Details" disabled={id === null}/>
+                                    <Tab label="POS" disabled/>
+                                </Tabs>
+                            </Box>
+                            <TabPanel value={value} index={0}>
+                                <SearchTab setResult={setResult}
+                                           searchInput={searchInput}
+                                           setString={setSearchInput}
+                                           searchFilter={searchFilter}
+                                           setSearchFilter={setSearchFilter}
+                                           setSearchInput={setSearchInput}/>
+                            </TabPanel>
+                            <TabPanel value={value} index={1}>
+                                {id ? <DetailsTab id={id}/> :
+                                    <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
+                            </TabPanel>
+                            <TabPanel value={value} index={2}>
+                                Item Three
+                            </TabPanel>
                         </Box>
-                        <TabPanel value={value} index={0}>
-                            <SearchTab setResult={setResult}
-                                       searchInput={searchInput}
-                                       setString={setSearchInput}
-                                       searchFilter={searchFilter}
-                                       setSearchFilter={setSearchFilter}
-                                       setSearchInput={setSearchInput}/>
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            {id ? <DetailsTab id={id}/> : <h1>"Für die Detailansicht bitte ein neues Gedicht auswählen"</h1>}
-                        </TabPanel>
-                        <TabPanel value={value} index={2}>
-                            Item Three
-                        </TabPanel>
-                    </Box>
                     </Item>
                 </Grid>
             </Grid>
@@ -86,7 +87,7 @@ export default function Layout() {
 
 
 function TabPanel(props) {
-    const { children, value, index, ...other } = props;
+    const {children, value, index, ...other} = props;
 
     return (
         <div
@@ -97,7 +98,7 @@ function TabPanel(props) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{p: 3}}>
                     <Typography>{children}</Typography>
                 </Box>
             )}

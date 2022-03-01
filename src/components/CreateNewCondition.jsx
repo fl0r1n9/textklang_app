@@ -14,17 +14,17 @@ export function CreateNewCondition(props) {
         handleAddCondition, func, setFunc,
         entity, setEntity,where,setWhere,
         conditionSearchInput,setConditionSearchInput,
-        handleDeleteCondition, handleSavePreset
-        //first
+        handleDeleteCondition, handleSavePreset, first
     }
         = props;
 
 
 //editable condition box
-//TODO: differentiate first & other dependencies
+//TODO: add more details/dependecies?
     return <div>
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2, flexWrap: 'wrap'}}>
-            <FormControl variant="standard" sx={{minWidth: 120}}>
+
+            {first ? <FormControl variant="standard" sx={{minWidth: 120}}>
                 <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                 <Select
 
@@ -39,7 +39,25 @@ export function CreateNewCondition(props) {
                     <MenuItem value="min">enthält mindestens</MenuItem>
                     <MenuItem value="max">enthält maximal</MenuItem>
                 </Select>
-            </FormControl>
+            </FormControl> :
+                <FormControl variant="standard" sx={{minWidth: 120}}>
+                    <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
+                    <Select
+
+                        value={func || ''}
+                        onChange={(event) => setFunc(event.target.value)}
+                        displayEmpty
+                    >
+                        <MenuItem value="follows">
+                            folgt
+                        </MenuItem>
+                        <MenuItem value="follows_not">folgt nicht</MenuItem>
+                    </Select>
+                </FormControl>
+
+            }
+
+
             <FormControl variant="standard" sx={{minWidth: 120}}>
                 <InputLabel id="demo-simple-select-standard-label">was?</InputLabel>
                 <Select
@@ -81,16 +99,17 @@ export function CreateNewCondition(props) {
 
         </Box>
 
-       {/*bottom button row */}
-        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4}}>
+        {/*bottom button row */}
+        {/*//TODO: better positioning*/}
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4, flexWrap: 'wrap'}}>
             {/*take out ||!entity||!where for debugging*/}
             <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
             {/*//TODO: these two buttons, modals, slide menu */}
-            <Button variant="contained" onClick={handleSavePreset}>Preset speichern</Button>
+            <Button variant="contained" onClick={handleSavePreset}>Filter speichern</Button>
 
-            <Button variant="contained">Preset laden</Button>
+            <Button variant="contained">Filter laden</Button>
         </Box>
     </div>
 
