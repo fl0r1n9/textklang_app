@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Condition from "./Condition";
 import {CreateNewCondition} from "./CreateNewCondition";
 
-export default function SearchField(props) {
+export default function SearchPage(props) {
 
 
     const {setResult, searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
@@ -49,6 +49,11 @@ export default function SearchField(props) {
 
     const handleDeleteCondition = () => {
         setConditions(conditions.filter((element) => element !== conditions.slice(-1)[0]));
+
+    }
+
+    const handleSavePreset = () => {
+
 
     }
 
@@ -156,6 +161,7 @@ export default function SearchField(props) {
                                 entity={entity} setEntity={setEntity}
                                 where={where} setWhere={setWhere}
                                 conditionSearchInput={conditionSearchInput} setConditionSearchInput={setConditionSearchInput}
+                                handleSavePreset={handleSavePreset}
 
             />
 

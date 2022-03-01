@@ -55,6 +55,10 @@ export default function ContentPage(props) {
                     autoEscape={true}
                     textToHighlight={displayText}
                 >{displayText}</Highlighter>
+               {/* { text.split('irgendwas').map((wort,index) => {
+                return <p onClick={() => console.log(index)}>{wort}</p>
+            })}
+            //match indexes or words */}
             </p>
 
 

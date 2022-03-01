@@ -14,7 +14,7 @@ export function CreateNewCondition(props) {
         handleAddCondition, func, setFunc,
         entity, setEntity,where,setWhere,
         conditionSearchInput,setConditionSearchInput,
-        handleDeleteCondition,
+        handleDeleteCondition, handleSavePreset
         //first
     }
         = props;
@@ -86,9 +86,10 @@ export function CreateNewCondition(props) {
             {/*take out ||!entity||!where for debugging*/}
             <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
-
-            {/*//TODO: these two buttons*/}
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
+            {/*//TODO: these two buttons, modals, slide menu */}
+            <Button variant="contained" onClick={handleSavePreset}>Preset speichern</Button>
+
             <Button variant="contained">Preset laden</Button>
         </Box>
     </div>

@@ -114,7 +114,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 
-export default function SearchTable(props) {
+export default function ContentTable(props) {
 
     //result?
     const {setId, searchInput, searchFilter} = props;
