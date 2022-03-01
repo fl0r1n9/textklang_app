@@ -211,6 +211,12 @@ export default function SearchTable(props) {
 
                 return poem.text.toLowerCase().includes(searchInput.toLowerCase());
 
+            default:
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.title.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.author.toLowerCase().includes(searchInput.toLowerCase())
+                    ||poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+
         }
     }
 

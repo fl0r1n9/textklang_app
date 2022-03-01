@@ -12,8 +12,10 @@ export function CreateNewCondition(props) {
 
     const {
         handleAddCondition, func, setFunc,
-        entity, setEntity,where,setWhere,first,
-        conditionSearchInput,setConditionSearchInput
+        entity, setEntity,where,setWhere,
+        conditionSearchInput,setConditionSearchInput,
+        handleDeleteCondition,
+        //first
     }
         = props;
 
@@ -21,12 +23,12 @@ export function CreateNewCondition(props) {
 //editable condition box
 //TODO: differentiate first & other dependencies
     return <div>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2}}>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2, flexWrap: 'wrap'}}>
             <FormControl variant="standard" sx={{minWidth: 120}}>
                 <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                 <Select
 
-                    value={func}
+                    value={func || ''}
                     onChange={(event) => setFunc(event.target.value)}
                     displayEmpty
                 >
@@ -42,7 +44,7 @@ export function CreateNewCondition(props) {
                 <InputLabel id="demo-simple-select-standard-label">was?</InputLabel>
                 <Select
 
-                    value={entity}
+                    value={entity || ''}
                     onChange={(event) => setEntity(event.target.value)}
                     displayEmpty
                 >
@@ -58,7 +60,7 @@ export function CreateNewCondition(props) {
                 <InputLabel id="demo-simple-select-standard-label">wo?</InputLabel>
                 <Select
 
-                    value={where}
+                    value={where || ''}
                     onChange={(event) => setWhere(event.target.value)}
                     displayEmpty
                 >
@@ -74,7 +76,7 @@ export function CreateNewCondition(props) {
                 </Select>
             </FormControl>
             <TextField sx={{minWidth: 100}} id="input-for-condition" label="Detaileingabe" variant="standard"
-                       value={conditionSearchInput}
+                       value={conditionSearchInput || ''}
                        onChange={(event) => setConditionSearchInput(event.target.value)}/>
 
         </Box>
@@ -82,11 +84,11 @@ export function CreateNewCondition(props) {
        {/*bottom button row */}
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4}}>
             {/*take out ||!entity||!where for debugging*/}
-            <Button variant="contained" onClick={handleAddCondition} disabled={!func||!entity||!where}>Filter
+            <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
 
             {/*//TODO: these two buttons*/}
-            <Button variant="contained">Filter -</Button>
+            <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
             <Button variant="contained">Preset laden</Button>
         </Box>
     </div>

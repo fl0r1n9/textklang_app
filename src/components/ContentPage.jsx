@@ -5,21 +5,22 @@ import {poems} from "../data/poems"
 import Highlighter from "react-highlight-words";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
-
+import {Howl} from "howler";
 
 export default function ContentPage(props) {
 
     //all parameters destructured
     const {id, setId, searchInput} = props;
 
+    const sound = new Howl({
+        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"],
+        html5: true,
+//      preload: true
+    })
+
+
     let displayText;
 
-    //TODO:implement
-    function playFile() {
-    }
-
-    function pauseFile() {
-    }
 
 
     //find and display texts
@@ -38,9 +39,10 @@ export default function ContentPage(props) {
 
     return (
         <Box>
+            {/*//TODO: better positioning*/}
             <h3>{id[0] + " - " + id[1]}
-                <PlayArrowIcon style={{cursor: 'pointer'}} onClick={playFile}/>
-                <PauseIcon style={{cursor: 'pointer'}} onClick={pauseFile}/>
+                <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
+                <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/>
             </h3>
             <style>
                 {`#preline {
@@ -48,7 +50,6 @@ export default function ContentPage(props) {
         }`}
             </style>
             <p id="preline">
-                {/*//TODO: optimize: Highlighter redundant attributes */}
                 <Highlighter
                     searchWords={[searchInput]}
                     autoEscape={true}
