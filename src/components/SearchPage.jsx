@@ -1,6 +1,9 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import {InputLabel, MenuItem} from "@mui/material";
+import {
+    InputLabel,
+    MenuItem
+} from "@mui/material";
 import {Select} from "@mui/material";
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
@@ -35,6 +38,8 @@ export default function SearchPage(props) {
 
     const [conditionSearchInput, setConditionSearchInput] = React.useState('');
 
+    const [saveFilterName, setSaveFilterName] = React.useState('');
+
 
     const handleAddCondition = () => {
         setConditions(conditions.concat(new Condition(first, func, entity, where, conditionSearchInput)));
@@ -52,8 +57,21 @@ export default function SearchPage(props) {
 
     const handleSavePreset = () => {
 
+        let conditions_appended = {};
+        conditions_appended[saveFilterName]=[];
 
+        conditions_appended[saveFilterName].push({"searchInput": searchInput, "searchFilter": searchFilter});
+        conditions.forEach((element) => {
+            conditions_appended[saveFilterName].push(element);
+        });
+
+        let json = JSON.stringify(conditions_appended);
+        console.log(json);
     }
+
+    const handleLoadPreset = () => {
+
+    };
 
 
     //added conditions to be rendered
@@ -164,6 +182,9 @@ export default function SearchPage(props) {
                                 conditionSearchInput={conditionSearchInput}
                                 setConditionSearchInput={setConditionSearchInput}
                                 handleSavePreset={handleSavePreset}
+                                handleLoadPreset={handleLoadPreset}
+                                saveFilterName={saveFilterName}
+                                setSaveFilterName={setSaveFilterName}
 
             />
 

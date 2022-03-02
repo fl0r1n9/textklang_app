@@ -1,7 +1,16 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
-import {InputLabel, MenuItem, Select} from "@mui/material";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    InputLabel,
+    MenuItem,
+    Select
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
@@ -12,34 +21,46 @@ export function CreateNewCondition(props) {
 
     const {
         handleAddCondition, func, setFunc,
-        entity, setEntity,where,setWhere,
-        conditionSearchInput,setConditionSearchInput,
-        handleDeleteCondition, handleSavePreset, first
+        entity, setEntity, where, setWhere,
+        conditionSearchInput, setConditionSearchInput,
+        handleDeleteCondition, handleSavePreset, handleLoadPreset,
+        first, saveFilterName, setSaveFilterName
     }
         = props;
+
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
 
 
 //editable condition box
 //TODO: add more details/dependecies?
     return <div>
-        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:2, flexWrap: 'wrap'}}>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 2, flexWrap: 'wrap'}}>
 
             {first ? <FormControl variant="standard" sx={{minWidth: 120}}>
-                <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
-                <Select
+                    <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
+                    <Select
 
-                    value={func || ''}
-                    onChange={(event) => setFunc(event.target.value)}
-                    displayEmpty
-                >
-                    <MenuItem value="contains">
-                        enthält
-                    </MenuItem>
-                    <MenuItem value="not">enthält nicht</MenuItem>
-                    <MenuItem value="min">enthält mindestens</MenuItem>
-                    <MenuItem value="max">enthält maximal</MenuItem>
-                </Select>
-            </FormControl> :
+                        value={func || ''}
+                        onChange={(event) => setFunc(event.target.value)}
+                        displayEmpty
+                    >
+                        <MenuItem value="contains">
+                            enthält
+                        </MenuItem>
+                        <MenuItem value="not">enthält nicht</MenuItem>
+                        <MenuItem value="min">enthält mindestens</MenuItem>
+                        <MenuItem value="max">enthält maximal</MenuItem>
+                    </Select>
+                </FormControl> :
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
@@ -101,16 +122,40 @@ export function CreateNewCondition(props) {
 
         {/*bottom button row */}
         {/*//TODO: better positioning*/}
-        <Box sx={{display: 'flex', justifyContent: 'space-between', mt:4, flexWrap: 'wrap'}}>
+        <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 4, flexWrap: 'wrap'}}>
             {/*take out ||!entity||!where for debugging*/}
             <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
             {/*//TODO: these two buttons, modals, slide menu */}
-            <Button variant="contained" onClick={handleSavePreset}>Filter speichern</Button>
+            <Button variant="contained" onClick={handleClickOpen}>Filter speichern</Button>
 
-            <Button variant="contained">Filter laden</Button>
+            <Button variant="contained" onClick={handleLoadPreset}>Filter laden</Button>
         </Box>
+        {/*add filter dialog*/}
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>Filter speichern</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Bitte einen Namen für den/die zu speichernden Filter angeben
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Name"
+                    type="string"
+                    fullWidth
+                    variant="standard"
+                    value={saveFilterName}
+                    onChange={(event) => setSaveFilterName(event.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose}>Abbrechen</Button>
+                <Button onClick={() => {handleSavePreset(); handleClose()}}>OK</Button>
+            </DialogActions>
+        </Dialog>
     </div>
 
 }
