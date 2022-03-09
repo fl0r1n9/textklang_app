@@ -9,6 +9,7 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Condition from "./Condition";
 import {CreateNewCondition} from "./CreateNewCondition";
+import {filter} from "../data/filter";
 
 export default function SearchPage(props) {
 
@@ -40,7 +41,7 @@ export default function SearchPage(props) {
 
     const [saveFilterName, setSaveFilterName] = React.useState('');
 
-
+    //adding a condition box when filter+ button is pressed
     const handleAddCondition = () => {
         setConditions(conditions.concat(new Condition(first, func, entity, where, conditionSearchInput)));
         setFirst(false);
@@ -50,11 +51,13 @@ export default function SearchPage(props) {
         setConditionSearchInput('');
     }
 
+    //undo previous
     const handleDeleteCondition = () => {
         setConditions(conditions.filter((element) => element !== conditions.slice(-1)[0]));
 
     }
 
+    //simple savePreset function
     const handleSavePreset = () => {
 
         let conditions_appended = {};

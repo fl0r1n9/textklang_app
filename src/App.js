@@ -4,11 +4,18 @@ import './App.css';
 
 function App() {
 
+    //create
+    const json = {};
+
+    function loadData(){
+
+
+    }
 
   return (
     <div className="App">
         <h1>Textklang App</h1>
-        <Layout/>
+        <Layout json = {json}/>
     </div>
 
   );

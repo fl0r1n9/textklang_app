@@ -7,7 +7,7 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    InputLabel,
+    InputLabel, List, ListItem, ListItemAvatar, ListItemText,
     MenuItem,
     Select
 } from "@mui/material";
@@ -29,6 +29,7 @@ export function CreateNewCondition(props) {
         = props;
 
 
+    //savePreset dialog hooks
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = () => {
@@ -37,6 +38,48 @@ export function CreateNewCondition(props) {
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+
+    const emails = ['username@gmail.com', 'user02@gmail.com'];
+
+
+    function SimpleDialog(props) {
+        const { onClose, selectedValue, open } = props;
+
+        const handleLoadClose = () => {
+            onClose(selectedValue);
+        };
+
+        const handleListItemClick = (value) => {
+            onClose(value);
+        };
+
+        return (
+            <Dialog onClose={handleLoadClose} open={open}>
+                <DialogTitle>Set backup account</DialogTitle>
+                <List sx={{ pt: 0 }}>
+                    {emails.map((email) => (
+                        <ListItem button onClick={() => handleListItemClick(email)} key={email}>
+
+                            <ListItemText primary={email} />
+                        </ListItem>
+                    ))}
+                </List>
+            </Dialog>
+        );
+    }
+
+    const [loadOpen, setLoadOpen] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState("");
+
+    const handleClickLoadOpen = () => {
+        setLoadOpen(true);
+    };
+
+    const handleLoadClose = (value) => {
+        setLoadOpen(false);
+        setSelectedValue(value);
     };
 
 
@@ -127,13 +170,13 @@ export function CreateNewCondition(props) {
             <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
-            {/*//TODO: these two buttons, modals, slide menu */}
             <Button variant="contained" onClick={handleClickOpen}>Filter speichern</Button>
 
-            <Button variant="contained" onClick={handleLoadPreset}>Filter laden</Button>
+            {/*//TODO: this button's functionality, modals, slide menu */}
+            <Button variant="contained" onClick={handleClickLoadOpen}>Filter laden</Button>
         </Box>
         {/*add filter dialog*/}
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open} onClose={handleLoadClose}>
             <DialogTitle>Filter speichern</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -155,7 +198,14 @@ export function CreateNewCondition(props) {
                 <Button onClick={handleClose}>Abbrechen</Button>
                 <Button onClick={() => {handleSavePreset(); handleClose()}}>OK</Button>
             </DialogActions>
+
         </Dialog>
+            <SimpleDialog
+                selectedValue={selectedValue}
+                open={loadOpen}
+                onClose={handleLoadClose}
+            />
+
     </div>
 
 }

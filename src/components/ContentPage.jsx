@@ -22,7 +22,6 @@ export default function ContentPage(props) {
     let displayText;
 
 
-
     //find and display texts
     for (const key in poems) {
 
@@ -49,20 +48,23 @@ export default function ContentPage(props) {
           white-space: pre-line;
         }`}
             </style>
-            <p id="preline">
+            {/* <p id="preline">
                 <Highlighter
                     searchWords={[searchInput]}
                     autoEscape={true}
                     textToHighlight={displayText}
-                >{displayText}</Highlighter>
-               {/* { text.split('irgendwas').map((wort,index) => {
-                return <p onClick={() => console.log(index)}>{wort}</p>
-            })}
-            //match indexes or words */}
-            </p>
+                >{displayText}</Highlighter>*/}
+
+            <p id="preline"> {displayText.split(' ').map((wort, index) => {
+                return <span  style={{color: wort.toLowerCase() === searchInput ? 'green' : 'black'}}
+                             onClick={() => console.log(index)}>{wort}</span>
+            })}</p>
 
 
-            <Button variant="contained" onClick={() => {setId(null); setValue(0)}}>Zurück</Button>
+            <Button variant="contained" onClick={() => {
+                setId(null);
+                setValue(0)
+            }}>Zurück</Button>
 
         </Box>
         // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
