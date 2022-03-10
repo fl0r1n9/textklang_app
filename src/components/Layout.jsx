@@ -59,6 +59,7 @@ export default function Layout() {
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                     <Tab label="Suche"/>
                                     <Tab label="Details" disabled={id === null}/>
+                                    <Tab label="Prosodie" disabled/>
                                     <Tab label="POS" disabled/>
                                 </Tabs>
                             </Box>

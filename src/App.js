@@ -1,16 +1,14 @@
 import React from "react";
 import Layout from "./components/Layout";
 import './App.css';
+//import excerpt from './data/excerpt.tsv';
+//import {tsv2json} from "tsv-json";
 
 function App() {
 
     //create
     const json = {};
-
-    function loadData(){
-
-
-    }
+    //console.log(tsv2json(excerpt));
 
   return (
     <div className="App">

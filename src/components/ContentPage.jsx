@@ -48,17 +48,19 @@ export default function ContentPage(props) {
           white-space: pre-line;
         }`}
             </style>
-            {/* <p id="preline">
+             <p id="preline">
                 <Highlighter
                     searchWords={[searchInput]}
                     autoEscape={true}
                     textToHighlight={displayText}
-                >{displayText}</Highlighter>*/}
+                >{displayText}</Highlighter>
 
-            <p id="preline"> {displayText.split(' ').map((wort, index) => {
+             </p>
+
+            {/*<p id="preline"> {displayText.split(' ').map((wort, index) => {
                 return <span  style={{color: wort.toLowerCase() === searchInput ? 'green' : 'black'}}
                              onClick={() => console.log(index)}>{wort}</span>
-            })}</p>
+            })}</p>*/}
 
 
             <Button variant="contained" onClick={() => {

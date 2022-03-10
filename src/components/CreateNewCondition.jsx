@@ -14,6 +14,7 @@ import {
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import {filter} from "../data/filter";
+import PropTypes from "prop-types";
 
 
 //routine and logic for adding components
@@ -60,7 +61,7 @@ export function CreateNewCondition(props) {
 
         return (
             <Dialog onClose={handleLoadClose} open={open}>
-                <DialogTitle>Set backup account</DialogTitle>
+                <DialogTitle>Filter laden</DialogTitle>
                 <List sx={{pt: 0}}>
                     {filter.map((entry) => (
                         <ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
@@ -72,6 +73,13 @@ export function CreateNewCondition(props) {
             </Dialog>
         );
     }
+
+
+    LoadPresetDialog.propTypes = {
+        onClose: PropTypes.func.isRequired,
+        open: PropTypes.bool.isRequired,
+        selectedValue: PropTypes.string.isRequired,
+    };
 
 
 //editable condition box
@@ -155,15 +163,13 @@ export function CreateNewCondition(props) {
         </Box>
 
         {/*bottom button row */}
-        {/*//TODO: better positioning*/}
+        {/*//TODO: better positioning, 2x2?*/}
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 4, flexWrap: 'wrap'}}>
             {/*take out ||!entity||!where for debugging*/}
             <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
                 +</Button>
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
             <Button variant="contained" onClick={handleClickOpen}>Filter speichern</Button>
-
-            {/*//TODO: this button's functionality, modals, slide menu */}
             <Button variant="contained" onClick={handleClickLoadOpen}>Filter laden</Button>
         </Box>
         {/*add filter dialog*/}

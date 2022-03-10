@@ -67,6 +67,7 @@ export default function SearchPage(props) {
             conditions_appended[saveFilterName].push(element);
         });
 
+        //TODO: add to filter.js
         let json = JSON.stringify(conditions_appended);
         console.log(json);
     }
