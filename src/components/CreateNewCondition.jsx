@@ -7,12 +7,13 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    InputLabel, List, ListItem, ListItemAvatar, ListItemText,
+    InputLabel, List, ListItem, ListItemText,
     MenuItem,
     Select
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import {filter} from "../data/filter";
 
 
 //routine and logic for adding components
@@ -23,8 +24,9 @@ export function CreateNewCondition(props) {
         handleAddCondition, func, setFunc,
         entity, setEntity, where, setWhere,
         conditionSearchInput, setConditionSearchInput,
-        handleDeleteCondition, handleSavePreset, handleLoadPreset,
-        first, saveFilterName, setSaveFilterName
+        handleDeleteCondition, handleSavePreset,
+        first, saveFilterName, setSaveFilterName,
+        handleLoadPreset, loadOpen, setLoadOpen, selectedValue
     }
         = props;
 
@@ -40,12 +42,13 @@ export function CreateNewCondition(props) {
         setOpen(false);
     };
 
+    const handleClickLoadOpen = () => {
+        setLoadOpen(true);
+    };
 
-    const emails = ['username@gmail.com', 'user02@gmail.com'];
 
-
-    function SimpleDialog(props) {
-        const { onClose, selectedValue, open } = props;
+    function LoadPresetDialog(props) {
+        const {onClose, selectedValue, open} = props;
 
         const handleLoadClose = () => {
             onClose(selectedValue);
@@ -58,29 +61,17 @@ export function CreateNewCondition(props) {
         return (
             <Dialog onClose={handleLoadClose} open={open}>
                 <DialogTitle>Set backup account</DialogTitle>
-                <List sx={{ pt: 0 }}>
-                    {emails.map((email) => (
-                        <ListItem button onClick={() => handleListItemClick(email)} key={email}>
+                <List sx={{pt: 0}}>
+                    {filter.map((entry) => (
+                        <ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
 
-                            <ListItemText primary={email} />
+                            <ListItemText primary={Object.keys(entry)}/>
                         </ListItem>
                     ))}
                 </List>
             </Dialog>
         );
     }
-
-    const [loadOpen, setLoadOpen] = React.useState(false);
-    const [selectedValue, setSelectedValue] = React.useState("");
-
-    const handleClickLoadOpen = () => {
-        setLoadOpen(true);
-    };
-
-    const handleLoadClose = (value) => {
-        setLoadOpen(false);
-        setSelectedValue(value);
-    };
 
 
 //editable condition box
@@ -176,7 +167,7 @@ export function CreateNewCondition(props) {
             <Button variant="contained" onClick={handleClickLoadOpen}>Filter laden</Button>
         </Box>
         {/*add filter dialog*/}
-        <Dialog open={open} onClose={handleLoadClose}>
+        <Dialog open={open} onClose={handleSavePreset}>
             <DialogTitle>Filter speichern</DialogTitle>
             <DialogContent>
                 <DialogContentText>
@@ -196,15 +187,18 @@ export function CreateNewCondition(props) {
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Abbrechen</Button>
-                <Button onClick={() => {handleSavePreset(); handleClose()}}>OK</Button>
+                <Button onClick={() => {
+                    handleSavePreset();
+                    handleClose()
+                }}>OK</Button>
             </DialogActions>
 
         </Dialog>
-            <SimpleDialog
-                selectedValue={selectedValue}
-                open={loadOpen}
-                onClose={handleLoadClose}
-            />
+        <LoadPresetDialog
+            selectedValue={selectedValue}
+            open={loadOpen}
+            onClose={handleLoadPreset}
+        />
 
     </div>
 

@@ -9,7 +9,6 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Condition from "./Condition";
 import {CreateNewCondition} from "./CreateNewCondition";
-import {filter} from "../data/filter";
 
 export default function SearchPage(props) {
 
@@ -72,7 +71,22 @@ export default function SearchPage(props) {
         console.log(json);
     }
 
-    const handleLoadPreset = () => {
+
+    //loadPreset dialog hooks
+    const [loadOpen, setLoadOpen] = React.useState(false);
+    const [selectedValue, setSelectedValue] = React.useState("");
+
+    const handleLoadPreset = (value) => {
+        setLoadOpen(false);
+        setSelectedValue(value);
+        console.log(Object.values(value)[0][0]);
+
+        setSearchInput(Object.values(value)[0][0].searchInput);
+        setSearchFilter(Object.values(value)[0][0].searchFilter);
+
+        for (let i = 1; i < Object.values(value)[0].length; i++) {
+            conditions[i-1] = Object.values(value)[0][i];
+        }
 
     };
 
@@ -186,6 +200,9 @@ export default function SearchPage(props) {
                                 setConditionSearchInput={setConditionSearchInput}
                                 handleSavePreset={handleSavePreset}
                                 handleLoadPreset={handleLoadPreset}
+                                loadOpen={loadOpen}
+                                setLoadOpen={setLoadOpen}
+                                selectedValue={selectedValue}
                                 saveFilterName={saveFilterName}
                                 setSaveFilterName={setSaveFilterName}
 
