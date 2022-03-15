@@ -10,6 +10,7 @@ import SearchTab from "./SearchTab";
 import {Tab, Tabs} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import DetailsTab from "./DetailsTab";
+import ProsodyTab from "./ProsodyTab";
 
 const Item = styled(Paper)(({theme}) => ({
     ...theme.typography.body2,
@@ -59,7 +60,7 @@ export default function Layout() {
                                 <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
                                     <Tab label="Suche"/>
                                     <Tab label="Details" disabled={id === null}/>
-                                    <Tab label="Prosodie" disabled/>
+                                    <Tab label="Prosodie" disabled={id === null}/>
                                     <Tab label="POS" disabled/>
                                 </Tabs>
                             </Box>
@@ -76,7 +77,7 @@ export default function Layout() {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                Item Three
+                                {<ProsodyTab/>}
                             </TabPanel>
                         </Box>
                     </Item>
