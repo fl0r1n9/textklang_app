@@ -47,25 +47,17 @@ export default function ProsodyTab(props) {
     }
 
 //TODO: create components per line
+    console.log(sentenceLengths);
     return (
+        sentenceLengths.map(sentence => {
 
-        <Grid container rowSpacing={2}>
-            <Grid item>
-                <Item>token0,0</Item>
-            </Grid>
-            <Grid item>
-                <Item>token0,1</Item>
-            </Grid>
+            return <Grid container columnSpacing={3}> {Array.from(Array(sentence).keys()).map(word => {
+                return <Grid item>
+                <Item>{word}</Item>
+                {/*  TODO: for ContentPage:  <span>{word}</span>*/}
+                </Grid>})}</Grid>
+        })
 
-            <Grid container rowSpacing={2}>
-                <Grid item>
-                    <Item>token1,0</Item>
-                </Grid>
-                <Grid item>
-                    <Item>token1,1</Item>
-                </Grid>
 
-            </Grid>
-        </Grid>
     )
 }

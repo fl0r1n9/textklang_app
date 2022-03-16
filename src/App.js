@@ -4,7 +4,6 @@ import './App.css';
 import excerpt from './data/excerpt.tsv';
 import {tsv2json} from "tsv-json";
 
-
 /* const loadTSV = (e) => {
       e.preventDefault();
       const reader = new FileReader();

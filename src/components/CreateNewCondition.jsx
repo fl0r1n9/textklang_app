@@ -47,20 +47,19 @@ export function CreateNewCondition(props) {
         setLoadOpen(true);
     };
 
+    const handleCloseLoadOpen = () => {
+        setLoadOpen(false);
+    };
 
     function LoadPresetDialog(props) {
-        const {onClose, selectedValue, open} = props;
-
-        const handleLoadClose = () => {
-            onClose(selectedValue);
-        };
+        const {onClose, open} = props;
 
         const handleListItemClick = (value) => {
             onClose(value);
         };
 
         return (
-            <Dialog onClose={handleLoadClose} open={open}>
+            <Dialog onClose={handleCloseLoadOpen} open={open}>
                 <DialogTitle>Filter laden</DialogTitle>
                 <List sx={{pt: 0}}>
                     {filter.map((entry) => (
