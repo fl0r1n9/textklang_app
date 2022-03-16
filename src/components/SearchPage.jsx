@@ -52,6 +52,9 @@ export default function SearchPage(props) {
 
     //undo previous
     const handleDeleteCondition = () => {
+        if(conditions.length === 1){
+            setFirst(true);
+        }
         setConditions(conditions.filter((element) => element !== conditions.slice(-1)[0]));
 
     }

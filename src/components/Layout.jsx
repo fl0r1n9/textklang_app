@@ -20,7 +20,9 @@ const Item = styled(Paper)(({theme}) => ({
 }));
 
 
-export default function Layout() {
+export default function Layout(props) {
+
+    const {json} = props;
 
     const [id, setId] = React.useState(null);
     const [result, setResult] = React.useState('');
@@ -77,7 +79,7 @@ export default function Layout() {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {<ProsodyTab/>}
+                                {<ProsodyTab json={json}/>}
                             </TabPanel>
                         </Box>
                     </Item>

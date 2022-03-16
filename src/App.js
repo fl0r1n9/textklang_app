@@ -27,7 +27,7 @@ function App() {
         audio: '',
         reader: '',
         author: '',
-        title:'',
+        title: '',
         tokens: []
     };
 
@@ -50,7 +50,7 @@ function App() {
         json.reader = tsv[2][0].split('=')[1].split('_')[0];
         json.author = tsv[2][0].split('=')[1].split('_')[1];
 
-        let titleStringArray = tsv[1][0].split('=')[1].split('_').splice(-splitNo+2);
+        let titleStringArray = tsv[1][0].split('=')[1].split('_').splice(-splitNo + 2);
         let titleString = "";
         for (let string of titleStringArray) {
             titleString = titleString.concat(string + " ");
@@ -61,30 +61,35 @@ function App() {
 
             if (tsv[i].length === 63) {
 
+                for (let j = 26; j < 30; j++) {
+
+                    tsv[i][j] = tsv[i][j].split('|').map( string => parseFloat(string));
+                   }
+
                 json.tokens.push({
-                    tokenId: parseInt(tsv[i][0]),
-                    word: tsv[i][1],
+                    tokenInSentenceId: parseInt(tsv[i][0]),
+                    tokenString: tsv[i][1],
                     pos: tsv[i][5],
-                    startTime: tsv[i][13],
-                    endTime: tsv[i][14],
+                    startTime: parseInt(tsv[i][13]),
+                    endTime: parseInt(tsv[i][14]),
                     b: tsv[i][26],
                     c1: tsv[i][27],
                     c2: tsv[i][28],
                     d: tsv[i][29],
-                    newline: ""
+                    //1 if true
+                    newline: tsv[i][2]
                 })
             }
 
         }
 
-
-      //  console.log(tsv);
+        console.log(json);
 
     }
     return (
         <div className="App">
             <h1>Textklang App</h1>
-            <Layout/>
+            <Layout json={json}/>
             {/*<input type="file" onChange={loadTSV} />*/}
         </div>
     );

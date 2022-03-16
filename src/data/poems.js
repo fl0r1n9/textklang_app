@@ -104,7 +104,23 @@ export var poems = [
         "title": "Der Herbst",
         "author": "Hölderlin",
         "reader": "Zischler",
-        "text": "",
+        "text": "\n" +
+            "Das Glänzen der Natur ist höheres Erscheinen,\n" +
+            "Wo sich der Tag mit vielen Freuden endet,\n" +
+            "Es ist das Jahr, das sich mit Pracht vollendet,\n" +
+            "Wo Früchte sich mit frohem Glanz vereinen.\n" +
+            "\n" +
+            "Das Erdenrund ist so geschmückt, und selten lärmet\n" +
+            "Der Schall durchs offne Feld, die Sonne wärmet\n" +
+            "Den Tag des Herbstes mild, die Felder stehen\n" +
+            "Als eine Aussicht weit, die Lüfte wehen\n" +
+            " \n" +
+            "Die Zweig und Äste durch mit frohem Rauschen,\n" +
+            "Wenn schon mit Leere sich die Felder dann vertauschen,\n" +
+            "Der ganze Sinn des hellen Bildes lebet\n" +
+            "Als wie ein Bild, das goldne Pracht umschwebet.\n" +
+            " \n" +
+            "d. 15ten Nov. 1759.\n",
     },
     {
         "id": "vulkan_hoelderlin",
