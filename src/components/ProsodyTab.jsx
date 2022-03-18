@@ -47,7 +47,7 @@ export default function ProsodyTab(props) {
         //TODO: optimize: replace with VictoryGroup, delete Axis and resize /
         return (
             <div style={{display: "inline-block", width: "fit-content", height: "fit-content"}}>
-                <VictoryGroup style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}}
+                <VictoryChart style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}}
                               maxDomain={{x: json.tokens[tokenNo].syllableCount, y: 300}}>
                     <VictoryAxis style={{
                         axis: {stroke: "transparent"},
@@ -84,7 +84,7 @@ export default function ProsodyTab(props) {
 
                     ))}
 
-                </VictoryGroup>
+                </VictoryChart>
             </div>
 
         );
