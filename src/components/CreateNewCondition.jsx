@@ -7,7 +7,10 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    InputLabel, List, ListItem, ListItemText,
+    InputLabel,
+    List,
+    ListItem,
+    ListItemText,
     MenuItem,
     Select
 } from "@mui/material";
@@ -22,14 +25,25 @@ import PropTypes from "prop-types";
 export function CreateNewCondition(props) {
 
     const {
-        handleAddCondition, func, setFunc,
-        entity, setEntity, where, setWhere,
-        conditionSearchInput, setConditionSearchInput,
-        handleDeleteCondition, handleSavePreset,
-        first, saveFilterName, setSaveFilterName,
-        handleLoadPreset, loadOpen, setLoadOpen, selectedValue
-    }
-        = props;
+        handleAddCondition,
+        func,
+        setFunc,
+        entity,
+        setEntity,
+        where,
+        setWhere,
+        conditionSearchInput,
+        setConditionSearchInput,
+        handleDeleteCondition,
+        handleSavePreset,
+        first,
+        saveFilterName,
+        setSaveFilterName,
+        handleLoadPreset,
+        loadOpen,
+        setLoadOpen,
+        selectedValue
+    } = props;
 
 
     //savePreset dialog hooks
@@ -58,26 +72,20 @@ export function CreateNewCondition(props) {
             onClose(value);
         };
 
-        return (
-            <Dialog onClose={handleCloseLoadOpen} open={open}>
+        return (<Dialog onClose={handleCloseLoadOpen} open={open}>
                 <DialogTitle>Filter laden</DialogTitle>
                 <List sx={{pt: 0}}>
-                    {filter.map((entry) => (
-                        <ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
+                    {filter.map((entry) => (<ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
 
                             <ListItemText primary={Object.keys(entry)}/>
-                        </ListItem>
-                    ))}
+                        </ListItem>))}
                 </List>
-            </Dialog>
-        );
+            </Dialog>);
     }
 
 
     LoadPresetDialog.propTypes = {
-        onClose: PropTypes.func.isRequired,
-        open: PropTypes.bool.isRequired,
-        selectedValue: PropTypes.string.isRequired,
+        onClose: PropTypes.func.isRequired, open: PropTypes.bool.isRequired, selectedValue: PropTypes.string.isRequired,
     };
 
 
@@ -87,35 +95,34 @@ export function CreateNewCondition(props) {
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 2, flexWrap: 'wrap'}}>
 
             {first ? <FormControl variant="standard" sx={{minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
-                    <Select
+                <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
+                <Select
 
-                        value={func || ''}
-                        onChange={(event) => setFunc(event.target.value)}
-                        displayEmpty
-                    >
-                        <MenuItem value="contains">
-                            enthält
-                        </MenuItem>
-                        <MenuItem value="not">enthält nicht</MenuItem>
-                        <MenuItem value="min">enthält mindestens</MenuItem>
-                        <MenuItem value="max">enthält maximal</MenuItem>
-                    </Select>
-                </FormControl> :
-                <FormControl variant="standard" sx={{minWidth: 120}}>
-                    <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
-                    <Select
+                    value={func || ''}
+                    onChange={(event) => setFunc(event.target.value)}
+                    displayEmpty
+                >
+                    <MenuItem value="contains">
+                        enthält
+                    </MenuItem>
+                    <MenuItem value="not">enthält nicht</MenuItem>
+                    <MenuItem value="min">enthält mindestens</MenuItem>
+                    <MenuItem value="max">enthält maximal</MenuItem>
+                </Select>
+            </FormControl> : <FormControl variant="standard" sx={{minWidth: 120}}>
+                <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
+                <Select
 
-                        value={func || ''}
-                        onChange={(event) => setFunc(event.target.value)}
-                        displayEmpty
-                    >
-                        <MenuItem value="follows">
-                            folgt
-                        </MenuItem>
-                        <MenuItem value="follows_not">folgt nicht</MenuItem>
-                    </Select>
-                </FormControl>
+                    value={func || ''}
+                    onChange={(event) => setFunc(event.target.value)}
+                    displayEmpty
+                >
+                    <MenuItem value="follows">
+                        folgt
+                    </MenuItem>
+                    <MenuItem value="follows_not">folgt nicht</MenuItem>
+                </Select>
+            </FormControl>
 
             }
 

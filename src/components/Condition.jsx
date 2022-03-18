@@ -1,4 +1,3 @@
-
 //conditions constructor
 export default class Condition {
 

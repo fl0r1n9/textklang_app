@@ -3,7 +3,7 @@ import * as React from "react";
 
 export default function SearchTab(props) {
 
-return(
+    return (
 
         <SearchPage setResult={props.setResult}
                     searchInput={props.searchInput}
@@ -13,5 +13,5 @@ return(
                     setSearchInput={props.setSearchInput}
         />
 
-)
+    )
 }

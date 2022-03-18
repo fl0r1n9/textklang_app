@@ -4,18 +4,6 @@ import './App.css';
 import excerpt from './data/excerpt.tsv';
 import {tsv2json} from "tsv-json";
 
-/* const loadTSV = (e) => {
-      e.preventDefault();
-      const reader = new FileReader();
-      reader.onload = (e) => {
-          const text = e.target.result;
-          const tsv = tsv2json(text);
-          console.log(tsv);
-      };
-      reader.readAsText(e.target.files[0]);
-
-  };*/
-
 
 function App() {
 
@@ -56,13 +44,16 @@ function App() {
         }
         json.title = titleString;
 
+        //TODO: entire file, divide 40
+        const toSplitAndParse = [26,27,28,29,40];
+
         for (let i = 0; i < tsv.length; i++) {
 
             if (tsv[i].length === 63) {
 
-                for (let j = 26; j < 30; j++) {
+                for (let number of toSplitAndParse) {
 
-                    tsv[i][j] = tsv[i][j].split('|').map( string => parseFloat(string));
+                    tsv[i][number] = tsv[i][number].split('|').map( string => parseFloat(string));
                    }
 
                 json.tokens.push({
@@ -71,10 +62,13 @@ function App() {
                     pos: tsv[i][5],
                     startTime: parseInt(tsv[i][13]),
                     endTime: parseInt(tsv[i][14]),
+                    syllableCount: parseInt(tsv[i][17]),
                     b: tsv[i][26],
                     c1: tsv[i][27],
                     c2: tsv[i][28],
                     d: tsv[i][29],
+                    stress: tsv[i][40],
+                    sampa: tsv[i][47].split('|'),
                     //1 if true
                     newline: tsv[i][2]
                 })
@@ -82,7 +76,7 @@ function App() {
 
         }
 
-        console.log(json);
+        //console.log(json);
 
     }
     return (

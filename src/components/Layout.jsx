@@ -13,10 +13,7 @@ import DetailsTab from "./DetailsTab";
 import ProsodyTab from "./ProsodyTab";
 
 const Item = styled(Paper)(({theme}) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
+    ...theme.typography.body2, padding: theme.spacing(1), textAlign: 'center', color: theme.palette.text.secondary,
 }));
 
 
@@ -35,23 +32,20 @@ export default function Layout(props) {
         setValue(newValue);
     };
 
-    return (
-        <Box sx={{width: '100%'}}>
+    return (<Box sx={{width: '100%'}}>
             <Nav/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 <Grid item xs={6}>
 
-                    {
-                        id === null ? <Item>
-                            <ContentTable setId={setId}
-                                          result={result}
-                                          searchInput={searchInput}
-                                          searchFilter={searchFilter}
-                            />
-                        </Item> : <Item>
-                            <ContentPage id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
-                        </Item>
-                    }
+                    {id === null ? <Item>
+                        <ContentTable setId={setId}
+                                      result={result}
+                                      searchInput={searchInput}
+                                      searchFilter={searchFilter}
+                        />
+                    </Item> : <Item>
+                        <ContentPage id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
+                    </Item>}
 
                 </Grid>
 
@@ -85,27 +79,22 @@ export default function Layout(props) {
                     </Item>
                 </Grid>
             </Grid>
-        </Box>
-    );
+        </Box>);
 }
 
 
 function TabPanel(props) {
     const {children, value, index, ...other} = props;
 
-    return (
-        <div
+    return (<div
             role="tabpanel"
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{p: 3}}>
+            {value === index && (<Box sx={{p: 3}}>
                     <Typography>{children}</Typography>
-                </Box>
-            )}
-        </div>
-    );
+                </Box>)}
+        </div>);
 }

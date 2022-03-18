@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import {
-    InputLabel,
-    MenuItem
+    InputLabel, MenuItem
 } from "@mui/material";
 import {Select} from "@mui/material";
 import FormControl from '@mui/material/FormControl';
@@ -52,7 +51,7 @@ export default function SearchPage(props) {
 
     //undo previous
     const handleDeleteCondition = () => {
-        if(conditions.length === 1){
+        if (conditions.length === 1) {
             setFirst(true);
         }
         setConditions(conditions.filter((element) => element !== conditions.slice(-1)[0]));
@@ -63,7 +62,7 @@ export default function SearchPage(props) {
     const handleSavePreset = () => {
 
         let conditions_appended = {};
-        conditions_appended[saveFilterName]=[];
+        conditions_appended[saveFilterName] = [];
 
         conditions_appended[saveFilterName].push({"searchInput": searchInput, "searchFilter": searchFilter});
         conditions.forEach((element) => {
@@ -89,7 +88,7 @@ export default function SearchPage(props) {
         setSearchFilter(Object.values(value)[0][0].searchFilter);
 
         for (let i = 1; i < Object.values(value)[0].length; i++) {
-            conditions[i-1] = Object.values(value)[0][i];
+            conditions[i - 1] = Object.values(value)[0][i];
         }
 
     };
@@ -213,7 +212,6 @@ export default function SearchPage(props) {
             />
 
 
-        </div>
-    );
+        </div>);
 
 }

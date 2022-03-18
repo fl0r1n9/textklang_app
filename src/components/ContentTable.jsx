@@ -190,10 +190,7 @@ export default function ContentTable(props) {
         switch (searchFilter) {
             case 'all':
 
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.title.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.author.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase()) || poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
             case 'title':
 
@@ -212,10 +209,7 @@ export default function ContentTable(props) {
                 return poem.text.toLowerCase().includes(searchInput.toLowerCase());
 
             default:
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.title.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.author.toLowerCase().includes(searchInput.toLowerCase())
-                    ||poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+                return poem.text.toLowerCase().includes(searchInput.toLowerCase()) || poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
         }
     }

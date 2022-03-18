@@ -1,5 +1,5 @@
 import * as React from "react";
-import {VictoryChart, VictoryLine} from "victory";
+import {VictoryAxis, VictoryChart, VictoryGroup, VictoryLabel, VictoryLine} from "victory";
 import Grid from "@mui/material/Grid";
 import {styled} from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
@@ -7,57 +7,104 @@ import Paper from "@mui/material/Paper";
 export default function ProsodyTab(props) {
 
     const {json} = props;
+    let tokenNumber = -1;
 
     const Item = styled(Paper)(({theme}) => ({
-        ...theme.typography.body2,
-        padding: theme.spacing(1),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        ...theme.typography.body2, padding: theme.spacing(1), textAlign: 'center', color: theme.palette.text.secondary,
     }));
 
-    let sentenceLength = 0
-    let sentenceLengths = []
+    let lineLength = 0
+    let lineLengths = []
     for (const token of json.tokens) {
 
-        sentenceLength++;
+        lineLength++;
         if (token.newline === "1") {
-            sentenceLengths.push(sentenceLength);
-            sentenceLength = 0;
+            lineLengths.push(lineLength);
+            lineLength = 0;
         }
 
 
     }
 
+    function increaseToken(){
+        tokenNumber++;
+        console.log(tokenNumber);
+        return tokenNumber;
+    }
 
-    function renderPlots() {
+    function renderPlots(tokenNo) {
+
+        const DataLabel = props => {
+            const x = props.scale.x(props.x);
+            const y = props.scale.y(props.y);
+            return <VictoryLabel {...props} x={x} y={y}/>
+        };
+
+        //TODO: filter out non-relevant curves & determine min/max
 
 
+        let min = 80;
+        let max;
+        tokenNo=8;
+
+
+        //TODO: optimize: replace with VictoryGroup, delete Axis and resize
         return (
+            <div style={{display: "inline-block", width:"fit-content", height:"fit-content"}}>
+                <VictoryChart style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}} maxDomain={{x: json.tokens[tokenNo].syllableCount, y: 300}}>
+                    <VictoryAxis style={{
+                        axis: {stroke: "transparent"},
+                        ticks: {stroke: "transparent"},
+                        tickLabels: { fill:"transparent"}
+                    }} />
+                    {Array.from(Array(json.tokens[tokenNo].syllableCount).keys()).map((value) => (
+                        <VictoryLine data={[
+                            {
+                                x: value,
+                                y: (json.tokens[tokenNo].d[value] - json.tokens[tokenNo].c1[value])
+                            }, {
+                                x: Math.abs(json.tokens[tokenNo].b[value] - Math.trunc(json.tokens[tokenNo].b[value])) + value,
+                                y: json.tokens[tokenNo].d[value]
+                            }, {
+                                x: value + 1,
+                                y: (json.tokens[tokenNo].d[value] - json.tokens[tokenNo].c2[value])
+                            }
+
+                        ]}
+                        />
 
 
-            <VictoryChart minDomain={{x: 0, y: 0}} maxDomain={{x: 1, y: 300}}>
-                <VictoryLine data={[
-                    {x: 0, y: (json.tokens[1].d - json.tokens[1].c1)},
-                    {x: json.tokens[1].b, y: (json.tokens[1].d - json.tokens[1].c2)}
-                ]}/>
+                    ))}
+                    {Array.from(Array(json.tokens[tokenNo].syllableCount).keys()).map((value) => (
 
-            </VictoryChart>
+                        <DataLabel
+                            x={value + 0.25}
+                            y={min}
+                            text={json.tokens[tokenNo].sampa[value]}
+                            style = {{fontSize:40}}
+
+                        />
+
+                    ))}
+
+                </VictoryChart>
+            </div>
+
         );
+
 
     }
 
-//TODO: create components per line
-    console.log(sentenceLengths);
-    return (
-        sentenceLengths.map(sentence => {
+    //TODO: for ContentPage:  <span>{word}</span> statt <Item>
 
-            return <Grid container columnSpacing={3}> {Array.from(Array(sentence).keys()).map(word => {
-                return <Grid item>
-                <Item>{word}</Item>
-                {/*  TODO: for ContentPage:  <span>{word}</span>*/}
-                </Grid>})}</Grid>
+    return (lineLengths.map(wordInLine => {
+            return <div style={{flexDirection:'row',  display: 'inline-flex'}}>
+                {Array.from(Array(wordInLine).keys()).map(() => {
+                return <div style={{flexDirection:'row',  display: 'inline-flex'}}>
+                {renderPlots()}
+
+                </div>})}</div>
         })
-
 
     )
 }

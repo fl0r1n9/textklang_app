@@ -13,9 +13,7 @@ export default function ContentPage(props) {
     const {id, setId, searchInput, setValue} = props;
 
     const sound = new Howl({
-        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"],
-        html5: true,
-//      preload: true
+        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
     })
 
 
@@ -36,8 +34,7 @@ export default function ContentPage(props) {
         }
     }
 
-    return (
-        <Box>
+    return (<Box>
             {/*//TODO: better positioning*/}
             <h3>{id[0] + " - " + id[1]}
                 <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
@@ -48,14 +45,14 @@ export default function ContentPage(props) {
           white-space: pre-line;
         }`}
             </style>
-             <p id="preline">
+            <p id="preline">
                 <Highlighter
                     searchWords={[searchInput]}
                     autoEscape={true}
                     textToHighlight={displayText}
                 >{displayText}</Highlighter>
 
-             </p>
+            </p>
 
             {/*<p id="preline"> {displayText.split(' ').map((wort, index) => {
                 return <span  style={{color: wort.toLowerCase() === searchInput ? 'green' : 'black'}}

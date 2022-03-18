@@ -16,26 +16,20 @@ function ScrollTop(props) {
     // will default to window.
     // This is only being set here because the demo is in an iframe.
     const trigger = useScrollTrigger({
-        target: window ? window() : undefined,
-        disableHysteresis: true,
-        threshold: 100,
+        target: window ? window() : undefined, disableHysteresis: true, threshold: 100,
     });
 
     const handleClick = (event) => {
-        const anchor = (event.target.ownerDocument || document).querySelector(
-            '#back-to-top-anchor',
-        );
+        const anchor = (event.target.ownerDocument || document).querySelector('#back-to-top-anchor',);
 
         if (anchor) {
             anchor.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
+                behavior: 'smooth', block: 'center',
             });
         }
     };
 
-    return (
-        <Zoom in={trigger}>
+    return (<Zoom in={trigger}>
             <Box
                 onClick={handleClick}
                 role="presentation"
@@ -43,13 +37,11 @@ function ScrollTop(props) {
             >
                 {children}
             </Box>
-        </Zoom>
-    );
+        </Zoom>);
 }
 
 ScrollTop.propTypes = {
-    children: PropTypes.element.isRequired,
-    /**
+    children: PropTypes.element.isRequired, /**
      * Injected by the documentation to work in an iframe.
      * You won't need it on your project.
      */
@@ -57,8 +49,7 @@ ScrollTop.propTypes = {
 };
 
 export default function BackToTop(props) {
-    return (
-        <React.Fragment>
+    return (<React.Fragment>
             <CssBaseline/>
             <AppBar>
                 <Toolbar>
@@ -85,6 +76,5 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
                     <KeyboardArrowUpIcon/>
                 </Fab>
             </ScrollTop>
-        </React.Fragment>
-    );
+        </React.Fragment>);
 }
