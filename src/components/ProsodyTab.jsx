@@ -7,7 +7,7 @@ import Paper from "@mui/material/Paper";
 export default function ProsodyTab(props) {
 
     const {json} = props;
-    let tokenNumber = -1;
+
 
     const Item = styled(Paper)(({theme}) => ({
         ...theme.typography.body2, padding: theme.spacing(1), textAlign: 'center', color: theme.palette.text.secondary,
@@ -15,21 +15,18 @@ export default function ProsodyTab(props) {
 
     let lineLength = 0
     let lineLengths = []
+    let tokenNumbers = []
     for (const token of json.tokens) {
 
-        lineLength++;
+        if (!isNaN(token.syllableCount)) {
+            lineLength++;
+            tokenNumbers.push(json.tokens.indexOf(token))
+        }
         if (token.newline === "1") {
             lineLengths.push(lineLength);
             lineLength = 0;
         }
 
-
-    }
-
-    function increaseToken(){
-        tokenNumber++;
-        console.log(tokenNumber);
-        return tokenNumber;
     }
 
     function renderPlots(tokenNo) {
@@ -45,18 +42,18 @@ export default function ProsodyTab(props) {
 
         let min = 80;
         let max;
-        tokenNo=8;
 
 
-        //TODO: optimize: replace with VictoryGroup, delete Axis and resize
+        //TODO: optimize: replace with VictoryGroup, delete Axis and resize /
         return (
-            <div style={{display: "inline-block", width:"fit-content", height:"fit-content"}}>
-                <VictoryChart style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}} maxDomain={{x: json.tokens[tokenNo].syllableCount, y: 300}}>
+            <div style={{display: "inline-block", width: "fit-content", height: "fit-content"}}>
+                <VictoryGroup style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}}
+                              maxDomain={{x: json.tokens[tokenNo].syllableCount, y: 300}}>
                     <VictoryAxis style={{
                         axis: {stroke: "transparent"},
                         ticks: {stroke: "transparent"},
-                        tickLabels: { fill:"transparent"}
-                    }} />
+                        tickLabels: {fill: "transparent"}
+                    }}/>
                     {Array.from(Array(json.tokens[tokenNo].syllableCount).keys()).map((value) => (
                         <VictoryLine data={[
                             {
@@ -81,13 +78,13 @@ export default function ProsodyTab(props) {
                             x={value + 0.25}
                             y={min}
                             text={json.tokens[tokenNo].sampa[value]}
-                            style = {{fontSize:40}}
+                            style={{fontSize: 70}}
 
                         />
 
                     ))}
 
-                </VictoryChart>
+                </VictoryGroup>
             </div>
 
         );
@@ -98,12 +95,13 @@ export default function ProsodyTab(props) {
     //TODO: for ContentPage:  <span>{word}</span> statt <Item>
 
     return (lineLengths.map(wordInLine => {
-            return <div style={{flexDirection:'row',  display: 'inline-flex'}}>
+            return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
                 {Array.from(Array(wordInLine).keys()).map(() => {
-                return <div style={{flexDirection:'row',  display: 'inline-flex'}}>
-                {renderPlots()}
+                    return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
+                     <span>  {renderPlots(tokenNumbers.shift())} </span>
 
-                </div>})}</div>
+                    </div>
+                })}</div>
         })
 
     )
