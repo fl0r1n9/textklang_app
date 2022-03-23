@@ -44,7 +44,7 @@ export default function Layout(props) {
                                       searchFilter={searchFilter}
                         />
                     </Item> : <Item>
-                        <ContentPage id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
+                        <ContentPage TabPanel={TabPanel} json={json} id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
                     </Item>}
 
                 </Grid>
@@ -73,7 +73,7 @@ export default function Layout(props) {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {<ProsodyTab json={json}/>}
+                                {<ProsodyTab json={json} id={id}/>}
                             </TabPanel>
                         </Box>
                     </Item>

@@ -7,10 +7,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import {Howl} from "howler";
 
+
 export default function ContentPage(props) {
 
     //all parameters destructured
-    const {id, setId, searchInput, setValue} = props;
+    const {id, setId, searchInput, setValue, json, TabPanel} = props;
 
     const sound = new Howl({
         src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
@@ -34,38 +35,42 @@ export default function ContentPage(props) {
         }
     }
 
-    return (<Box>
-            {/*//TODO: better positioning*/}
-            <h3>{id[0] + " - " + id[1]}
+    return (
+
+            <TabPanel value={0} index={0}>
+        <Box>
+
+                {/*//TODO: better positioning or somewhere else*/}
+                <h3> {id[0] + " - " + id[1]}
                 <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
-                <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/>
-            </h3>
-            <style>
-                {`#preline {
+                <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/></h3>
+
+
+
+                <style>
+                    {`#preline {
           white-space: pre-line;
+          font-style: calibri;
+           font-size: 15px;
+           color:black;
         }`}
-            </style>
-            <p id="preline">
-                <Highlighter
-                    searchWords={[searchInput]}
-                    autoEscape={true}
-                    textToHighlight={displayText}
-                >{displayText}</Highlighter>
+                </style>
 
-            </p>
-
-            {/*<p id="preline"> {displayText.split(' ').map((wort, index) => {
-                return <span  style={{color: wort.toLowerCase() === searchInput ? 'green' : 'black'}}
-                             onClick={() => console.log(index)}>{wort}</span>
-            })}</p>*/}
+                {/*TODO: add canvas if prosody tab is shown, improve highlighting*/}
+                <p id="preline"> {displayText.split(' ').map((wort, index) => {
+                    return <span
+                        style={{cursor: 'pointer', color: wort.toLowerCase() === searchInput.toLowerCase() ? 'green' : 'black'}}
+                        onClick={() => console.log(index)}>{wort + " "}</span>
+                })}</p>
 
 
-            <Button variant="contained" onClick={() => {
-                setId(null);
-                setValue(0)
-            }}>Zurück</Button>
+                <Button variant="contained" onClick={() => {
+                    setId(null);
+                    setValue(0)
+                }}>Zurück</Button>
 
         </Box>
+            </TabPanel>
         // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
 
     );

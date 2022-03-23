@@ -76,7 +76,7 @@ function App() {
 
         }
 
-        //console.log(json);
+        console.log(json);
 
     }
     return (

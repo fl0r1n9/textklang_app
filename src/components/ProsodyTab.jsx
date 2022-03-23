@@ -1,17 +1,36 @@
 import * as React from "react";
-import {VictoryAxis, VictoryChart, VictoryGroup, VictoryLabel, VictoryLine} from "victory";
-import Grid from "@mui/material/Grid";
-import {styled} from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
+import {VictoryAxis, VictoryChart, VictoryLabel, VictoryLine} from "victory";
+import {poems} from "../data/poems";
+import Canvas from './Canvas';
+import Box from "@mui/material/Box";
 
 export default function ProsodyTab(props) {
 
-    const {json} = props;
+    const {json, id} = props;
 
+    let displayText;
 
-    const Item = styled(Paper)(({theme}) => ({
-        ...theme.typography.body2, padding: theme.spacing(1), textAlign: 'center', color: theme.palette.text.secondary,
-    }));
+    const draw = (ctx) => {
+        ctx.fillStyle = '#000000'
+        ctx.borderColor = '#FFFFFF'
+        //ctx.beginPath()
+        //ctx.arc(50, 100, 20, 0, 2 * Math.PI)
+        ctx.fill()
+    }
+
+    //find and display texts
+    for (const key in poems) {
+
+        if (poems[key].title === id[1]) {
+            if (poems[key].text === "") {
+                displayText = "Text nicht in der Datenbank";
+            } else {
+                displayText = poems[key].text;
+
+            }
+            break;
+        }
+    }
 
     let lineLength = 0
     let lineLengths = []
@@ -40,14 +59,14 @@ export default function ProsodyTab(props) {
         //TODO: filter out non-relevant curves & determine min/max
 
 
-        let min = 80;
+        let min = 0;
         let max;
 
 
         //TODO: optimize: replace with VictoryGroup, delete Axis and resize /
         return (
             <div style={{display: "inline-block", width: "fit-content", height: "fit-content"}}>
-                <VictoryChart style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 80}}
+                <VictoryChart style={{parent: {maxWidth: "100%"}}} minDomain={{x: 0, y: 0}}
                               maxDomain={{x: json.tokens[tokenNo].syllableCount, y: 300}}>
                     <VictoryAxis style={{
                         axis: {stroke: "transparent"},
@@ -76,7 +95,7 @@ export default function ProsodyTab(props) {
 
                         <DataLabel
                             x={value + 0.25}
-                            y={min}
+                            y={min + 1}
                             text={json.tokens[tokenNo].sampa[value]}
                             style={{fontSize: 70}}
 
@@ -92,17 +111,23 @@ export default function ProsodyTab(props) {
 
     }
 
-    //TODO: for ContentPage:  <span>{word}</span> statt <Item>
-
-    return (lineLengths.map(wordInLine => {
-            return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
-                {Array.from(Array(wordInLine).keys()).map(() => {
-                    return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
-                     <span>  {renderPlots(tokenNumbers.shift())} </span>
-
-                    </div>
-                })}</div>
-        })
-
+    return (
+        <div>
+            <style>
+                {`#preline2 {
+          white-space: pre-line;
+          font-style: calibri;
+          font-size: 15px;
+          color:black;
+        }`}
+            </style>
+            <p> {displayText.split(' ').map((wort, index) => {
+                return( <div style={{width:"fit-content", height:"fit-content", border:'1px dotted black'}}>
+                   <Canvas draw={draw} style={{border:'1px dotted black'}}/>
+                <span style={{font: "arial", fontFamily: "sans-serif", cursor: 'pointer'}}
+                             onClick={() => console.log(index)}>{wort + " "}</span>
+                </div>)
+            })}</p>
+        </div>
     )
 }
