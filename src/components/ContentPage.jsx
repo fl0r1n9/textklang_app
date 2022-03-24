@@ -48,13 +48,6 @@ export default function ContentPage(props) {
 
     }
 
-    const draw = (ctx) => {
-        ctx.fillStyle = '#000000'
-        ctx.borderColor = '#FFFFFF'
-        //ctx.beginPath()
-        //ctx.arc(50, 100, 20, 0, 2 * Math.PI)
-        ctx.fill()
-    }
 
 
     return (
