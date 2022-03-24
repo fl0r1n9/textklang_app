@@ -1,49 +1,42 @@
 import * as React from "react";
 import {VictoryAxis, VictoryChart, VictoryLabel, VictoryLine} from "victory";
-import {poems} from "../data/poems";
 import Canvas from './Canvas';
-import Box from "@mui/material/Box";
 import {Stack} from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 export default function ProsodyTab(props) {
 
-    const {json, id, setCanvasActive} = props;
+    const {json, setCanvasActive} = props;
 
-    let displayText;
 
     const draw = (ctx) => {
-        ctx.fillStyle = '#000000'
-        ctx.borderColor = '#FFFFFF'
-        //ctx.beginPath()
-        //ctx.arc(50, 100, 20, 0, 2 * Math.PI)
-        ctx.fill()
+        ctx.moveTo(0,0)
+        ctx.lineTo(ctx.canvas.width,ctx.canvas.height)
+        ctx.stroke()
         setCanvasActive(true);
     }
-
 
     let lineLength = 0
     let lineLengths = []
     let sampaStream = [];
 
-    //Array(19) [ 7, 8, 4, 5, 7, 5, 2, 5, 2, 5, … ]
-
     for (const token of json.tokens) {
-        if (token.newline !== "1" && !isNaN(token.syllableCount)) {
-            lineLength++;
+
+        if (!isNaN(token.syllableCount)) {
             for (const sampa of token.sampa) {
-                sampaStream.push(sampa + " ");
+                sampaStream.push(sampa);
+                lineLength++;
             }
 
-        } else {
-            sampaStream.push(token.sampa + "\n")
+        }
+        if (token.newline === "1") {
             lineLengths.push(lineLength)
             lineLength = 0
+
         }
 
 
     }
-
-    console.log(lineLengths)
 
     function renderPlots(tokenNo) {
 
@@ -120,13 +113,14 @@ export default function ProsodyTab(props) {
             </style>
             <p id="preline">
                 {lineLengths.map(wordInLine => {
-                    return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
+                    return <Grid container columnSpacing={0} sx={{justifyContent:'center'}}>
                         {Array.from(Array(wordInLine).keys()).map(() => {
-                                return <Stack sx={{flexDirection: "column", display: "inline-flex"}}>
+                            return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex"}}>
                                     <Canvas draw={draw}
                                             style={{
                                                 border: '1px dotted black',
-                                                width: "30px" /*TODO: width: 10* sampa length*/
+                                                height: "20px",
+                                                width: Math.max(20, (sampaStream[0].length * 10)).toString() + "px"
                                             }}/>
                                     <span key="1"
                                           style={{
@@ -138,10 +132,10 @@ export default function ProsodyTab(props) {
                                           onClick={() => console.log("")}>
                                                  {sampaStream.shift()}
                                              </span>
-                                </Stack>
+                                </Stack></Grid>
 
                             }
-                        )}</div>
+                        )}</Grid>
                 })}
 
 

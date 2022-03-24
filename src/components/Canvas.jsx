@@ -9,7 +9,7 @@ const Canvas = props => {
 
         const canvas = canvasRef.current
         const context = canvas.getContext('2d')
-        //TODO: get size from span -> offsetWidth?
+        //TODO: get size from span -> offsetWidth? or https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
 
         draw(context)
     }, [draw])
