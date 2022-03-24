@@ -6,12 +6,14 @@ import Highlighter from "react-highlight-words";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import {Howl} from "howler";
+import Canvas from "./Canvas";
+import {Stack} from "@mui/material";
 
 
 export default function ContentPage(props) {
 
     //all parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel} = props;
+    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive} = props;
 
     const sound = new Howl({
         src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
@@ -35,16 +37,35 @@ export default function ContentPage(props) {
         }
     }
 
-    return (
 
-            <TabPanel value={0} index={0}>
-        <Box>
+    let tokenStream = [];
+    for (const token of json.tokens) {
+        if (token.newline !== "1") {
+            tokenStream.push(token.tokenString + " ")
+        } else {
+            tokenStream.push(token.tokenString + "\n")
+        }
+
+    }
+
+    const draw = (ctx) => {
+        ctx.fillStyle = '#000000'
+        ctx.borderColor = '#FFFFFF'
+        //ctx.beginPath()
+        //ctx.arc(50, 100, 20, 0, 2 * Math.PI)
+        ctx.fill()
+    }
+
+
+    return (
+        //TODO: optimize: spawns DOMNesting error, align screen-scrolling containers?*/
+        <TabPanel value={0} index={0}>
+            <Box>
 
                 {/*//TODO: better positioning or somewhere else*/}
                 <h3> {id[0] + " - " + id[1]}
-                <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
-                <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/></h3>
-
+                    <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
+                    <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/></h3>
 
 
                 <style>
@@ -57,10 +78,18 @@ export default function ContentPage(props) {
                 </style>
 
                 {/*TODO: add canvas if prosody tab is shown, improve highlighting*/}
-                <p id="preline"> {displayText.split(' ').map((wort, index) => {
-                    return <span
-                        style={{cursor: 'pointer', color: wort.toLowerCase() === searchInput.toLowerCase() ? 'green' : 'black'}}
-                        onClick={() => console.log(index)}>{wort + " "}</span>
+                <p style={{whiteSpace:"pre-line"}}> {tokenStream.map((wort, index) => {
+                    return (
+                    <span
+                        style={{
+                            cursor: 'pointer',
+                            color: wort.toLowerCase() === searchInput.toLowerCase() ? 'green' : 'black'
+                        }}
+                        onClick={() => console.log(index)}>{wort}</span>
+                        )
+                        {/*<Stack sx={{flexDirection: "column", display: "inline-flex"}}>
+                        canvasActive ? <Canvas draw={draw}
+                                               style={{border: '1px dotted black', width: "30px"}} /> : ""*/}
                 })}</p>
 
 
@@ -69,8 +98,8 @@ export default function ContentPage(props) {
                     setValue(0)
                 }}>Zurück</Button>
 
-        </Box>
-            </TabPanel>
+            </Box>
+        </TabPanel>
         // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
 
     );

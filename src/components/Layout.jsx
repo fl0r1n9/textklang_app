@@ -28,6 +28,8 @@ export default function Layout(props) {
 
     const [value, setValue] = React.useState(0);
 
+    const [canvasActive, setCanvasActive] = React.useState(false);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -44,7 +46,10 @@ export default function Layout(props) {
                                       searchFilter={searchFilter}
                         />
                     </Item> : <Item>
-                        <ContentPage TabPanel={TabPanel} json={json} id={id} setId={setId} searchInput={searchInput} setValue={setValue}/>
+                        <ContentPage TabPanel={TabPanel} json={json} id={id}
+                                     setId={setId} searchInput={searchInput}
+                                     setValue={setValue} canvasActive={canvasActive}
+                        />
                     </Item>}
 
                 </Grid>
@@ -73,7 +78,7 @@ export default function Layout(props) {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {<ProsodyTab json={json} id={id}/>}
+                                {<ProsodyTab json={json} id={id} setCanvasActive={setCanvasActive}/>}
                             </TabPanel>
                         </Box>
                     </Item>

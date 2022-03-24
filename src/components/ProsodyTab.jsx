@@ -3,10 +3,11 @@ import {VictoryAxis, VictoryChart, VictoryLabel, VictoryLine} from "victory";
 import {poems} from "../data/poems";
 import Canvas from './Canvas';
 import Box from "@mui/material/Box";
+import {Stack} from "@mui/material";
 
 export default function ProsodyTab(props) {
 
-    const {json, id} = props;
+    const {json, id, setCanvasActive} = props;
 
     let displayText;
 
@@ -16,37 +17,33 @@ export default function ProsodyTab(props) {
         //ctx.beginPath()
         //ctx.arc(50, 100, 20, 0, 2 * Math.PI)
         ctx.fill()
+        setCanvasActive(true);
     }
 
-    //find and display texts
-    for (const key in poems) {
-
-        if (poems[key].title === id[1]) {
-            if (poems[key].text === "") {
-                displayText = "Text nicht in der Datenbank";
-            } else {
-                displayText = poems[key].text;
-
-            }
-            break;
-        }
-    }
 
     let lineLength = 0
     let lineLengths = []
-    let tokenNumbers = []
-    for (const token of json.tokens) {
+    let sampaStream = [];
 
-        if (!isNaN(token.syllableCount)) {
+    //Array(19) [ 7, 8, 4, 5, 7, 5, 2, 5, 2, 5, … ]
+
+    for (const token of json.tokens) {
+        if (token.newline !== "1" && !isNaN(token.syllableCount)) {
             lineLength++;
-            tokenNumbers.push(json.tokens.indexOf(token))
+            for (const sampa of token.sampa) {
+                sampaStream.push(sampa + " ");
+            }
+
+        } else {
+            sampaStream.push(token.sampa + "\n")
+            lineLengths.push(lineLength)
+            lineLength = 0
         }
-        if (token.newline === "1") {
-            lineLengths.push(lineLength);
-            lineLength = 0;
-        }
+
 
     }
+
+    console.log(lineLengths)
 
     function renderPlots(tokenNo) {
 
@@ -114,20 +111,41 @@ export default function ProsodyTab(props) {
     return (
         <div>
             <style>
-                {`#preline2 {
+                {`#preline {
           white-space: pre-line;
           font-style: calibri;
-          font-size: 15px;
-          color:black;
+           font-size: 15px;
+           color:black;
         }`}
             </style>
-            <p> {displayText.split(' ').map((wort, index) => {
-                return( <div style={{width:"fit-content", height:"fit-content", border:'1px dotted black'}}>
-                   <Canvas draw={draw} style={{border:'1px dotted black'}}/>
-                <span style={{font: "arial", fontFamily: "sans-serif", cursor: 'pointer'}}
-                             onClick={() => console.log(index)}>{wort + " "}</span>
-                </div>)
-            })}</p>
+            <p id="preline">
+                {lineLengths.map(wordInLine => {
+                    return <div style={{flexDirection: 'row', display: 'inline-flex'}}>
+                        {Array.from(Array(wordInLine).keys()).map(() => {
+                                return <Stack sx={{flexDirection: "column", display: "inline-flex"}}>
+                                    <Canvas draw={draw}
+                                            style={{
+                                                border: '1px dotted black',
+                                                width: "30px" /*TODO: width: 10* sampa length*/
+                                            }}/>
+                                    <span key="1"
+                                          style={{
+                                              border: '1px dotted black',
+                                              font: "arial",
+                                              fontFamily: "sans-serif",
+                                              cursor: 'pointer'
+                                          }}
+                                          onClick={() => console.log("")}>
+                                                 {sampaStream.shift()}
+                                             </span>
+                                </Stack>
+
+                            }
+                        )}</div>
+                })}
+
+
+            </p>
         </div>
     )
 }
