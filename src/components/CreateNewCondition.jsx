@@ -25,24 +25,12 @@ import PropTypes from "prop-types";
 export function CreateNewCondition(props) {
 
     const {
-        handleAddCondition,
-        func,
-        setFunc,
-        entity,
-        setEntity,
-        where,
-        setWhere,
-        conditionSearchInput,
-        setConditionSearchInput,
-        handleDeleteCondition,
-        handleSavePreset,
-        first,
-        saveFilterName,
-        setSaveFilterName,
-        handleLoadPreset,
-        loadOpen,
-        setLoadOpen,
-        selectedValue
+        handleAddCondition, func, setFunc,
+        entity, setEntity, where, setWhere,
+        conditionSearchInput, setConditionSearchInput,
+        handleDeleteCondition, handleSavePreset,
+        first, saveFilterName, setSaveFilterName, handleLoadPreset,
+        loadOpen, setLoadOpen, selectedValue
     } = props;
 
 
@@ -73,14 +61,14 @@ export function CreateNewCondition(props) {
         };
 
         return (<Dialog onClose={handleCloseLoadOpen} open={open}>
-                <DialogTitle>Filter laden</DialogTitle>
-                <List sx={{pt: 0}}>
-                    {filter.map((entry) => (<ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
+            <DialogTitle>Filter laden</DialogTitle>
+            <List sx={{pt: 0}}>
+                {filter.map((entry) => (<ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
 
-                            <ListItemText primary={Object.keys(entry)}/>
-                        </ListItem>))}
-                </List>
-            </Dialog>);
+                    <ListItemText primary={Object.keys(entry)}/>
+                </ListItem>))}
+            </List>
+        </Dialog>);
     }
 
 

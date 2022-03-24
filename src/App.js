@@ -44,7 +44,7 @@ function App() {
         }
         json.title = titleString;
 
-        //TODO: entire file, divide 40
+        //TODO: entire file
         const toSplitAndParse = [26,27,28,29,40];
 
         for (let i = 0; i < tsv.length; i++) {
