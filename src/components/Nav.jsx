@@ -11,11 +11,16 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from '@mui/icons-material/Stop';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
-import {Howl} from "howler";
+import {Howl, Howler} from "howler";
+import wav from '../data/wavs/Zischler_Hoelderlin_Der_Herbst.wav'
+import mp3 from '../data/mp3s/01_Chiron.mp3'
+import {Snackbar} from "@mui/material";
+import {useEffect} from "react";
 
 function ScrollTop(props) {
     const {children, window} = props;
@@ -37,14 +42,14 @@ function ScrollTop(props) {
     };
 
     return (<Zoom in={trigger}>
-            <Box
-                onClick={handleClick}
-                role="presentation"
-                sx={{position: 'fixed', bottom: 16, right: 16}}
-            >
-                {children}
-            </Box>
-        </Zoom>);
+        <Box
+            onClick={handleClick}
+            role="presentation"
+            sx={{position: 'fixed', bottom: 16, right: 16}}
+        >
+            {children}
+        </Box>
+    </Zoom>);
 }
 
 ScrollTop.propTypes = {
@@ -57,31 +62,110 @@ ScrollTop.propTypes = {
 
 export default function BackToTop(props) {
 
-    const sound = new Howl({
-        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
-    })
+
+    //TODO:can't listen to start for 'all', but fixes render bug
+   // useEffect(() => {
+     let sound
+        if (props.id) {
+             sound = new Howl({
+                src: [mp3], html5: false, preload: true,
+                sprite: {
+                    // TODO: index might be prone to errors
+                    all: [0, props.json.tokens[props.json.tokens.length - 2].endTime * 1000],
+                    interval: [props.start * 1000, (props.end - props.start) * 1000 +100],
+                }
+            })
+           sound.play('interval')
+        }
+//    }, [props.start])
+
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    function SimpleSnackbar() {
+
+        const handleClose = (event, reason) => {
+            if (reason === 'clickaway') {
+                return;
+            }
+
+            setOpen(false);
+        };
+
+
+        return (<div>
+            <Snackbar
+                open={open}
+                autoHideDuration={500}
+                onClose={handleClose}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                message={message}
+            />
+        </div>);
+    }
 
     return (<React.Fragment>
-            <CssBaseline/>
-            <AppBar>
-                <Toolbar>
-                    <Typography variant="h6" component="div"  sx={{mr:"10px"}}>
-                        {props.id ?   props.id[0] + " - " + props.id[1] : "Textklang App"}
-                    </Typography>
-                    <PlayArrowIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
-                    <PauseIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}} onClick={() => sound.pause()}/>
-                    <VolumeDownIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}}/>
-                    <VolumeUpIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{ cursor: 'pointer'}}/>
-                    <div style={{flexGrow:1}} />
-                    <ArrowBackIos sx={{ mr:"10px"}}/>
-                    <Typography variant="h8" component="div" sx={{mr:"10px"}}>
-                        Rezitation {1 + "/" + 1}
-                    </Typography>
-                    <ArrowForwardIos/>
-                </Toolbar>
-            </AppBar>
-            <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
-            {/*<Container>
+        <CssBaseline/>
+        <AppBar>
+            <SimpleSnackbar handleClick={handleClick}/>
+            <Toolbar>
+                <Typography variant="h6" component="div" sx={{mr: "10px"}}>
+                    {props.id ? props.id[0] + " - " + props.id[1] : "Textklang App"}
+                </Typography>
+                <PlayArrowIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
+                               style={{cursor: props.id ? 'pointer' : 'auto'}} onClick={() => {
+                    if (props.id) {
+                    sound.play('all')
+
+                        handleClick()
+                        setMessage("Audio wird abgespielt...")
+                    }
+                }}/>
+
+                {/*TODO:fix pause & stop button*/}
+                <PauseIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
+                           style={{cursor: props.id ? 'pointer' : 'auto'}} onClick={() => {
+                    if (props.id) {
+                    sound.pause()
+                    handleClick()
+                    setMessage("Audio pausiert")
+                    }
+                }}/>
+                <StopIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
+                          style={{cursor: props.id ? 'pointer' : 'auto'}}
+                          onClick={() => {
+                              sound.stop();
+                              handleClick()
+                              setMessage("Audio gestoppt")
+                          }}/>
+                <VolumeDownIcon sx={{mr: "10px"}}
+                                style={{cursor: 'pointer'}}
+                                onClick={() => {
+                                    Howler.volume(Howler.volume() - 0.1);
+                                    handleClick();
+                                    setMessage("Lautstärke: " + Howler.volume().toFixed(1) * 100 + "%")
+
+                                }}/>
+                <VolumeUpIcon sx={{mr: "10px"}}
+                              style={{cursor: 'pointer'}}
+                              onClick={() => {
+                                  Howler.volume(Howler.volume() + 0.1);
+                                  handleClick()
+                                  setMessage("Lautstärke: " + Howler.volume().toFixed(1) * 100 + "%")
+                              }}/>
+                <div style={{flexGrow: 1}}/>
+                <ArrowBackIos sx={{mr: "10px"}} style={{cursor: 'pointer'}}/>
+                <Typography variant="h8" component="div" sx={{mr: "10px"}}>
+                    Rezitation {1 + "/" + 1}
+                </Typography>
+                <ArrowForwardIos style={{cursor: 'pointer'}}/>
+            </Toolbar>
+        </AppBar>
+        <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
+        {/*<Container>
                 <Box sx={{ my: 2 }}>
                     {[...new Array(12)]
                         .map(
@@ -93,10 +177,10 @@ Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
                         .join('\n')}
                 </Box>
             </Container>*/}
-            <ScrollTop {...props}>
-                <Fab color="secondary" size="small" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon/>
-                </Fab>
-            </ScrollTop>
-        </React.Fragment>);
+        <ScrollTop {...props}>
+            <Fab color="secondary" size="small" aria-label="scroll back to top">
+                <KeyboardArrowUpIcon/>
+            </Fab>
+        </ScrollTop>
+    </React.Fragment>);
 }

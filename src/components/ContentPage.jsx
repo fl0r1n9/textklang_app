@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 export default function ContentPage(props) {
 
     //parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive} = props;
+    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, setStart, setEnd} = props;
 
 
     let displayText;
@@ -38,11 +38,11 @@ export default function ContentPage(props) {
 
     for (const token of json.tokens) {
         if (token.tokenString === ".") {
-            tokenStream[tokenStream.length - 1] = tokenStream.slice(-1)[0].concat(".")
+            tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(".")
         } else if (token.tokenString === ",") {
-            tokenStream[tokenStream.length - 1] = tokenStream.slice(-1)[0].concat(",")
+            tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(",")
         } else {
-            tokenStream.push(token.tokenString)
+            tokenStream.push([token.tokenString, token.startTime, token.endTime])
             lineLength++
         }
         if (token.newline === "1") {
@@ -52,8 +52,7 @@ export default function ContentPage(props) {
 
     }
 
-    return (
-        //TODO: optimize: spawns DOMNesting error, align screen-scrolling containers better?*/
+    return (//TODO: optimize: spawns DOMNesting error, align screen-scrolling containers better?*/
         <TabPanel value={0} index={0}>
             <Box>
                 <h3> {id[0] + " - " + id[1]}</h3>
@@ -68,42 +67,44 @@ export default function ContentPage(props) {
                 </style>
 
                 <p id="preline2">
-                    {lineLengths.map(wordInLine => {
+                    {lineLengths.map((wordInLine, index1) => {
                         return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
-                            {Array.from(Array(wordInLine).keys()).map(() => {
+                            {Array.from(Array(wordInLine).keys()).map((value) => {
                                 return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex"}}>
                                     {canvasActive ? <div style={{
-                                        height: "17px", width: "2px", border: "1px dotted black"
+                                        height: "20px", width: "2px"
                                     }}/> : ""}
-                                    <span key="1"
+                                    <span key={lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value}
                                           style={{
-                                              font: "arial",
-                                              fontFamily: "sans-serif",
-                                              cursor: 'pointer',
+                                              font: "arial", fontFamily: "sans-serif", cursor: 'pointer',
                                           }}
-                                          onClick={() => console.log("Do something fancy with clickable sampas")}>
-                                                 {tokenStream.shift()}
-                                             </span>
-                                </Stack></Grid>
+                                          onClick={/*get start and end time*/() => {
+                                              setStart(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][1]);
+                                              setEnd(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][2])
+                                          }}>
+                                          {tokenStream[lineLengths.slice(0,index1).reduce((pv,cv) => pv+cv,0) +value][0]}
+                                              </span>
+                                              </Stack></Grid>
 
-                            })}</Grid>
-                    })}
+                                          })}</Grid>
+                            })}
 
 
-                </p>
+                            </p>
 
 
-                <Button variant="contained" onClick={() => {
-                    setId(null);
-                    setValue(0)
-                    setCanvasActive(false)
-                }}>Zurück</Button>
+                                <Button variant="contained" onClick={() => {
+                                    setId(null);
+                                    setValue(0)
+                                    setCanvasActive(false)
+                                }}>Zurück</Button>
 
-            </Box>
-        </TabPanel>
-        // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
+                            </Box>
+                            </TabPanel>
+                                // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
 
-    );
+                            )
+                                ;
 
-}
+                            }
 

@@ -80,7 +80,7 @@ export default function ProsodyTab(props) {
             const context = canvas.getContext('2d')
             //TODO: optimize: get size from span -> offsetWidth or https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
             draw(context)
-        }, [draw])
+        })
 
 
         return <canvas ref={canvasRef} {...props}/>
@@ -109,10 +109,9 @@ export default function ProsodyTab(props) {
                                                          }}/> : <div style={{
                                 height: "20px", width: Math.max(20, (sampaStream[0][0].length * 10)).toString() + "px"
                             }}/>}
-                            <span key="1"
-                                  style={{
-                                      font: "arial", fontFamily: "sans-serif", cursor: 'pointer'
-                                  }}
+                            <span style={{
+                                font: "arial", fontFamily: "sans-serif", cursor: 'pointer'
+                            }}
                                   onClick={() => console.log("Do something fancy with clickable sampas")}>
                                                  {sampaStream.shift()[0]}
                                              </span>
