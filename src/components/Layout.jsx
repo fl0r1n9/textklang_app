@@ -33,11 +33,17 @@ export default function Layout(props) {
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
+        if(newValue === 2){
+            setCanvasActive(true)
+
+        }else{
+            setCanvasActive(false)
+        }
     };
 
     //main view
     return (<Box sx={{width: '100%'}}>
-            <Nav/>
+            <Nav id={id}/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 {/*left component*/}
                 <Grid item xs={6}>
@@ -51,7 +57,7 @@ export default function Layout(props) {
                     </Item> : <Item>
                         <ContentPage TabPanel={TabPanel} json={json} id={id}
                                      setId={setId} searchInput={searchInput}
-                                     setValue={setValue} canvasActive={canvasActive}
+                                     setValue={setValue} canvasActive={canvasActive} setCanvasActive={setCanvasActive}
                         />
                     </Item>}
 
@@ -81,7 +87,7 @@ export default function Layout(props) {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {<ProsodyTab json={json} id={id} setCanvasActive={setCanvasActive}/>}
+                                {<ProsodyTab json={json} id={id}/>}
                             </TabPanel>
                         </Box>
                     </Item>

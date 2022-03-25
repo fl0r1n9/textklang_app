@@ -5,7 +5,7 @@ import {useEffect, useRef} from "react";
 
 export default function ProsodyTab(props) {
 
-    const {json, setCanvasActive} = props;
+    const {json} = props;
 
     let lineLength = 0
     let lineLengths = []
@@ -55,9 +55,6 @@ export default function ProsodyTab(props) {
         return (prev < curr) ? prev : curr
     }))
 
-//TODO: set false when Component is inactive -> useEffect
-    setCanvasActive(true);
-
     //custom Canvas component
     const Canvas = props => {
 
@@ -67,12 +64,11 @@ export default function ProsodyTab(props) {
 
         const adapter = 150 / (max - min)
 
-
         //ctx.canvas.width: 300 & ctx.canvas.height: 150
         const draw = ctx => {
             ctx.moveTo(0, ctx.canvas.height - (coordinates[5] - coordinates[3] - min) * adapter)
-            ctx.lineTo(ctx.canvas.width/2, ctx.canvas.height - (coordinates[5] - min) * adapter)
-            ctx.moveTo(ctx.canvas.width/2, ctx.canvas.height - (coordinates[5] - min) * adapter)
+            ctx.lineTo(ctx.canvas.width / 2, ctx.canvas.height - (coordinates[5] - min) * adapter)
+            ctx.moveTo(ctx.canvas.width / 2, ctx.canvas.height - (coordinates[5] - min) * adapter)
             ctx.lineTo(ctx.canvas.width, ctx.canvas.height - (coordinates[5] - coordinates[4] - min) * adapter)
             ctx.lineWidth = 10
             ctx.stroke()
@@ -82,7 +78,7 @@ export default function ProsodyTab(props) {
 
             const canvas = canvasRef.current
             const context = canvas.getContext('2d')
-            //TODO: get size from span -> offsetWidth? or https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
+            //TODO: optimize: get size from span -> offsetWidth or https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
             draw(context)
         }, [draw])
 
@@ -115,11 +111,9 @@ export default function ProsodyTab(props) {
                             }}/>}
                             <span key="1"
                                   style={{
-                                      font: "arial",
-                                      fontFamily: "sans-serif",
-                                      cursor: 'pointer'
+                                      font: "arial", fontFamily: "sans-serif", cursor: 'pointer'
                                   }}
-                                  onClick={() => console.log("")}>
+                                  onClick={() => console.log("Do something fancy with clickable sampas")}>
                                                  {sampaStream.shift()[0]}
                                              </span>
                         </Stack></Grid>

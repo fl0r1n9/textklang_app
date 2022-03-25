@@ -9,6 +9,13 @@ import Box from '@mui/material/Box';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Zoom from '@mui/material/Zoom';
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeDownIcon from '@mui/icons-material/VolumeDown';
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
+import {Howl} from "howler";
 
 function ScrollTop(props) {
     const {children, window} = props;
@@ -49,13 +56,28 @@ ScrollTop.propTypes = {
 };
 
 export default function BackToTop(props) {
+
+    const sound = new Howl({
+        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
+    })
+
     return (<React.Fragment>
             <CssBaseline/>
             <AppBar>
                 <Toolbar>
-                    <Typography variant="h6" component="div">
-                        Textklang App
+                    <Typography variant="h6" component="div"  sx={{mr:"10px"}}>
+                        {props.id ?   props.id[0] + " - " + props.id[1] : "Textklang App"}
                     </Typography>
+                    <PlayArrowIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
+                    <PauseIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}} onClick={() => sound.pause()}/>
+                    <VolumeDownIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{cursor: 'pointer'}}/>
+                    <VolumeUpIcon sx={{mr:"10px"}} color={props.id?"white":"disabled" } style={{ cursor: 'pointer'}}/>
+                    <div style={{flexGrow:1}} />
+                    <ArrowBackIos sx={{ mr:"10px"}}/>
+                    <Typography variant="h8" component="div" sx={{mr:"10px"}}>
+                        Rezitation {1 + "/" + 1}
+                    </Typography>
+                    <ArrowForwardIos/>
                 </Toolbar>
             </AppBar>
             <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>

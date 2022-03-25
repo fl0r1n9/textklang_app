@@ -3,20 +3,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import {poems} from "../data/poems"
 import Highlighter from "react-highlight-words";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import {Howl} from "howler";
+
 import {Stack} from "@mui/material";
+import Grid from "@mui/material/Grid";
 
 
 export default function ContentPage(props) {
 
     //parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive} = props;
-
-    const sound = new Howl({
-        src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"], html5: true, //      preload: true
-    })
+    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive} = props;
 
 
     let displayText;
@@ -38,30 +33,33 @@ export default function ContentPage(props) {
 
 
     let tokenStream = [];
+    let lineLength = 0
+    let lineLengths = []
+
     for (const token of json.tokens) {
-        if (token.newline !== "1") {
-            tokenStream.push(token.tokenString + " ")
+        if (token.tokenString === ".") {
+            tokenStream[tokenStream.length - 1] = tokenStream.slice(-1)[0].concat(".")
+        } else if (token.tokenString === ",") {
+            tokenStream[tokenStream.length - 1] = tokenStream.slice(-1)[0].concat(",")
         } else {
-            tokenStream.push(token.tokenString + "\n")
+            tokenStream.push(token.tokenString)
+            lineLength++
+        }
+        if (token.newline === "1") {
+            lineLengths.push(lineLength)
+            lineLength = 0
         }
 
     }
 
-
-
     return (
-        //TODO: optimize: spawns DOMNesting error, align screen-scrolling containers?*/
+        //TODO: optimize: spawns DOMNesting error, align screen-scrolling containers better?*/
         <TabPanel value={0} index={0}>
             <Box>
-
-                {/*//TODO: better positioning or somewhere else*/}
-                <h3> {id[0] + " - " + id[1]}
-                    <PlayArrowIcon style={{cursor: 'pointer'}} onClick={() => sound.play()}/>
-                    <PauseIcon style={{cursor: 'pointer'}} onClick={() => sound.pause()}/></h3>
-
+                <h3> {id[0] + " - " + id[1]}</h3>
 
                 <style>
-                    {`#preline {
+                    {`#preline2 {
           white-space: pre-line;
           font-style: calibri;
            font-size: 15px;
@@ -69,25 +67,36 @@ export default function ContentPage(props) {
         }`}
                 </style>
 
-                {/*TODO: add canvas if prosody tab is shown, improve highlighting*/}
-                <p style={{whiteSpace:"pre-line"}}> {tokenStream.map((wort, index) => {
-                    return (
-                    <span
-                        style={{
-                            cursor: 'pointer',
-                            color: wort.toLowerCase() === searchInput.toLowerCase() ? 'green' : 'black'
-                        }}
-                        onClick={() => console.log(index)}>{wort}</span>
-                        )
-                        {/*<Stack sx={{flexDirection: "column", display: "inline-flex"}}>
-                        canvasActive ? <Canvas draw={draw}
-                                               style={{border: '1px dotted black', width: "30px"}} /> : ""*/}
-                })}</p>
+                <p id="preline2">
+                    {lineLengths.map(wordInLine => {
+                        return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
+                            {Array.from(Array(wordInLine).keys()).map(() => {
+                                return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex"}}>
+                                    {canvasActive ? <div style={{
+                                        height: "17px", width: "2px", border: "1px dotted black"
+                                    }}/> : ""}
+                                    <span key="1"
+                                          style={{
+                                              font: "arial",
+                                              fontFamily: "sans-serif",
+                                              cursor: 'pointer',
+                                          }}
+                                          onClick={() => console.log("Do something fancy with clickable sampas")}>
+                                                 {tokenStream.shift()}
+                                             </span>
+                                </Stack></Grid>
+
+                            })}</Grid>
+                    })}
+
+
+                </p>
 
 
                 <Button variant="contained" onClick={() => {
                     setId(null);
                     setValue(0)
+                    setCanvasActive(false)
                 }}>Zurück</Button>
 
             </Box>

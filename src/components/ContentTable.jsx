@@ -48,13 +48,13 @@ function stableSort(array, comparator) {
 
 //settings for formatting table head
 const headCells = [{
-    id: 'title', string: true, disablePadding: true, label: 'Titel',
+    id: 'title', string: false, disablePadding: true, label: 'Titel',
 }, {
-    id: 'author', string: true, disablePadding: false, label: 'Autor',
+    id: 'author', string: false, disablePadding: false, label: 'Autor',
 }, {
-    id: 'reader', string: true, disablePadding: false, label: 'Leser',
+    id: 'reader', string: false, disablePadding: false, label: 'Leser',
 }, {
-    id: 'orig', string: true, disablePadding: false, label: 'Original',
+    id: 'orig', string: false, disablePadding: false, label: 'Original',
 },];
 
 function EnhancedTableHead(props) {
@@ -65,7 +65,7 @@ function EnhancedTableHead(props) {
 
     return (<TableHead>
         <TableRow>
-            {headCells.map((headCell) => (//TODO: improve alignment -> only works for header
+            {headCells.map((headCell) => (
                 <TableCell
                     key={headCell.id}
                     align={headCell.string ? 'right' : 'left'}
@@ -249,6 +249,7 @@ export default function ContentTable(props) {
                                         tabIndex={-1}
                                         key={row.title}
                                         selected={isItemSelected}
+
                                     >
                                         {/* <TableCell padding="checkbox">
                                                 <Checkbox
@@ -265,14 +266,15 @@ export default function ContentTable(props) {
                                             id={labelId}
                                             scope="row"
                                             padding="none"
+                                            align="left"
                                         >
                                             {row.title}
                                         </TableCell>
-                                        <TableCell align="right"
+                                        <TableCell align="left"
                                                    style={{cursor: 'pointer'}}>{row.author} </TableCell>
-                                        <TableCell align="right"
+                                        <TableCell align="left"
                                                    style={{cursor: 'pointer'}}>{row.reader}</TableCell>
-                                        <TableCell align="right" style={{cursor: 'pointer'}}>{row.id}</TableCell>
+                                        <TableCell align="left" style={{cursor: 'pointer'}}>{row.id}</TableCell>
                                     </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow
