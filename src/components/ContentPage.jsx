@@ -6,13 +6,12 @@ import Highlighter from "react-highlight-words";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import {Howl} from "howler";
-import Canvas from "./Canvas";
 import {Stack} from "@mui/material";
 
 
 export default function ContentPage(props) {
 
-    //all parameters destructured
+    //parameters destructured
     const {id, setId, searchInput, setValue, json, TabPanel, canvasActive} = props;
 
     const sound = new Howl({
@@ -23,7 +22,7 @@ export default function ContentPage(props) {
     let displayText;
 
 
-    //find and display texts
+    //find and display texts, old
     for (const key in poems) {
 
         if (poems[key].title === id[1]) {

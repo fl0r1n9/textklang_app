@@ -18,6 +18,7 @@ function App() {
         tokens: []
     };
 
+    //get file(s)
     fetch(excerpt)
         .then(r => r.text())
         .then(text => {
@@ -26,6 +27,7 @@ function App() {
 
         });
 
+    //read tsv and parse to json
     if (readText !== '') {
 
         const tsv = tsv2json(readText);
@@ -69,7 +71,7 @@ function App() {
                     d: tsv[i][29],
                     stress: tsv[i][40],
                     sampa: tsv[i][47].split('|'),
-                    //1 if true
+                    //1 if true, change index to last for new tsv version
                     newline: tsv[i][2]
                 })
             }
@@ -83,7 +85,7 @@ function App() {
         <div className="App">
             <h1>Textklang App</h1>
             <Layout json={json}/>
-            {/*<input type="file" onChange={loadTSV} />*/}
+            {/*optional: <input type="file" onChange={loadTSV} />*/}
         </div>
     );
 }

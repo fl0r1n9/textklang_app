@@ -21,7 +21,8 @@ export default function Layout(props) {
 
     const {json} = props;
 
-    const [id, setId] = React.useState(null);
+    //global states
+    const [id, setId] = React.useState(null); //old
     const [result, setResult] = React.useState('');
     const [searchInput, setSearchInput] = React.useState('');
     const [searchFilter, setSearchFilter] = React.useState('all');
@@ -34,11 +35,13 @@ export default function Layout(props) {
         setValue(newValue);
     };
 
+    //main view
     return (<Box sx={{width: '100%'}}>
             <Nav/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
+                {/*left component*/}
                 <Grid item xs={6}>
-
+                    {/*render text when table entry is chosen*/}
                     {id === null ? <Item>
                         <ContentTable setId={setId}
                                       result={result}
@@ -53,7 +56,7 @@ export default function Layout(props) {
                     </Item>}
 
                 </Grid>
-
+                {/*right component*/}
                 <Grid item xs={6}>
                     <Item>
                         <Box sx={{width: '100%'}}>
