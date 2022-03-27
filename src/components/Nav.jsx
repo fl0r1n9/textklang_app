@@ -62,22 +62,22 @@ ScrollTop.propTypes = {
 
 export default function BackToTop(props) {
 
-
-    //TODO:can't listen to start for 'all', but fixes render bug
-   // useEffect(() => {
-     let sound
+    useEffect(() => {
         if (props.id) {
-             sound = new Howl({
-                src: [mp3], html5: false, preload: true,
+             const snippet = new Howl({
+                src: [wav], html5: true, preload: true,
                 sprite: {
-                    // TODO: index might be prone to errors
-                    all: [0, props.json.tokens[props.json.tokens.length - 2].endTime * 1000],
-                    interval: [props.start * 1000, (props.end - props.start) * 1000 +100],
+                    interval: [props.start * 1000, (props.end - props.start) * 1000 + 100],
                 }
             })
-           sound.play('interval')
+            snippet.play('interval')
         }
-//    }, [props.start])
+    }, [props.wordClicked])
+
+
+    const entireAudio = new Howl({
+        src: [mp3], html5: true, preload:false
+    })
 
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState("");
@@ -116,28 +116,25 @@ export default function BackToTop(props) {
                     {props.id ? props.id[0] + " - " + props.id[1] : "Textklang App"}
                 </Typography>
                 <PlayArrowIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
-                               style={{cursor: props.id ? 'pointer' : 'auto'}} onClick={() => {
-                    if (props.id) {
-                    sound.play('all')
+                               style={{cursor: props.id ? 'pointer' : 'auto'}}  onClick={() => {
 
-                        handleClick()
-                        setMessage("Audio wird abgespielt...")
-                    }
+                   // TODO: state change while play() loses reference to Howl
+                   handleClick()
+                   setMessage("Audio wird abgespielt")
+                   entireAudio.play()
+
                 }}/>
 
-                {/*TODO:fix pause & stop button*/}
                 <PauseIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
                            style={{cursor: props.id ? 'pointer' : 'auto'}} onClick={() => {
-                    if (props.id) {
-                    sound.pause()
-                    handleClick()
-                    setMessage("Audio pausiert")
-                    }
+                        entireAudio.pause()
+                        handleClick()
+                        setMessage("Audio pausiert")
                 }}/>
                 <StopIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
                           style={{cursor: props.id ? 'pointer' : 'auto'}}
                           onClick={() => {
-                              sound.stop();
+                              entireAudio.stop();
                               handleClick()
                               setMessage("Audio gestoppt")
                           }}/>

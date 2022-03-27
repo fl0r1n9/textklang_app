@@ -32,6 +32,7 @@ export default function Layout(props) {
     const [canvasActive, setCanvasActive] = React.useState(false);
     const [start, setStart]= React.useState(0);
     const [end, setEnd]= React.useState(0);
+    const [wordClicked, setWordClicked]= React.useState(false);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -45,7 +46,7 @@ export default function Layout(props) {
 
     //main view
     return (<Box sx={{width: '100%'}}>
-            <Nav id={id} start={start} end={end} json={json}/>
+            <Nav id={id} start={start} end={end} json={json} wordClicked={wordClicked}/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 {/*left component*/}
                 <Grid item xs={6}>
@@ -57,7 +58,7 @@ export default function Layout(props) {
                                       searchFilter={searchFilter}
                         />
                     </Item> : <Item>
-                        <ContentPage TabPanel={TabPanel} setStart={setStart} setEnd={setEnd} json={json} id={id}
+                        <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked} setStart={setStart} setEnd={setEnd} json={json} id={id}
                                      setId={setId} searchInput={searchInput}
                                      setValue={setValue} canvasActive={canvasActive} setCanvasActive={setCanvasActive}
                         />

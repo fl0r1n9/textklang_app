@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 export default function ContentPage(props) {
 
     //parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, setStart, setEnd} = props;
+    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, start, setStart, setEnd} = props;
 
 
     let displayText;
@@ -80,6 +80,7 @@ export default function ContentPage(props) {
                                           }}
                                           onClick={/*get start and end time*/() => {
                                               setStart(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][1]);
+                                              props.setWordClicked(!props.wordClicked)
                                               setEnd(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][2])
                                           }}>
                                           {tokenStream[lineLengths.slice(0,index1).reduce((pv,cv) => pv+cv,0) +value][0]}
