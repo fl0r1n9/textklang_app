@@ -11,7 +11,7 @@ import Grid from "@mui/material/Grid";
 export default function ContentPage(props) {
 
     //parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, start, setStart, setEnd} = props;
+    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, setStart, setEnd} = props;
 
 
     let displayText;

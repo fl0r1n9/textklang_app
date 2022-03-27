@@ -19,7 +19,7 @@ const Item = styled(Paper)(({theme}) => ({
 
 export default function Layout(props) {
 
-    const {json} = props;
+    const {all_poems_json} = props;
 
     //global states
     const [id, setId] = React.useState(null); //old
@@ -46,7 +46,7 @@ export default function Layout(props) {
 
     //main view
     return (<Box sx={{width: '100%'}}>
-            <Nav id={id} start={start} end={end} json={json} wordClicked={wordClicked}/>
+            <Nav id={id} start={start} end={end} all_poems_json={all_poems_json} wordClicked={wordClicked}/>
             <Grid container rowSpacing={1} columnSpacing={{xs: 1, sm: 2, md: 3}}>
                 {/*left component*/}
                 <Grid item xs={6}>
@@ -58,7 +58,7 @@ export default function Layout(props) {
                                       searchFilter={searchFilter}
                         />
                     </Item> : <Item>
-                        <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked} setStart={setStart} setEnd={setEnd} json={json} id={id}
+                        <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked} setStart={setStart} setEnd={setEnd} all_poems_json={all_poems_json} id={id}
                                      setId={setId} searchInput={searchInput}
                                      setValue={setValue} canvasActive={canvasActive} setCanvasActive={setCanvasActive}
                         />
@@ -90,7 +90,7 @@ export default function Layout(props) {
                                     <h1>Für die Detailansicht bitte ein neues Gedicht auswählen</h1>}
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                {<ProsodyTab json={json} id={id}/>}
+                                {<ProsodyTab all_poems_json={all_poems_json} id={id}/>}
                             </TabPanel>
                         </Box>
                     </Item>
