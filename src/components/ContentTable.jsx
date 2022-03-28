@@ -47,13 +47,13 @@ function stableSort(array, comparator) {
 
 //settings for formatting table head
 const headCells = [{
-    id: 'title', string: false, disablePadding: true, label: 'Titel',
+    id: 'title', string: false, disablePadding: false, label: 'Titel',
 }, {
     id: 'author', string: false, disablePadding: false, label: 'Autor',
 }, {
     id: 'reader', string: false, disablePadding: false, label: 'Leser',
 }, {
-    id: 'orig', string: false, disablePadding: false, label: 'Dateiname',
+    id: 'orig', string: false, disablePadding: true, label: 'Dateiname',
 },];
 
 function EnhancedTableHead(props) {
@@ -87,8 +87,7 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-//  numSelected: PropTypes.number.isRequired,
-    onRequestSort: PropTypes.func.isRequired, //    onSelectAllClick: PropTypes.func.isRequired,
+    onRequestSort: PropTypes.func.isRequired,
     order: PropTypes.oneOf(['asc', 'desc']).isRequired,
     orderBy: PropTypes.string.isRequired,
     rowCount: PropTypes.number.isRequired,
@@ -160,10 +159,15 @@ export default function ContentTable(props) {
 
     const filterResults = (poem) => {
         switch (searchFilter) {
-            //TODO
             case 'all':
-
-                return poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+                if (poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase()))
+                    return true
+                for (const token of poem.tokens) {
+                    if (token.tokenString.toLowerCase().includes(searchInput.toLowerCase())) {
+                        return true
+                    }
+                }
+                return false
 
             case 'title':
 
@@ -177,7 +181,6 @@ export default function ContentTable(props) {
 
                 return poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
-            //TODO: more than one token
             case 'text':
 
                 for (const token of poem.tokens) {
@@ -224,22 +227,12 @@ export default function ContentTable(props) {
                                     return (<TableRow
                                         hover
                                         onClick={() => setSelectedPoem(all_poems_json.poems.find(poem => poem.documentId === row.documentId))}
-                                        //role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
                                         key={row.title}
                                         selected={isItemSelected}
 
                                     >
-                                        {/* <TableCell padding="checkbox">
-                                                <Checkbox
-                                                    color="primary"
-                                                    checked={isItemSelected}
-                                                    inputProps={{
-                                                        'aria-labelledby': labelId,
-                                                    }}
-                                                />
-                                            </TableCell>*/}
                                         <TableCell
                                             style={{cursor: 'pointer'}}
                                             component="th"
@@ -255,7 +248,7 @@ export default function ContentTable(props) {
                                         <TableCell align="left"
                                                    style={{cursor: 'pointer'}}>{row.reader}</TableCell>
                                         <TableCell align="left" style={{cursor: 'pointer'}}>{row.id}</TableCell>
-                                        <TableCell align="left" style={{cursor: 'pointer'}}>{row.documentId}</TableCell>
+                                        <TableCell align="center" style={{cursor: 'pointer'}}>{row.documentId}</TableCell>
                                     </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow

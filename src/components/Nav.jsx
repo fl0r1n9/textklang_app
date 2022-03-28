@@ -17,7 +17,7 @@ import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
 import {Howl, Howler} from "howler";
-import wav from '../data/wavs/Zischler_Hoelderlin_Der_Herbst.wav'
+//import wav from '../data/wavs/Zischler_Hoelderlin_Der_Herbst.wav'
 import mp3 from '../data/mp3s/01_Chiron.mp3'
 import {Snackbar} from "@mui/material";
 import {useEffect} from "react";
@@ -67,7 +67,7 @@ export default function BackToTop(props) {
     useEffect(() => {
         if (props.selectedPoem) {
              const snippet = new Howl({
-                src: [audioString], html5: true, preload: true,
+                src: [mp3], html5: true, preload: true,
                 sprite: {
                     interval: [props.start * 1000, (props.end - props.start) * 1000 + 100],
                 }
@@ -77,9 +77,8 @@ export default function BackToTop(props) {
     }, [props.wordClicked])
 
         const entireAudio = new Howl({
-            src: [wav], html5: true, preload: false
+            src: [mp3], html5: true, preload: false
         })
-
 
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState("");
@@ -115,7 +114,7 @@ export default function BackToTop(props) {
             <SimpleSnackbar handleClick={handleClick}/>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{mr: "10px"}}>
-                    {props.selectedPoem ? props.selectedPoem.author + " - " + props.selectedPoem.title + "(" + props.selectedPoem.reader +")" : "Textklang App"}
+                    {props.selectedPoem ? props.selectedPoem.author + " - " + props.selectedPoem.title + " (" + props.selectedPoem.reader +")" : "Textklang App"}
                 </Typography>
                 <PlayArrowIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
                                style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}}  onClick={() => {
@@ -155,12 +154,14 @@ export default function BackToTop(props) {
                                   handleClick()
                                   setMessage("Lautstärke: " + Howler.volume().toFixed(1) * 100 + "%")
                               }}/>
-                <div style={{flexGrow: 1}}/>
-                <ArrowBackIos sx={{mr: "10px"}} style={{cursor: 'pointer'}}/>
-                <Typography variant="h8" component="div" sx={{mr: "10px"}}>
+                <div style={{ flexGrow:1}}/>
+                {props.selectedPoem ? <Box sx={{display: 'flex', flexDirection:"row", alignItems: 'center'}}>
+                <ArrowBackIos  style={{cursor: 'pointer'}} sx={{mr: "10px"}}/>
+                 <Typography component="h8" sx={{mr: "10px"}}>
                     Rezitation {1 + "/" + 1}
                 </Typography>
-                <ArrowForwardIos style={{cursor: 'pointer'}}/>
+                <ArrowForwardIos style={{cursor: 'pointer'}}/> </Box> : <div/>
+                }
             </Toolbar>
         </AppBar>
         <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>

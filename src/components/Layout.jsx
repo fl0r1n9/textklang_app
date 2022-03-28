@@ -60,7 +60,7 @@ export default function Layout(props) {
                 </Item> : <Item>
                     <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked}
                                  setStart={setStart} setEnd={setEnd} all_poems_json={all_poems_json} selectedPoem={selectedPoem}
-                                 setSelectedPoem={setSelectedPoem} searchInput={searchInput}
+                                 setSelectedPoem={setSelectedPoem} searchInput={searchInput} searchFilter={searchFilter}
                                  setValue={setValue} canvasActive={canvasActive} setCanvasActive={setCanvasActive}
                     />
                 </Item>}

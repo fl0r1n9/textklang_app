@@ -31,7 +31,7 @@ export default function ProsodyTab(props) {
         }
     }
 
-    //determine min&max values
+    //min&max values
     let maxes = []
     let mins1 = []
     let mins2 = []
@@ -42,10 +42,15 @@ export default function ProsodyTab(props) {
         mins2 = mins2.concat(token.c2)
     }
 
+    //determine max value for y-axis
     const max = maxes.filter(d => !isNaN(d)).reduce((prev, curr) => {
         return (prev > curr) ? prev : curr
     })
-    const min = Math.min(maxes.filter(d => !isNaN(d)).map((item, index) => {
+
+    // determine minimal value for y-axis
+    // Min(all d-c1, all d-c2)
+    // if any c>d: min = 0
+    const min = Math.max(0,Math.min(maxes.filter(d => !isNaN(d)).map((item, index) => {
         return item - mins1.filter(c1 => !isNaN(c1))[index]
     }).reduce((prev, curr) => {
         return (prev < curr) ? prev : curr
@@ -53,7 +58,7 @@ export default function ProsodyTab(props) {
         return item - mins2.filter(c2 => !isNaN(c2))[index]
     }).reduce((prev, curr) => {
         return (prev < curr) ? prev : curr
-    }))
+    })))
 
     //custom Canvas component
     const Canvas = props => {
@@ -85,7 +90,6 @@ export default function ProsodyTab(props) {
 
         return <canvas ref={canvasRef} {...props}/>
     }
-
 
     return (<div>
         <style>

@@ -25,7 +25,6 @@ export default function SearchPage(props) {
     const [conditions, setConditions] = React.useState([]);
 
     //FormControl hooks
-    //TODO: optimize: don't initialize w/ null
     const [first, setFirst] = React.useState(true);
 
     const [func, setFunc] = React.useState(null);
