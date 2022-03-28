@@ -5,7 +5,7 @@ import {useEffect, useRef} from "react";
 
 export default function ProsodyTab(props) {
 
-    const {json} = props;
+    const {selectedPoem} = props;
 
     let lineLength = 0
     let lineLengths = []
@@ -13,7 +13,7 @@ export default function ProsodyTab(props) {
 
     //TODO: account for false syllable counts
     //get all sampa strings, relevant painte values & lineLenghts for rendering
-    for (const token of json.tokens) {
+    for (const token of selectedPoem.tokens) {
         if (!isNaN(token.syllableCount)) {
             for (let i = 0; i < token.sampa.length; i++) {
                 if (token.b[i] > 0 && token.stress[i] === 1 && (token.c1[i] >= 50 || token.c2[i] >= 50)) {
@@ -36,7 +36,7 @@ export default function ProsodyTab(props) {
     let mins1 = []
     let mins2 = []
 
-    for (const token of json.tokens) {
+    for (const token of selectedPoem.tokens) {
         maxes = maxes.concat(token.d)
         mins1 = mins1.concat(token.c1)
         mins2 = mins2.concat(token.c2)

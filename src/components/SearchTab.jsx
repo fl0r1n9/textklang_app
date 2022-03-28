@@ -5,7 +5,7 @@ export default function SearchTab(props) {
 
     return (
 
-        <SearchPage setResult={props.setResult}
+        <SearchPage
                     searchInput={props.searchInput}
                     setString={props.setSearchInput}
                     searchFilter={props.searchFilter}

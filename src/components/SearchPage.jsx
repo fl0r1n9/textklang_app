@@ -12,14 +12,13 @@ import {CreateNewCondition} from "./CreateNewCondition";
 export default function SearchPage(props) {
 
 
-    const {setResult, searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
+    const {searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
 
 
     //SearchFilter hook
     const handleChange = (event) => {
         setSearchFilter(event.target.value);
         setString('');
-        setResult([]);
     };
 
     //add conditions hook

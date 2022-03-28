@@ -62,10 +62,10 @@ ScrollTop.propTypes = {
 
 export default function BackToTop(props) {
 
-    let audioString = props.id ? '../data/wavs/' + props.id.audio : ""
+    let audioString = props.selectedPoem ? '../data/wavs/' + props.selectedPoem.audio : ""
 
     useEffect(() => {
-        if (props.id) {
+        if (props.selectedPoem) {
              const snippet = new Howl({
                 src: [audioString], html5: true, preload: true,
                 sprite: {
@@ -115,10 +115,10 @@ export default function BackToTop(props) {
             <SimpleSnackbar handleClick={handleClick}/>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{mr: "10px"}}>
-                    {props.id ? props.id.author + " - " + props.id.title + "(" + props.id.reader +")" : "Textklang App"}
+                    {props.selectedPoem ? props.selectedPoem.author + " - " + props.selectedPoem.title + "(" + props.selectedPoem.reader +")" : "Textklang App"}
                 </Typography>
-                <PlayArrowIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
-                               style={{cursor: props.id ? 'pointer' : 'auto'}}  onClick={() => {
+                <PlayArrowIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
+                               style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}}  onClick={() => {
 
                    // TODO: state change while play() loses reference to Howl
                    handleClick()
@@ -127,14 +127,14 @@ export default function BackToTop(props) {
 
                 }}/>
 
-                <PauseIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
-                           style={{cursor: props.id ? 'pointer' : 'auto'}} onClick={() => {
+                <PauseIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
+                           style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}} onClick={() => {
                         entireAudio.pause()
                         handleClick()
                         setMessage("Audio pausiert")
                 }}/>
-                <StopIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
-                          style={{cursor: props.id ? 'pointer' : 'auto'}}
+                <StopIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
+                          style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}}
                           onClick={() => {
                               entireAudio.stop();
                               handleClick()
@@ -164,18 +164,6 @@ export default function BackToTop(props) {
             </Toolbar>
         </AppBar>
         <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
-        {/*<Container>
-                <Box sx={{ my: 2 }}>
-                    {[...new Array(12)]
-                        .map(
-                            () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-                        )
-                        .join('\n')}
-                </Box>
-            </Container>*/}
         <ScrollTop {...props}>
             <Fab color="secondary" size="small" aria-label="scroll back to top">
                 <KeyboardArrowUpIcon/>

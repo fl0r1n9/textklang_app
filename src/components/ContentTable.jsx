@@ -115,7 +115,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function ContentTable(props) {
 
-    const {setId, searchInput, searchFilter, all_poems_json} = props;
+    const {setSelectedPoem, searchInput, searchFilter, all_poems_json} = props;
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -223,7 +223,7 @@ export default function ContentTable(props) {
 
                                     return (<TableRow
                                         hover
-                                        onClick={() => setId(all_poems_json.poems.find(poem => poem.documentId === row.documentId))}
+                                        onClick={() => setSelectedPoem(all_poems_json.poems.find(poem => poem.documentId === row.documentId))}
                                         //role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}

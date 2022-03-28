@@ -1,9 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import {poems} from "../data/poems"
 import Highlighter from "react-highlight-words";
-
 import {Stack} from "@mui/material";
 import Grid from "@mui/material/Grid";
 
@@ -11,13 +9,15 @@ import Grid from "@mui/material/Grid";
 export default function ContentPage(props) {
 
     //parameters destructured
-    const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, setStart, setEnd} = props;
+    const {
+        selectedPoem, setSelectedPoem, searchInput, setValue, TabPanel, canvasActive, setCanvasActive, setStart, setEnd
+    } = props;
 
     let tokenStream = [];
     let lineLength = 0
     let lineLengths = []
 
-    for (const token of id.tokens) {
+    for (const token of selectedPoem.tokens) {
         if (token.tokenString === ".") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(".")
         } else if (token.tokenString === ",") {
@@ -33,10 +33,16 @@ export default function ContentPage(props) {
 
     }
 
+    let spanIndex
+    const getIndex = (l, i, v) => {
+        spanIndex = l.slice(0, i).reduce((pv, cv) => pv + cv, 0) + v
+        return spanIndex
+    }
+
     return (//TODO: optimize: spawns DOMNesting error, align screen-scrolling containers better?*/
         <TabPanel value={0} index={0}>
             <Box>
-                <h3> {id.author + " - " + id.title}</h3>
+                <h3> {selectedPoem.author + " - " + selectedPoem.title}</h3>
 
                 <style>
                     {`#preline2 {
@@ -48,45 +54,55 @@ export default function ContentPage(props) {
                 </style>
 
                 <p id="preline2">
-                    {lineLengths.map((wordInLine, index1) => {
+                    {lineLengths.map((wordInLine, index) => {
                         return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
                             {Array.from(Array(wordInLine).keys()).map((value) => {
                                 return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex"}}>
                                     {canvasActive ? <div style={{
                                         height: "20px", width: "2px"
                                     }}/> : ""}
-                                    <span key={lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value}
+                                    <Highlighter
+                                        searchWords={[searchInput]}
+                                        autoEscape={true}
+                                        textToHighlight={tokenStream[getIndex(lineLengths, index, value)][0]}
+                                    >
+                                    <span id={getIndex(lineLengths, index, value)}
                                           style={{
-                                              font: "arial", fontFamily: "sans-serif", cursor: 'pointer',
+                                              font: "arial",
+                                              fontFamily: "sans-serif",
+                                              cursor: 'pointer',
+                                              color: tokenStream[spanIndex][0].toLowerCase() === searchInput ? 'black' : 'black'
                                           }}
                                           onClick={/*get start and end time*/() => {
-                                              setStart(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][1]);
+                                              setStart(tokenStream[spanIndex][1]);
                                               props.setWordClicked(!props.wordClicked)
-                                              setEnd(tokenStream[lineLengths.slice(0, index1).reduce((pv, cv) => pv + cv, 0) + value][2])
+                                              setEnd(tokenStream[spanIndex][2])
+                                              console.log(spanIndex)
                                           }}>
-                                          {tokenStream[lineLengths.slice(0,index1).reduce((pv,cv) => pv+cv,0) +value][0]}
+
+                                          {tokenStream[spanIndex][0]}
                                               </span>
-                                              </Stack></Grid>
+                                    </Highlighter>
+                                </Stack></Grid>
 
-                                          })}</Grid>
-                            })}
-
-
-                            </p>
+                            })}</Grid>
+                    })}
 
 
-                                <Button variant="contained" onClick={() => {
-                                    setId(null);
-                                    setValue(0)
-                                    setCanvasActive(false)
-                                }}>Zurück</Button>
+                </p>
 
-                            </Box>
-                            </TabPanel>
-                                // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
 
-                            )
-                                ;
+                <Button variant="contained" onClick={() => {
+                    setSelectedPoem(null);
+                    setValue(0)
+                    setCanvasActive(false)
+                }}>Zurück</Button>
 
-                            }
+            </Box>
+        </TabPanel>
+        // https://www.npmjs.com/package/react-diff-viewer <ReactDiffViewer oldValue={oldCode} newValue={newCode} splitView={true} />
+
+    );
+
+}
 

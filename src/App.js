@@ -10,14 +10,6 @@ function App() {
 
     const [readText, setReadText] = React.useState('');
     const all_poems_json = {poems: []}
-    const poem_json = {
-        documentId: '',
-        audio: '',
-        reader: '',
-        author: '',
-        title: '',
-        tokens: []
-    };
 
     //get file(s)
     fetch(pipeline)
@@ -100,7 +92,7 @@ function App() {
 
 
         }
-        console.log(all_poems_json.poems)
+       // console.log(all_poems_json.poems)
     }
 
 
