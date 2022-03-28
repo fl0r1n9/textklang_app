@@ -17,6 +17,7 @@ export default function ContentPage(props) {
     let lineLength = 0
     let lineLengths = []
 
+    //define text to be displayed
     for (const token of selectedPoem.tokens) {
         if (token.tokenString === ".") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(".")
@@ -33,6 +34,7 @@ export default function ContentPage(props) {
 
     }
 
+    //get index of spans by lineLenghts
     let spanIndex
     const getIndex = (l, i, v) => {
         spanIndex = l.slice(0, i).reduce((pv, cv) => pv + cv, 0) + v
@@ -57,6 +59,7 @@ export default function ContentPage(props) {
                     {lineLengths.map((wordInLine, index) => {
                         return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
                             {Array.from(Array(wordInLine).keys()).map((value) => {
+                                /*Stack canvas (if selected in prosody tab) and spans including text*/
                                 return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex"}}>
                                     {canvasActive ? <div style={{
                                         height: "20px", width: "2px"
@@ -66,14 +69,14 @@ export default function ContentPage(props) {
                                         autoEscape={true}
                                         textToHighlight={tokenStream[getIndex(lineLengths, index, value)][0]}
                                     >
-                                    <span id={getIndex(lineLengths, index, value)}
+                                    <span id={spanIndex}
                                           style={{
                                               font: "arial",
                                               fontFamily: "sans-serif",
                                               cursor: 'pointer',
                                               color: tokenStream[spanIndex][0].toLowerCase() === searchInput ? 'black' : 'black'
                                           }}
-                                          onClick={/*get start and end time*/() => {
+                                          onClick={/*get start and end time of clicked token*/() => {
                                               setStart(tokenStream[spanIndex][1]);
                                               props.setWordClicked(!props.wordClicked)
                                               setEnd(tokenStream[spanIndex][2])
