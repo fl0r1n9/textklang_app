@@ -13,30 +13,11 @@ export default function ContentPage(props) {
     //parameters destructured
     const {id, setId, searchInput, setValue, json, TabPanel, canvasActive, setCanvasActive, setStart, setEnd} = props;
 
-
-    let displayText;
-
-
-    //find and display texts, old
-    for (const key in poems) {
-
-        if (poems[key].title === id[1]) {
-            if (poems[key].text === "") {
-                displayText = "Text nicht in der Datenbank";
-            } else {
-                displayText = poems[key].text;
-
-            }
-            break;
-        }
-    }
-
-
     let tokenStream = [];
     let lineLength = 0
     let lineLengths = []
 
-    for (const token of json.tokens) {
+    for (const token of id.tokens) {
         if (token.tokenString === ".") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(".")
         } else if (token.tokenString === ",") {
@@ -55,7 +36,7 @@ export default function ContentPage(props) {
     return (//TODO: optimize: spawns DOMNesting error, align screen-scrolling containers better?*/
         <TabPanel value={0} index={0}>
             <Box>
-                <h3> {id[0] + " - " + id[1]}</h3>
+                <h3> {id.author + " - " + id.title}</h3>
 
                 <style>
                     {`#preline2 {

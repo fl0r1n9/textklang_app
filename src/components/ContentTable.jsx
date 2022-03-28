@@ -15,7 +15,6 @@ import Paper from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import {visuallyHidden} from '@mui/utils';
-import {poems} from "../data/poems";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -54,7 +53,7 @@ const headCells = [{
 }, {
     id: 'reader', string: false, disablePadding: false, label: 'Leser',
 }, {
-    id: 'orig', string: false, disablePadding: false, label: 'Original',
+    id: 'orig', string: false, disablePadding: false, label: 'Dateiname',
 },];
 
 function EnhancedTableHead(props) {
@@ -116,8 +115,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function ContentTable(props) {
 
-    //result?
-    const {setId, searchInput, searchFilter} = props;
+    const {setId, searchInput, searchFilter, all_poems_json} = props;
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -134,38 +132,12 @@ export default function ContentTable(props) {
 
     const handleSelectAllClick = (event) => {
         if (event.target.checked) {
-            const newSelecteds = poems.map((n) => n.title);
+            const newSelecteds = all_poems_json.poems.map((n) => n.title);
 
             setSelected(newSelecteds);
             return;
         }
         setSelected([]);
-    };
-
-
-    const handleClick = (event, name) => {
-
-        const parameter = [event, name];
-
-        setId(parameter);
-
-        /*const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
-
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(
-                selected.slice(0, selectedIndex),
-                selected.slice(selectedIndex + 1),
-            );
-        }
-
-        setSelected(newSelected);*/
     };
 
     const handleChangePage = (event, newPage) => {
@@ -184,13 +156,14 @@ export default function ContentTable(props) {
     const isSelected = (name) => selected.indexOf(name) !== -1;
 
     // Avoid a layout jump when reaching the last page with empty rows.
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - poems.length) : 0;
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - all_poems_json.poems.length) : 0;
 
     const filterResults = (poem) => {
         switch (searchFilter) {
+            //TODO
             case 'all':
 
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase()) || poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+                return poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
             case 'title':
 
@@ -204,16 +177,24 @@ export default function ContentTable(props) {
 
                 return poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
+            //TODO: more than one token
             case 'text':
 
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase());
+                for (const token of poem.tokens) {
+                    if (token.tokenString.toLowerCase().includes(searchInput.toLowerCase())) {
+                        return true
+                    }
+                }
+                return false
 
             default:
-                return poem.text.toLowerCase().includes(searchInput.toLowerCase()) || poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
+                return poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase());
 
         }
     }
 
+    const displayContent = stableSort(all_poems_json.poems, getComparator(order, orderBy))
+        .filter(poem => filterResults(poem))
 
     return (<Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
@@ -230,12 +211,11 @@ export default function ContentTable(props) {
                             orderBy={orderBy}
                             onSelectAllClick={handleSelectAllClick}
                             onRequestSort={handleRequestSort}
-                            rowCount={poems.length}
+                            rowCount={all_poems_json.poems.length}
                         />
                         <TableBody>
 
-                            {stableSort(poems, getComparator(order, orderBy))
-                                .filter(poem => filterResults(poem))
+                            {displayContent
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     const isItemSelected = isSelected(row.title);
@@ -243,7 +223,7 @@ export default function ContentTable(props) {
 
                                     return (<TableRow
                                         hover
-                                        onClick={() => handleClick(row.author, row.title)}
+                                        onClick={() => setId(all_poems_json.poems.find(poem => poem.documentId === row.documentId))}
                                         //role="checkbox"
                                         aria-checked={isItemSelected}
                                         tabIndex={-1}
@@ -275,6 +255,7 @@ export default function ContentTable(props) {
                                         <TableCell align="left"
                                                    style={{cursor: 'pointer'}}>{row.reader}</TableCell>
                                         <TableCell align="left" style={{cursor: 'pointer'}}>{row.id}</TableCell>
+                                        <TableCell align="left" style={{cursor: 'pointer'}}>{row.documentId}</TableCell>
                                     </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow
@@ -290,7 +271,7 @@ export default function ContentTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={poems.length}
+                    count={displayContent.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

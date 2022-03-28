@@ -44,6 +44,9 @@ export default function Layout(props) {
         }
     };
 
+    if(id)
+        console.log(id.title)
+
     //main view
     return (<Box sx={{width: '100%'}}>
             <Nav id={id} start={start} end={end} all_poems_json={all_poems_json} wordClicked={wordClicked}/>
@@ -56,6 +59,7 @@ export default function Layout(props) {
                                       result={result}
                                       searchInput={searchInput}
                                       searchFilter={searchFilter}
+                                      all_poems_json={all_poems_json}
                         />
                     </Item> : <Item>
                         <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked} setStart={setStart} setEnd={setEnd} all_poems_json={all_poems_json} id={id}

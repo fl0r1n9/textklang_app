@@ -62,10 +62,12 @@ ScrollTop.propTypes = {
 
 export default function BackToTop(props) {
 
+    let audioString = props.id ? '../data/wavs/' + props.id.audio : ""
+
     useEffect(() => {
         if (props.id) {
              const snippet = new Howl({
-                src: [wav], html5: true, preload: true,
+                src: [audioString], html5: true, preload: true,
                 sprite: {
                     interval: [props.start * 1000, (props.end - props.start) * 1000 + 100],
                 }
@@ -74,10 +76,10 @@ export default function BackToTop(props) {
         }
     }, [props.wordClicked])
 
+        const entireAudio = new Howl({
+            src: [wav], html5: true, preload: false
+        })
 
-    const entireAudio = new Howl({
-        src: [mp3], html5: true, preload:false
-    })
 
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState("");
@@ -113,7 +115,7 @@ export default function BackToTop(props) {
             <SimpleSnackbar handleClick={handleClick}/>
             <Toolbar>
                 <Typography variant="h6" component="div" sx={{mr: "10px"}}>
-                    {props.id ? props.id[0] + " - " + props.id[1] : "Textklang App"}
+                    {props.id ? props.id.author + " - " + props.id.title + "(" + props.id.reader +")" : "Textklang App"}
                 </Typography>
                 <PlayArrowIcon sx={{mr: "10px"}} color={props.id ? "white" : "disabled"}
                                style={{cursor: props.id ? 'pointer' : 'auto'}}  onClick={() => {
