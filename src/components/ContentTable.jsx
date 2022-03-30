@@ -53,7 +53,7 @@ const headCells = [{
 }, {
     id: 'reader', string: false, disablePadding: false, label: 'Leser',
 }, {
-    id: 'orig', string: false, disablePadding: true, label: 'Dateiname',
+    id: 'orig', string: false, disablePadding: false, label: 'Dateiname',
 },];
 
 function EnhancedTableHead(props) {
@@ -64,24 +64,23 @@ function EnhancedTableHead(props) {
 
     return (<TableHead>
         <TableRow>
-            {headCells.map((headCell) => (
-                <TableCell
-                    key={headCell.id}
-                    align={headCell.string ? 'right' : 'left'}
-                    padding={headCell.disablePadding ? 'none' : 'normal'}
-                    sortDirection={orderBy === headCell.id ? order : false}
+            {headCells.map((headCell) => (<TableCell
+                key={headCell.id}
+                align={headCell.string ? 'right' : 'left'}
+                padding={headCell.disablePadding ? 'none' : 'normal'}
+                sortDirection={orderBy === headCell.id ? order : false}
+            >
+                <TableSortLabel
+                    active={orderBy === headCell.id}
+                    direction={orderBy === headCell.id ? order : 'asc'}
+                    onClick={createSortHandler(headCell.id)}
                 >
-                    <TableSortLabel
-                        active={orderBy === headCell.id}
-                        direction={orderBy === headCell.id ? order : 'asc'}
-                        onClick={createSortHandler(headCell.id)}
-                    >
-                        {headCell.label}
-                        {orderBy === headCell.id ? (<Box component="span" sx={visuallyHidden}>
-                            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                        </Box>) : null}
-                    </TableSortLabel>
-                </TableCell>))}
+                    {headCell.label}
+                    {orderBy === headCell.id ? (<Box component="span" sx={visuallyHidden}>
+                        {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                    </Box>) : null}
+                </TableSortLabel>
+            </TableCell>))}
         </TableRow>
     </TableHead>);
 }
@@ -160,8 +159,7 @@ export default function ContentTable(props) {
     const filterResults = (poem) => {
         switch (searchFilter) {
             case 'all':
-                if (poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase()))
-                    return true
+                if (poem.title.toLowerCase().includes(searchInput.toLowerCase()) || poem.author.toLowerCase().includes(searchInput.toLowerCase()) || poem.reader.toLowerCase().includes(searchInput.toLowerCase())) return true
                 for (const token of poem.tokens) {
                     if (token.tokenString.toLowerCase().includes(searchInput.toLowerCase())) {
                         return true
@@ -233,22 +231,31 @@ export default function ContentTable(props) {
                                         selected={isItemSelected}
 
                                     >
-                                        <TableCell
-                                            style={{cursor: 'pointer'}}
-                                            component="th"
-                                            id={labelId}
-                                            scope="row"
-                                            padding="none"
-                                            align="left"
-                                        >
-                                            {row.title}
-                                        </TableCell>
+                                        <TableCell  align="left"
+                                                    style={{cursor: 'pointer'}}
+                                                    component="th"
+                                                    id={labelId}
+                                                    scope="row"
+                                                    padding="none"> {row.title} </TableCell>
                                         <TableCell align="left"
-                                                   style={{cursor: 'pointer'}}>{row.author} </TableCell>
+                                                   style={{cursor: 'pointer'}}
+                                                   component="th"
+                                                   id={labelId}
+                                                   scope="row"
+                                               >{row.author} </TableCell>
                                         <TableCell align="left"
-                                                   style={{cursor: 'pointer'}}>{row.reader}</TableCell>
-                                        <TableCell align="left" style={{cursor: 'pointer'}}>{row.id}</TableCell>
-                                        <TableCell align="center" style={{cursor: 'pointer'}}>{row.documentId}</TableCell>
+                                                   style={{cursor: 'pointer'}}
+                                                   component="th"
+                                                   id={labelId}
+                                                   scope="row"
+                                                   >{row.reader} </TableCell>
+                                        <TableCell align="left"
+                                                   style={{cursor: 'pointer'}}
+                                                   component="th"
+                                                   id={labelId}
+                                                   scope="row"
+                                                   >{row.documentId} </TableCell>
+
                                     </TableRow>);
                                 })}
                             {emptyRows > 0 && (<TableRow

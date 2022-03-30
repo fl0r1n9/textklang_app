@@ -16,9 +16,8 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import VolumeDownIcon from '@mui/icons-material/VolumeDown';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIos from '@mui/icons-material/ArrowForwardIos';
-import {Howl, Howler} from "howler";
-//import wav from '../data/wavs/Zischler_Hoelderlin_Der_Herbst.wav'
-import mp3 from '../data/mp3s/01_Chiron.mp3'
+import SettingsIcon from '@mui/icons-material/Settings';
+import {Howl} from "howler";
 import {Snackbar} from "@mui/material"
 import {useEffect} from "react"
 import ReactHowler from 'react-howler'
@@ -63,35 +62,45 @@ ScrollTop.propTypes = {
 
 export default function BackToTop(props) {
 
+    //Howler hooks
+    const [playing, setPlaying] = React.useState(false);
+    const [volume, setVolume] = React.useState(1.0);
+
+    //load audio file from name
+    let entireAudio
+    let audioString
+    if (props.selectedPoem) {
+        try {
+            audioString = require('../data/wavs/' + props.selectedPoem.audio)
+            entireAudio = new Howl({
+                src: [audioString], html5: true, preload: false
+            })
+
+        } catch (e) {
+            console.log("Falscher Audioname")
+        }
+    }
+
+    //check for click in ContentPage and play word interval
     useEffect(() => {
         if (props.selectedPoem) {
+            audioString = require('../data/wavs/' + props.selectedPoem.audio)
             const snippet = new Howl({
-                src: [mp3], html5: true, preload: true,
+                src: [audioString], html5: true, preload: true,
                 sprite: {
-                    interval: [props.start * 1000, (props.end - props.start) * 1000 + 100],
+                    interval: [props.start * 1000, (props.end - props.start) * 1000 + 50],
                 }
             })
             snippet.play('interval')
         }
     }, [props.wordClicked])
 
-    let entireAudio
-    if (props.selectedPoem) {
-        try {
-            const audioString2 = require('../data/wavs/' + props.selectedPoem.audio)
-            entireAudio = new Howl({
-                src: [audioString2], html5: true, preload: false
-            })
-        } catch (e) {
-            console.log("Falscher Audioname")
-        }
-    }
 
+    //snackbar hooks
     const [open, setOpen] = React.useState(false);
     const [message, setMessage] = React.useState("");
-    const handleClick = () => {
-        setOpen(true);
-    };
+    useEffect(()=>{setMessage("Lautstärke: " + volume.toFixed(1) * 100 + "%")},[volume])
+
 
     function SimpleSnackbar() {
 
@@ -102,7 +111,6 @@ export default function BackToTop(props) {
 
             setOpen(false);
         };
-
 
         return (<div>
             <Snackbar
@@ -118,70 +126,73 @@ export default function BackToTop(props) {
     return (<React.Fragment>
         <CssBaseline/>
         <AppBar>
-            <SimpleSnackbar handleClick={handleClick}/>
+            <SimpleSnackbar/>
             <Toolbar>
 
-                <ReactHowler
-                    src={mp3}
-                    playing={false}
-                />
+                {props.selectedPoem ?
+                    <ReactHowler
+                    src={audioString}
+                    playing={playing}
+                    volume={volume}
+                    ref={(ref) => (entireAudio = ref)}
+                    /> : ""}
 
                 <Typography variant="h6" component="div" sx={{mr: "10px"}}>
                     {props.selectedPoem ? props.selectedPoem.author + " - " + props.selectedPoem.title + " (" + props.selectedPoem.reader + ")" : "Textklang App"}
                 </Typography>
                 <PlayArrowIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
                                style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}} onClick={() => {
-
-                    // TODO: state change while play() loses reference to Howl
-                    handleClick()
+                    setPlaying(true)
+                    setOpen(true)
                     setMessage("Audio wird abgespielt")
-                    entireAudio.play()
 
                 }}/>
 
                 <PauseIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
                            style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}} onClick={() => {
-                    entireAudio.pause()
-                    handleClick()
+                    setPlaying(false)
+                    setOpen(true)
                     setMessage("Audio pausiert")
                 }}/>
                 <StopIcon sx={{mr: "10px"}} color={props.selectedPoem ? "white" : "disabled"}
                           style={{cursor: props.selectedPoem ? 'pointer' : 'auto'}}
                           onClick={() => {
-                              entireAudio.stop();
-                              handleClick()
+                              setPlaying(false)
+                              entireAudio.seek(0)
+                              setOpen(true)
                               setMessage("Audio gestoppt")
                           }}/>
                 <VolumeDownIcon sx={{mr: "10px"}}
                                 style={{cursor: 'pointer'}}
                                 onClick={() => {
-                                    Howler.volume(Howler.volume() - 0.1);
-                                    handleClick();
-                                    setMessage("Lautstärke: " + Howler.volume().toFixed(1) * 100 + "%")
-
+                                    if(volume >= 0.09) {
+                                        setVolume( volume - 0.1)
+                                    }
+                                    setOpen(true)
                                 }}/>
                 <VolumeUpIcon sx={{mr: "10px"}}
                               style={{cursor: 'pointer'}}
                               onClick={() => {
-                                  Howler.volume(Howler.volume() + 0.1);
-                                  handleClick()
-                                  setMessage("Lautstärke: " + Howler.volume().toFixed(1) * 100 + "%")
+                                  if(volume !== 1) {
+                                      setVolume( volume + 0.1)
+                                  }
+                                  setOpen(true)
                               }}/>
                 <div style={{flexGrow: 1}}/>
-                {props.selectedPoem ? <Box sx={{display: 'flex', flexDirection: "row", alignItems: 'center'}}>
-                    <ArrowBackIos style={{cursor: 'pointer'}} sx={{mr: "10px"}}/>
-                    <Typography variant="h8" sx={{mr: "10px"}}>
-                        Rezitation {1 + "/" + 1}
-                    </Typography>
-                    <ArrowForwardIos style={{cursor: 'pointer'}}/> </Box> : <div/>
+                    {props.selectedPoem ? <Box sx={{display: 'flex', flexDirection: "row", alignItems: 'center'}}>
+                        <ArrowBackIos style={{cursor: 'pointer'}} sx={{mr: "10px"}}/>
+                        <Typography variant="h8" sx={{mr: "10px"}}>
+                            Rezitation {1 + "/" + 1}
+                        </Typography>
+                        <ArrowForwardIos style={{cursor: 'pointer'}}/> </Box> : <SettingsIcon style={{cursor: 'pointer'}} sx={{mr: "10px"}}/>
+                    }
+                    </Toolbar>
+                    </AppBar>
+                    <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
+                    <ScrollTop {...props}>
+                    <Fab color="secondary" size="small" aria-label="scroll back to top">
+                    <KeyboardArrowUpIcon/>
+                    </Fab>
+                    </ScrollTop>
+                    </React.Fragment>);
                 }
-            </Toolbar>
-        </AppBar>
-        <Toolbar id="back-to-top-anchor" style={{minHeight: 1}}/>
-        <ScrollTop {...props}>
-            <Fab color="secondary" size="small" aria-label="scroll back to top">
-                <KeyboardArrowUpIcon/>
-            </Fab>
-        </ScrollTop>
-    </React.Fragment>);
-}

@@ -67,7 +67,7 @@ export default function SearchPage(props) {
             conditions_appended[saveFilterName].push(element);
         });
 
-        //TODO: add to filter.js
+        //TODO: add to filter.js -> save where?
         let json = JSON.stringify(conditions_appended);
         console.log(json);
     }
@@ -92,7 +92,7 @@ export default function SearchPage(props) {
     };
 
 
-    //added conditions to be rendered
+    //render newly added conditions
     function showConditions() {
         return conditions.map(condition => {
             return <Box sx={{display: 'flex', justifyContent: 'space-between', border: 2, mt: 2, flexWrap: 'wrap'}}>

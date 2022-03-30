@@ -78,7 +78,6 @@ export function CreateNewCondition(props) {
 
 
 //editable condition box
-//TODO: add more details/dependecies?
     return <div>
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 2, flexWrap: 'wrap'}}>
 

@@ -50,7 +50,7 @@ export default function ProsodyTab(props) {
     // determine minimal value for y-axis
     // Min(all d-c1, all d-c2)
     // if any c>d: min = 0
-    const min = Math.max(0,Math.min(maxes.filter(d => !isNaN(d)).map((item, index) => {
+    const min = Math.max(0, Math.min(maxes.filter(d => !isNaN(d)).map((item, index) => {
         return item - mins1.filter(c1 => !isNaN(c1))[index]
     }).reduce((prev, curr) => {
         return (prev < curr) ? prev : curr
@@ -85,8 +85,8 @@ export default function ProsodyTab(props) {
             const context = canvas.getContext('2d')
             //TODO: optimize: get size from span -> offsetWidth or https://stackoverflow.com/questions/118241/calculate-text-width-with-javascript
             draw(context)
-        })
 
+        })
 
         return <canvas ref={canvasRef} {...props}/>
     }

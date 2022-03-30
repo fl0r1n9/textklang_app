@@ -21,12 +21,13 @@ function App() {
         });
 
     if (readText !== '') {
-
+        //parse tsv to json arrays
         const tsv = tsv2json(readText);
         let poemNo = 0
         let startNewJson = false
         const toSplitAndParse = [26, 27, 28, 29, 40];
 
+        //read arrays line by line
         for (const line of tsv) {
             if (line[0].includes("#end document")) {
                 poemNo++
@@ -56,7 +57,7 @@ function App() {
                         d: line[29],
                         stress: line[40],
                         sampa: line[47].split('|'),
-                        //1 if true, change index to last for new tsv version
+                        //TODO: change index to last for new tsv version
                         newline: line[2]
                     })
                 }
@@ -92,7 +93,7 @@ function App() {
 
 
         }
-       // console.log(all_poems_json.poems)
+        //console.log(all_poems_json.poems)
     }
 
 
@@ -100,7 +101,6 @@ function App() {
         <div className="App">
             <h1>Textklang App</h1>
             <Layout all_poems_json={all_poems_json}/>
-            {/*optional: <input type="file" onChange={loadTSV} />*/}
         </div>
     );
 }
