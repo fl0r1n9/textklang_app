@@ -67,11 +67,9 @@ export default function SearchPage(props) {
             conditions_appended[saveFilterName].push(element);
         });
 
-        //TODO: add to filter.js -> save where?
-        let json = JSON.stringify(conditions_appended);
-        console.log(json);
+        //add filter blocks to local storage
+        localStorage.setItem(saveFilterName, JSON.stringify(conditions_appended))
     }
-
 
     //loadPreset dialog hooks
     const [loadOpen, setLoadOpen] = React.useState(false);
@@ -80,13 +78,16 @@ export default function SearchPage(props) {
     const handleLoadPreset = (value) => {
         setLoadOpen(false);
         setSelectedValue(value);
-        console.log(Object.values(value)[0][0]);
 
-        setSearchInput(Object.values(value)[0][0].searchInput);
-        setSearchFilter(Object.values(value)[0][0].searchFilter);
+        //get filters from local storage
+        let retrieved = JSON.parse(localStorage.getItem(value))
 
-        for (let i = 1; i < Object.values(value)[0].length; i++) {
-            conditions[i - 1] = Object.values(value)[0][i];
+        //set filters
+        setSearchInput(Object.values(retrieved)[0][0].searchInput);
+        setSearchFilter(Object.values(retrieved)[0][0].searchFilter);
+
+        for (let i = 1; i < Object.values(retrieved)[0].length; i++) {
+            conditions[i - 1] = Object.values(retrieved)[0][i];
         }
 
     };

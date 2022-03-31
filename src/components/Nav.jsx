@@ -86,7 +86,7 @@ export default function BackToTop(props) {
         if (props.selectedPoem) {
             audioString = require('../data/wavs/' + props.selectedPoem.audio)
             const snippet = new Howl({
-                src: [audioString], html5: true, preload: true,
+                src: [audioString], html5: true, preload: false,
                 sprite: {
                     interval: [props.start * 1000, (props.end - props.start) * 1000 + 50],
                 }
@@ -128,7 +128,6 @@ export default function BackToTop(props) {
         <AppBar>
             <SimpleSnackbar/>
             <Toolbar>
-
                 {props.selectedPoem ?
                     <ReactHowler
                     src={audioString}

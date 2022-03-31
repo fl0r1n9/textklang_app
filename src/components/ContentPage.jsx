@@ -10,7 +10,16 @@ export default function ContentPage(props) {
 
     //parameters destructured
     const {
-        selectedPoem, setSelectedPoem, searchInput, searchFilter, setValue, TabPanel, canvasActive, setCanvasActive, setStart, setEnd
+        selectedPoem,
+        setSelectedPoem,
+        searchInput,
+        searchFilter,
+        setValue,
+        TabPanel,
+        canvasActive,
+        setCanvasActive,
+        setStart,
+        setEnd
     } = props;
 
     let tokenStream = [];
@@ -23,9 +32,9 @@ export default function ContentPage(props) {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(".")
         } else if (token.tokenString === ",") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(",")
-        }else if (token.tokenString === ";") {
+        } else if (token.tokenString === ";") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat(";")
-        }else if (token.tokenString === "!") {
+        } else if (token.tokenString === "!") {
             tokenStream[tokenStream.length - 1][0] = tokenStream.slice(-1)[0][0].concat("!")
         } else {
             tokenStream.push([token.tokenString, token.startTime, token.endTime])
@@ -64,21 +73,22 @@ export default function ContentPage(props) {
                         return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
                             {Array.from(Array(wordInLine).keys()).map((value) => {
                                 /*Stack canvas (if selected in prosody tab) and spans including text*/
-                                return <Grid item><Stack sx={{flexDirection: "column", display: "inline-flex", cursor:"pointer"}}>
+                                return <Grid item> <Stack
+                                    sx={{flexDirection: "column", display: "inline-flex", cursor: "pointer"}}>
                                     {canvasActive ? <div style={{
                                         height: "20px", width: "2px"
                                     }}/> : ""}
                                     <Highlighter
-                                        searchWords={(searchFilter === 'all' || searchFilter === 'text') ? [searchInput] : [] }
+                                        searchWords={(searchFilter === 'all' || searchFilter === 'text') ? [searchInput] : []}
                                         autoEscape={true}
                                         textToHighlight={tokenStream[getIndex(lineLengths, index, value)][0]}
-                                        onClick={/*get start and end time of clicked token*/() => {
-                                            setStart(tokenStream[getIndex(lineLengths, index, value)][1]);
+                                        onClick={ /*get start and end time of clicked token()*/ () => {
+                                            setStart(tokenStream[getIndex(lineLengths, index, value)][1])
                                             props.setWordClicked(!props.wordClicked)
                                             setEnd(tokenStream[getIndex(lineLengths, index, value)][2])
                                         }}
                                     >
-                                    <span id={spanIndex}
+                                    <span id={getIndex(lineLengths, index, value)}
                                           style={{
                                               font: "arial",
                                               fontFamily: "sans-serif",

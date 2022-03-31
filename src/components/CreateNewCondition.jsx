@@ -16,7 +16,6 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import {filter} from "../data/filter";
 import PropTypes from "prop-types";
 
 
@@ -45,6 +44,7 @@ export function CreateNewCondition(props) {
         setOpen(false);
     };
 
+    //loadPreset dialog hooks...
     const handleClickLoadOpen = () => {
         setLoadOpen(true);
     };
@@ -53,6 +53,7 @@ export function CreateNewCondition(props) {
         setLoadOpen(false);
     };
 
+    //... & custom function
     function LoadPresetDialog(props) {
         const {onClose, open} = props;
 
@@ -60,17 +61,23 @@ export function CreateNewCondition(props) {
             onClose(value);
         };
 
+        //read from local storage
+        let filterList = []
+        for (let i = 0; i < localStorage.length; i++) {
+            filterList.push(localStorage.key(i))
+        }
+
         return (<Dialog onClose={handleCloseLoadOpen} open={open}>
             <DialogTitle>Filter laden</DialogTitle>
             <List sx={{pt: 0}}>
-                {filter.map((entry) => (<ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
+                {filterList.map((entry) =>
+                        (<ListItem button onClick={() => handleListItemClick(entry)} key={entry}>
 
-                    <ListItemText primary={Object.keys(entry)}/>
+                    <ListItemText primary={entry}/>
                 </ListItem>))}
             </List>
         </Dialog>);
     }
-
 
     LoadPresetDialog.propTypes = {
         onClose: PropTypes.func.isRequired, open: PropTypes.bool.isRequired, selectedValue: PropTypes.string.isRequired,
@@ -193,6 +200,7 @@ export function CreateNewCondition(props) {
             </DialogActions>
 
         </Dialog>
+        {/*load filter dialog*/}
         <LoadPresetDialog
             selectedValue={selectedValue}
             open={loadOpen}
