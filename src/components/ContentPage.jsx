@@ -2,7 +2,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Highlighter from "react-highlight-words";
-import {Stack} from "@mui/material";
+import {Stack, Tooltip} from "@mui/material";
 import Grid from "@mui/material/Grid";
 
 
@@ -54,21 +54,16 @@ export default function ContentPage(props) {
         return spanIndex
     }
 
+    function isHighlighted(l,i,v){
+        return tokenStream[getIndex(l, i, v)][0].toLowerCase() === searchInput
+    }
+
     return (//TODO: optimize: DOMNesting error, align screen-scrolling containers better?*/
         <TabPanel value={0} index={0}>
             <Box>
                 <h3> {selectedPoem.author + " - " + selectedPoem.title}</h3>
 
-                <style>
-                    {`#preline2 {
-          white-space: pre-line;
-          font-style: calibri;
-           font-size: 15px;
-           color:black;
-        }`}
-                </style>
-
-                <p id="preline2">
+                <p id="preline2" style={{whiteSpace: "pre-line",fontStyle: 'calibri', fontSize: '15px'}}>
                     {lineLengths.map((wordInLine, index) => {
                         return <Grid container columnSpacing={1} sx={{justifyContent: 'center'}}>
                             {Array.from(Array(wordInLine).keys()).map((value) => {
@@ -78,26 +73,24 @@ export default function ContentPage(props) {
                                     {canvasActive ? <div style={{
                                         height: "20px", width: "2px"
                                     }}/> : ""}
-                                    <Highlighter
-                                        searchWords={(searchFilter === 'all' || searchFilter === 'text') ? [searchInput] : []}
-                                        autoEscape={true}
-                                        textToHighlight={tokenStream[getIndex(lineLengths, index, value)][0]}
-                                        onClick={ /*get start and end time of clicked token()*/ () => {
-                                            setStart(tokenStream[getIndex(lineLengths, index, value)][1])
-                                            props.setWordClicked(!props.wordClicked)
-                                            setEnd(tokenStream[getIndex(lineLengths, index, value)][2])
-                                        }}
-                                    >
+                                    <Tooltip title="Abspielen" placement="top">
                                     <span id={getIndex(lineLengths, index, value)}
-                                          style={{
-                                              font: "arial",
-                                              fontFamily: "sans-serif",
-                                              cursor: 'pointer',
-                                              color: tokenStream[spanIndex][0].toLowerCase() === searchInput ? 'black' : 'black'
-                                          }}>
-                                          {tokenStream[spanIndex][0]}
+                                          style={{color: isHighlighted(lineLengths, index, value) ? 'blue': 'black'}}>
+                                        <Highlighter
+                                            searchWords={(searchFilter === 'all' || searchFilter === 'text') ? [searchInput] : []}
+                                            autoEscape={true}
+                                            textToHighlight={tokenStream[getIndex(lineLengths, index, value)][0]}
+                                            onClick={ /*get start and end time of clicked token*/ () => {
+                                                setStart(tokenStream[getIndex(lineLengths, index, value)][1])
+                                                props.setWordClicked(!props.wordClicked)
+                                                setEnd(tokenStream[getIndex(lineLengths, index, value)][2])
+                                            }}
+                                        >
+                                        {tokenStream[spanIndex][0]}
+                                             </Highlighter>
                                               </span>
-                                    </Highlighter>
+                                    </Tooltip>
+
                                 </Stack></Grid>
 
                             })}</Grid>

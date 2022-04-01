@@ -25,6 +25,7 @@ export default function Layout(props) {
     const [selectedPoem, setSelectedPoem] = React.useState(null);
     const [searchInput, setSearchInput] = React.useState('');
     const [searchFilter, setSearchFilter] = React.useState('all');
+    const [conditions, setConditions] = React.useState([]);
 
     const [value, setValue] = React.useState(0);
 
@@ -56,6 +57,7 @@ export default function Layout(props) {
                                   searchInput={searchInput}
                                   searchFilter={searchFilter}
                                   all_poems_json={all_poems_json}
+                                  conditions={conditions}
                     />
                 </Item> : <Item>
                     <ContentPage TabPanel={TabPanel} wordClicked={wordClicked} setWordClicked={setWordClicked}
@@ -83,7 +85,9 @@ export default function Layout(props) {
                                        setString={setSearchInput}
                                        searchFilter={searchFilter}
                                        setSearchFilter={setSearchFilter}
-                                       setSearchInput={setSearchInput}/>
+                                       setSearchInput={setSearchInput}
+                                       conditions={conditions}
+                                       setConditions={setConditions}/>
                         </TabPanel>
                         <TabPanel value={value} index={1}>
                             {selectedPoem ? <DetailsTab selectedPoem={selectedPoem}/> :

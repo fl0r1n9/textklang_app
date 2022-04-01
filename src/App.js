@@ -1,7 +1,6 @@
 import React from "react";
 import Layout from "./components/Layout";
 import './App.css';
-//import excerpt from './data/excerpt.tsv';
 import pipeline from './data/hoelderlin-zischler-forICARUS1.tsv';
 import {tsv2json} from "tsv-json";
 
@@ -24,6 +23,7 @@ function App() {
         //parse tsv to json arrays
         const tsv = tsv2json(readText);
         let poemNo = 0
+        let tokenIndex = 0
         let startNewJson = false
         const toSplitAndParse = [26, 27, 28, 29, 40];
 
@@ -32,6 +32,7 @@ function App() {
             if (line[0].includes("#end document")) {
                 poemNo++
                 startNewJson = false
+                tokenIndex = 0
             }
             if (startNewJson === true) {
                 if (line[0].includes("#audio-file")) {
@@ -45,6 +46,7 @@ function App() {
                     }
 
                     all_poems_json.poems[poemNo].tokens.push({
+                        index: tokenIndex,
                         tokenInSentenceId: parseInt(line[0]),
                         tokenString: line[1],
                         pos: line[5],
@@ -60,6 +62,7 @@ function App() {
                         //TODO: change index to last for new tsv version
                         newline: line[2]
                     })
+                    tokenIndex++
                 }
 
             }

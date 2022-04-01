@@ -113,7 +113,7 @@ EnhancedTableToolbar.propTypes = {
 
 export default function ContentTable(props) {
 
-    const {setSelectedPoem, searchInput, searchFilter, all_poems_json} = props;
+    const {setSelectedPoem, searchInput, searchFilter, all_poems_json, conditions} = props;
 
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('calories');
@@ -194,8 +194,95 @@ export default function ContentTable(props) {
         }
     }
 
-    const displayContent = stableSort(all_poems_json.poems, getComparator(order, orderBy))
-        .filter(poem => filterResults(poem))
+    //array to render when only string search is applied
+    const filteredBySearchInput = all_poems_json.poems.filter(poem => filterResults(poem))
+    let filteredByConditionInput
+
+    //filter out conditions
+    if (conditions.length !== 0) {
+        const processConditionsFirst = (poem) => {
+            if (conditions[0].conditionSearchInput === '') {
+                return true
+            }
+
+            for (let i = 0; i < poem.tokens.length; i++) {
+
+                switch (conditions[0].entity) {
+                    case 'punctuation':
+
+                        if (isNaN(poem.tokens[i].startTime) && poem.tokens[i].tokenString === conditions[0].conditionSearchInput) {
+                            switch (conditions[0].where) {
+                                case 'vers_start':
+                                    if (poem.tokens[i - 1].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'vers_end':
+                                    if (poem.tokens[i].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'wayne':
+                                    return true
+                                default:
+                                    break
+                            }
+                        }
+                        break
+                    case 'syl':
+                        if (poem.tokens[i].tokenString.includes(conditions[0].conditionSearchInput)) {
+                            switch (conditions[0].where) {
+                                case 'vers_start':
+                                    if (poem.tokens[i - 1].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'vers_end':
+                                    if (poem.tokens[i].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'wayne':
+                                    return true
+                                default:
+                                    break
+                            }
+                        }
+                        break
+                    case 'word':
+                        if (poem.tokens[i].tokenString === conditions[0].conditionSearchInput) {
+                            switch (conditions[0].where) {
+                                case 'vers_start':
+                                    if (poem.tokens[i - 1].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'vers_end':
+                                    if (poem.tokens[i].newline === '1') {
+                                        return true
+                                    }
+                                    break
+                                case 'wayne':
+                                    return true
+                                default:
+                                    break
+                            }
+                        }
+                        break
+                    default:
+                        break
+                }
+            }
+        }
+
+        if (conditions[0].func === 'contains') {
+            filteredByConditionInput = filteredBySearchInput.filter(poem => processConditionsFirst(poem))
+        }
+        if (conditions[0].func === 'not') {
+            filteredByConditionInput = filteredBySearchInput.filter(poem => !processConditionsFirst(poem))
+        }
+    }
+
 
     return (<Box sx={{width: '100%'}}>
             <Paper sx={{width: '100%', mb: 2}}>
@@ -215,8 +302,7 @@ export default function ContentTable(props) {
                             rowCount={all_poems_json.poems.length}
                         />
                         <TableBody>
-
-                            {displayContent
+                            {stableSort((conditions.length !== 0) ? filteredByConditionInput : filteredBySearchInput, getComparator(order, orderBy))
                                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                 .map((row, index) => {
                                     const isItemSelected = isSelected(row.title);
@@ -231,30 +317,30 @@ export default function ContentTable(props) {
                                         selected={isItemSelected}
 
                                     >
-                                        <TableCell  align="left"
-                                                    style={{cursor: 'pointer'}}
-                                                    component="th"
-                                                    id={labelId}
-                                                    scope="row"
-                                                    padding="none"> {row.title} </TableCell>
                                         <TableCell align="left"
                                                    style={{cursor: 'pointer'}}
                                                    component="th"
                                                    id={labelId}
                                                    scope="row"
-                                               >{row.author} </TableCell>
+                                                   padding="none"> {row.title} </TableCell>
                                         <TableCell align="left"
                                                    style={{cursor: 'pointer'}}
                                                    component="th"
                                                    id={labelId}
                                                    scope="row"
-                                                   >{row.reader} </TableCell>
+                                        >{row.author} </TableCell>
                                         <TableCell align="left"
                                                    style={{cursor: 'pointer'}}
                                                    component="th"
                                                    id={labelId}
                                                    scope="row"
-                                                   >{row.documentId} </TableCell>
+                                        >{row.reader} </TableCell>
+                                        <TableCell align="left"
+                                                   style={{cursor: 'pointer'}}
+                                                   component="th"
+                                                   id={labelId}
+                                                   scope="row"
+                                        >{row.documentId} </TableCell>
 
                                     </TableRow>);
                                 })}
@@ -271,7 +357,7 @@ export default function ContentTable(props) {
                 <TablePagination
                     rowsPerPageOptions={[5, 10, 25]}
                     component="div"
-                    count={displayContent.length}
+                    count={(conditions.length !== 0) ? filteredByConditionInput.length : filteredBySearchInput.length}
                     rowsPerPage={rowsPerPage}
                     page={page}
                     onPageChange={handleChangePage}

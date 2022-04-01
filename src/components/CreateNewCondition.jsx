@@ -166,7 +166,7 @@ export function CreateNewCondition(props) {
         {/*//TODO: better positioning, 2x2?*/}
         <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 4, flexWrap: 'wrap'}}>
             {/*take out ||!entity||!where for debugging*/}
-            <Button variant="contained" onClick={handleAddCondition} disabled={!func}>Filter
+            <Button variant="contained" onClick={handleAddCondition} disabled={!func||!entity||!where}>Filter
                 +</Button>
             <Button variant="contained" onClick={handleDeleteCondition}>Filter -</Button>
             <Button variant="contained" onClick={handleClickOpen}>Filter speichern</Button>

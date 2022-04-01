@@ -12,7 +12,7 @@ import {CreateNewCondition} from "./CreateNewCondition";
 export default function SearchPage(props) {
 
 
-    const {searchInput, setString, searchFilter, setSearchFilter, setSearchInput} = props;
+    const {searchInput, setString, searchFilter, setSearchFilter, setSearchInput, conditions, setConditions} = props;
 
 
     //SearchFilter hook
@@ -20,9 +20,6 @@ export default function SearchPage(props) {
         setSearchFilter(event.target.value);
         setString('');
     };
-
-    //add conditions hook
-    const [conditions, setConditions] = React.useState([]);
 
     //FormControl hooks
     const [first, setFirst] = React.useState(true);

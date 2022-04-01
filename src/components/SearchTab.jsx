@@ -11,6 +11,8 @@ export default function SearchTab(props) {
                     searchFilter={props.searchFilter}
                     setSearchFilter={props.setSearchFilter}
                     setSearchInput={props.setSearchInput}
+                    conditions={props.conditions}
+                    setConditions={props.setConditions}
         />
 
     )
