@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import {
-    InputLabel, MenuItem
+    InputLabel, MenuItem, Snackbar
 } from "@mui/material";
 import {Select} from "@mui/material";
 import FormControl from '@mui/material/FormControl';
@@ -34,6 +34,31 @@ export default function SearchPage(props) {
 
     const [saveFilterName, setSaveFilterName] = React.useState('');
 
+    //snackbar hooks
+    const [open, setOpen] = React.useState(false);
+    const [message, setMessage] = React.useState("");
+
+    function SimpleSnackbar() {
+
+        const handleClose = (event, reason) => {
+            if (reason === 'clickaway') {
+                return;
+            }
+
+            setOpen(false);
+        };
+
+        return (<div>
+            <Snackbar
+                open={open}
+                autoHideDuration={500}
+                onClose={handleClose}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                message={message}
+            />
+        </div>);
+    }
+
     //adding a condition box when filter+ button is pressed
     const handleAddCondition = () => {
         setConditions(conditions.concat(new Condition(first, func, entity, where, conditionSearchInput)));
@@ -42,6 +67,8 @@ export default function SearchPage(props) {
         setEntity(null);
         setWhere(null);
         setConditionSearchInput('');
+        setOpen(true)
+        setMessage("Filter hinzugefügt")
     }
 
     //undo previous
@@ -50,7 +77,8 @@ export default function SearchPage(props) {
             setFirst(true);
         }
         setConditions(conditions.filter((element) => element !== conditions.slice(-1)[0]));
-
+        setOpen(true)
+        setMessage("Filter gelöscht")
     }
 
     //simple savePreset function
@@ -65,6 +93,7 @@ export default function SearchPage(props) {
         });
 
         //add filter blocks to local storage
+        //TODO: on first instance: download&save standard filters from server, then check on startup whether they are deleted
         localStorage.setItem(saveFilterName, JSON.stringify(conditions_appended))
     }
 
@@ -97,6 +126,7 @@ export default function SearchPage(props) {
                 <FormControl variant="standard" sx={{minWidth: 120}}>
                     <InputLabel id="demo-simple-select-standard-label">Funktion</InputLabel>
                     <Select
+                        style={{color:'darkgreen'}}
                         disabled={true}
                         value={condition.func || ''}
                         displayEmpty
@@ -206,8 +236,7 @@ export default function SearchPage(props) {
                                 setSaveFilterName={setSaveFilterName}
 
             />
-
-
+        <SimpleSnackbar/>
         </div>);
 
 }
